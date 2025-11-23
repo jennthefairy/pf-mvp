@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Launch Your Lash Brand - PageFairy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .brand-font { font-family: 'Playfair Display', serif; }
+        .hero-gradient { background: linear-gradient(135deg, #fdfbff 0%, #f5f3ff 100%); }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: { colors: { fairy: { 50: '#fdfbff', 100: '#f5f3ff', 500: '#8b5cf6', 600: '#7c3aed', 900: '#4c1d95' } } }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white text-slate-800">
+
+    <!-- Navigation -->
+    <nav class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <span class="bg-fairy-100 p-1.5 rounded-lg text-fairy-600"><i data-lucide="wand-2" class="h-5 w-5"></i></span>
+            <span class="font-bold text-xl tracking-tight text-gray-900 brand-font">PageFairy</span>
+        </div>
+        <a href="home.html" class="text-sm font-medium text-gray-500 hover:text-fairy-600">Member Login</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="max-w-4xl mx-auto px-6 py-16 md:py-24 text-center">
+        
+        <span class="inline-block py-1 px-3 rounded-full bg-fairy-50 border border-fairy-100 text-fairy-600 text-xs font-bold uppercase tracking-wider mb-6">
+            For Lash Artists & Beauty Entrepreneurs
+        </span>
+
+        <h1 class="text-4xl md:text-6xl font-bold brand-font text-gray-900 mb-6 leading-tight">
+            Launch your own product line.<br>
+            <span class="text-fairy-600 italic">Zero inventory risk.</span>
+        </h1>
+
+        <p class="text-lg text-gray-500 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Download our free <strong>2024 Product Catalog</strong>. Browse premium white-label lash trays, adhesives, and tools you can launch today with our risk-free pre-order system.
+        </p>
+
+        <!-- Lead Capture Form -->
+        <div class="max-w-md mx-auto bg-white p-2 rounded-xl shadow-xl shadow-fairy-900/5 border border-gray-100 flex flex-col sm:flex-row gap-2">
+            <input type="email" placeholder="Enter your email address..." class="flex-1 px-4 py-3 bg-gray-50 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-fairy-500" required>
+            <button class="bg-fairy-600 hover:bg-fairy-700 text-white px-6 py-3 rounded-lg font-bold transition-all whitespace-nowrap shadow-md">
+                Get the Catalog
+            </button>
+        </div>
+        <p class="text-xs text-gray-400 mt-4">
+            <i data-lucide="lock" class="inline w-3 h-3 mr-1"></i> We respect your inbox. Unsubscribe anytime.
+        </p>
+
+    </main>
+
+    <!-- Social Proof / Features -->
+    <section class="bg-fairy-50 py-16 border-y border-fairy-100">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-xl border border-fairy-100 shadow-sm">
+                <div class="w-10 h-10 bg-fairy-100 rounded-full flex items-center justify-center text-fairy-600 mb-4"><i data-lucide="book-open" class="w-5 h-5"></i></div>
+                <h3 class="font-bold text-gray-900 mb-2">1. Pick a Product</h3>
+                <p class="text-sm text-gray-500">Browse our PDF catalog and choose from 50+ tested, premium lash products.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl border border-fairy-100 shadow-sm">
+                <div class="w-10 h-10 bg-fairy-100 rounded-full flex items-center justify-center text-fairy-600 mb-4"><i data-lucide="zap" class="w-5 h-5"></i></div>
+                <h3 class="font-bold text-gray-900 mb-2">2. Test Demand</h3>
+                <p class="text-sm text-gray-500">Use our platform to launch a 7-day pre-order campaign. You don't pay until you sell.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl border border-fairy-100 shadow-sm">
+                <div class="w-10 h-10 bg-fairy-100 rounded-full flex items-center justify-center text-fairy-600 mb-4"><i data-lucide="package" class="w-5 h-5"></i></div>
+                <h3 class="font-bold text-gray-900 mb-2">3. We Handle Fulfillment</h3>
+                <p class="text-sm text-gray-500">If your campaign succeeds, we ship orders directly to your customers.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 text-center text-gray-400 text-sm">
+        <p>&copy; 2024 PageFairy. Empowering Beauty Entrepreneurs.</p>
+    </footer>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

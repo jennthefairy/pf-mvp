@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FairyCode AI Editor</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Cropper.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Custom Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        
+        /* Cropper Overrides for Dark Mode */
+        .cropper-view-box,
+        .cropper-face {
+            border-radius: 0;
+        }
+        .cropper-line, .cropper-point {
+            background-color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen text-gray-100 font-sans selection:bg-blue-500 selection:text-white">
+
+    <!-- Header -->
+    <header class="w-full bg-gray-800/50 backdrop-blur-md border-b border-gray-700/50 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i data-lucide="wand-2" class="text-blue-400 w-6 h-6"></i>
+                <h1 class="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                    FairyCode
+                </h1>
+            </div>
+            <div class="text-sm text-gray-400 flex items-center gap-2">
+                <span class="hidden sm:inline">AI-Powered Image Editor</span>
+                <span class="px-2 py-1 bg-blue-500/10 text-blue-400 rounded text-xs border border-blue-500/20">Beta</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow w-full max-w-[1600px] mx-auto p-4 md:p-8 flex justify-center min-h-[calc(100vh-64px)]">
+        
+        <!-- Start Screen (Hidden when image loaded) -->
+        <div id="start-screen" class="flex flex-col items-center justify-center w-full max-w-xl text-center animate-fade-in">
+            <div class="bg-gray-800/50 border-2 border-dashed border-gray-700 rounded-2xl p-12 w-full hover:border-blue-500/50 transition-colors duration-300 group cursor-pointer" onclick="document.getElementById('file-input').click()">
+                <div class="mb-6 relative">
+                    <div class="absolute inset-0 bg-blue-500/20 rounded-full blur-xl animate-pulse"></div>
+                    <div class="relative bg-gray-800 p-4 rounded-full inline-block border border-gray-700 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="image-plus" class="w-12 h-12 text-blue-400"></i>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-100 mb-2">Upload an Image</h2>
+                <p class="text-gray-400 mb-6">Drag and drop or click to start editing</p>
+                <button class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-8 rounded-lg transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40">
+                    Choose File
+                </button>
+                <input type="file" id="file-input" class="hidden" accept="image/*">
+            </div>
+            <div class="mt-8 grid grid-cols-3 gap-4 text-center text-sm text-gray-500 w-full">
+                <div class="flex flex-col items-center gap-2">
+                    <div class="p-2 bg-gray-800 rounded-lg"><i data-lucide="sparkles" class="w-5 h-5"></i></div>
+                    <span>AI Retouch</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="p-2 bg-gray-800 rounded-lg"><i data-lucide="crop" class="w-5 h-5"></i></div>
+                    <span>Smart Crop</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="p-2 bg-gray-800 rounded-lg"><i data-lucide="sliders" class="w-5 h-5"></i></div>
+                    <span>Adjustments</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Editor Interface (Hidden by default) -->
+        <div id="editor-interface" class="hidden w-full max-w-4xl flex-col items-center gap-6 animate-fade-in">
+            
+            <!-- Image Canvas Area -->
+            <div class="relative w-full shadow-2xl rounded-xl overflow-hidden bg-black/20 group">
+                
+                <!-- Loading Overlay -->
+                <div id="loading-overlay" class="hidden absolute inset-0 bg-black/70 z-40 flex-col items-center justify-center gap-4">
+                    <div class="relative">
+                        <div class="w-12 h-12 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-blue-400"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 font-medium animate-pulse">AI is working its magic...</p>
+                </div>
+
+                <!-- Main Image Display -->
+                <div id="image-wrapper" class="relative max-h-[70vh] flex justify-center bg-[url('https://grainy-gradients.vercel.app/noise.svg')]">
+                    <img id="main-image" src="" alt="Editing" class="max-h-[60vh] w-auto object-contain pointer-events-auto">
+                    
+                    <!-- Retouch Hotspot Marker -->
+                    <div id="hotspot-marker" class="hidden absolute w-6 h-6 -ml-3 -mt-3 pointer-events-none z-20">
+                        <span class="absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75 animate-ping"></span>
+                        <span class="relative inline-flex rounded-full h-6 w-6 bg-blue-500 border-2 border-white"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="w-full bg-gray-800/80 border border-gray-700/80 rounded-lg p-1.5 flex items-center justify-center gap-2 backdrop-blur-sm sticky bottom-4 z-30 shadow-xl md:static">
+                <button onclick="switchTab('retouch')" class="tab-btn w-full flex items-center justify-center gap-2 capitalize font-semibold py-3 px-4 rounded-md transition-all duration-200 text-sm md:text-base data-[active=true]:bg-blue-600 data-[active=true]:text-white data-[active=true]:shadow-lg data-[active=false]:text-gray-400 data-[active=false]:hover:bg-white/5" data-tab="retouch">
+                    <i data-lucide="wand-2" class="w-4 h-4"></i> Retouch
+                </button>
+                <button onclick="switchTab('adjust')" class="tab-btn w-full flex items-center justify-center gap-2 capitalize font-semibold py-3 px-4 rounded-md transition-all duration-200 text-sm md:text-base data-[active=true]:bg-blue-600 data-[active=true]:text-white data-[active=true]:shadow-lg data-[active=false]:text-gray-400 data-[active=false]:hover:bg-white/5" data-tab="adjust">
+                    <i data-lucide="sliders" class="w-4 h-4"></i> Adjust
+                </button>
+                <button onclick="switchTab('filters')" class="tab-btn w-full flex items-center justify-center gap-2 capitalize font-semibold py-3 px-4 rounded-md transition-all duration-200 text-sm md:text-base data-[active=true]:bg-blue-600 data-[active=true]:text-white data-[active=true]:shadow-lg data-[active=false]:text-gray-400 data-[active=false]:hover:bg-white/5" data-tab="filters">
+                    <i data-lucide="palette" class="w-4 h-4"></i> Filters
+                </button>
+                <button onclick="switchTab('crop')" class="tab-btn w-full flex items-center justify-center gap-2 capitalize font-semibold py-3 px-4 rounded-md transition-all duration-200 text-sm md:text-base data-[active=true]:bg-blue-600 data-[active=true]:text-white data-[active=true]:shadow-lg data-[active=false]:text-gray-400 data-[active=false]:hover:bg-white/5" data-tab="crop">
+                    <i data-lucide="crop" class="w-4 h-4"></i> Crop
+                </button>
+            </div>
+
+            <!-- Tool Controls Area -->
+            <div class="w-full bg-gray-800/40 border border-gray-700/50 rounded-xl p-6">
+                
+                <!-- Retouch Controls -->
+                <div id="controls-retouch" class="tool-panel flex flex-col gap-4">
+                    <p class="text-center text-gray-400 text-sm" id="retouch-instruction">
+                        Click on the image to select an area to edit.
+                    </p>
+                    <form onsubmit="handleGenerate(event)" class="w-full flex items-center gap-2">
+                        <input type="text" id="retouch-prompt" disabled
+                            placeholder="First click a point on the image..." 
+                            class="flex-grow bg-gray-900 border border-gray-700 text-gray-200 rounded-lg p-4 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition">
+                        <button type="submit" id="retouch-submit" disabled
+                            class="bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-lg transition-all shadow-lg hover:shadow-blue-500/20 whitespace-nowrap">
+                            Generate
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Adjust Controls -->
+                <div id="controls-adjust" class="tool-panel hidden flex-col gap-4">
+                    <p class="text-center text-gray-400 text-sm">Describe how you want to adjust the image lighting or color.</p>
+                    <form onsubmit="handleGenerate(event, 'adjust')" class="w-full flex items-center gap-2">
+                        <input type="text" id="adjust-prompt" 
+                            placeholder="e.g., 'Make it look like sunset' or 'Increase contrast'" 
+                            class="flex-grow bg-gray-900 border border-gray-700 text-gray-200 rounded-lg p-4 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+                        <button type="submit" 
+                            class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-6 rounded-lg transition-all shadow-lg hover:shadow-blue-500/20 whitespace-nowrap">
+                            Adjust
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Filters Controls -->
+                <div id="controls-filters" class="tool-panel hidden flex-col gap-4">
+                    <p class="text-center text-gray-400 text-sm">Apply a creative filter to your image.</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <button onclick="applyFilter('Grayscale')" class="p-3 bg-gray-700 hover:bg-gray-600 rounded-lg border border-gray-600 transition text-sm">B&W</button>
+                        <button onclick="applyFilter('Sepia')" class="p-3 bg-amber-900/30 hover:bg-amber-900/50 text-amber-200 rounded-lg border border-amber-900/50 transition text-sm">Sepia</button>
+                        <button onclick="applyFilter('Vivid')" class="p-3 bg-purple-900/30 hover:bg-purple-900/50 text-purple-200 rounded-lg border border-purple-900/50 transition text-sm">Vivid</button>
+                        <button onclick="applyFilter('Cool')" class="p-3 bg-blue-900/30 hover:bg-blue-900/50 text-blue-200 rounded-lg border border-blue-900/50 transition text-sm">Cool</button>
+                    </div>
+                </div>
+
+                <!-- Crop Controls -->
+                <div id="controls-crop" class="tool-panel hidden flex flex-col items-center gap-4">
+                    <p class="text-center text-gray-400 text-sm">Drag handles to crop the image.</p>
+                    <button onclick="applyCrop()" 
+                        class="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-8 rounded-lg transition-all shadow-lg shadow-green-500/20 flex items-center gap-2">
+                        <i data-lucide="check" class="w-4 h-4"></i> Apply Crop
+                    </button>
+                </div>
+            </div>
+
+            <!-- Global Actions -->
+            <div class="flex flex-wrap items-center justify-center gap-3 w-full">
+                <button onclick="handleUndo()" id="btn-undo" disabled 
+                    class="flex items-center bg-gray-800 border border-gray-700 text-gray-200 py-2 px-4 rounded-md hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition">
+                    <i data-lucide="undo-2" class="w-4 h-4 mr-2"></i> Undo
+                </button>
+                
+                <button onclick="handleRedo()" id="btn-redo" disabled 
+                    class="flex items-center bg-gray-800 border border-gray-700 text-gray-200 py-2 px-4 rounded-md hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition">
+                    <i data-lucide="redo-2" class="w-4 h-4 mr-2"></i> Redo
+                </button>
+
+                <div class="h-6 w-px bg-gray-700 mx-2 hidden sm:block"></div>
+
+                <button id="btn-compare" 
+                    onmousedown="startCompare()" onmouseup="endCompare()" onmouseleave="endCompare()"
+                    ontouchstart="startCompare()" ontouchend="endCompare()"
+                    disabled
+                    class="flex items-center bg-gray-800 border border-gray-700 text-gray-200 py-2 px-4 rounded-md hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition select-none">
+                    <i data-lucide="eye" class="w-4 h-4 mr-2"></i> Hold to Compare
+                </button>
+
+                <button onclick="handleReset()" class="bg-transparent border border-gray-600 text-gray-400 py-2 px-4 rounded-md hover:text-white hover:border-gray-400 transition">
+                    Reset
+                </button>
+
+                <button onclick="handleUploadNew()" class="bg-gray-800 border border-gray-700 text-gray-300 py-2 px-4 rounded-md hover:bg-gray-700 transition ml-auto">
+                    New File
+                </button>
+                
+                <button onclick="handleDownload()" class="bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-2 px-6 rounded-md shadow-lg shadow-green-900/20 hover:shadow-green-500/30 transition flex items-center gap-2">
+                    <i data-lucide="download" class="w-4 h-4"></i> Save
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Cropper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+    <script>
+        // --- State Management ---
+        const state = {
+            history: [], // Array of data URLs
+            historyIndex: -1,
+            activeTab: 'retouch',
+            hotspot: null, // {x, y} relative to image
+            cropperInstance: null,
+            isProcessing: false
+        };
+
+        // --- DOM Elements ---
+        const els = {
+            startScreen: document.getElementById('start-screen'),
+            editorInterface: document.getElementById('editor-interface'),
+            fileInput: document.getElementById('file-input'),
+            mainImage: document.getElementById('main-image'),
+            hotspotMarker: document.getElementById('hotspot-marker'),
+            loadingOverlay: document.getElementById('loading-overlay'),
+            tabs: document.querySelectorAll('.tab-btn'),
+            panels: document.querySelectorAll('.tool-panel'),
+            retouchPrompt: document.getElementById('retouch-prompt'),
+            retouchSubmit: document.getElementById('retouch-submit'),
+            retouchInstruction: document.getElementById('retouch-instruction'),
+            btnUndo: document.getElementById('btn-undo'),
+            btnRedo: document.getElementById('btn-redo'),
+            btnCompare: document.getElementById('btn-compare')
+        };
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            
+            // File Input Listener
+            els.fileInput.addEventListener('change', (e) => {
+                if(e.target.files && e.target.files[0]) {
+                    handleFileSelect(e.target.files[0]);
+                }
+            });
+
+            // Image Click for Hotspots
+            els.mainImage.addEventListener('click', handleImageClick);
+        });
+
+        // --- Core Functions ---
+
+        function handleFileSelect(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const dataUrl = e.target.result;
+                state.history = [dataUrl];
+                state.historyIndex = 0;
+                updateView();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateView() {
+            // Toggle Screens
+            if (state.historyIndex >= 0) {
+                els.startScreen.classList.add('hidden');
+                els.editorInterface.classList.remove('hidden');
+                els.editorInterface.classList.add('flex');
+            } else {
+                els.startScreen.classList.remove('hidden');
+                els.editorInterface.classList.add('hidden');
+                els.editorInterface.classList.remove('flex');
+                return;
+            }
+
+            // Update Image Src
+            const currentImg = state.history[state.historyIndex];
+            // Only update src if it changed to prevent flickering in some browsers
+            if (els.mainImage.src !== currentImg) {
+                if(state.cropperInstance) state.cropperInstance.replace(currentImg);
+                else els.mainImage.src = currentImg;
+            }
+
+            // Update Buttons
+            els.btnUndo.disabled = state.historyIndex <= 0;
+            els.btnRedo.disabled = state.historyIndex >= state.history.length - 1;
+            els.btnCompare.disabled = state.historyIndex <= 0;
+
+            // Update Hotspot UI
+            if (state.hotspot && state.activeTab === 'retouch') {
+                els.hotspotMarker.classList.remove('hidden');
+                els.hotspotMarker.style.left = `${state.hotspot.displayX}px`;
+                els.hotspotMarker.style.top = `${state.hotspot.displayY}px`;
+                
+                els.retouchPrompt.disabled = false;
+                els.retouchPrompt.placeholder = "Describe change (e.g. 'Remove object')";
+                els.retouchPrompt.focus();
+                els.retouchInstruction.innerText = "Great! Now describe your edit below.";
+            } else {
+                els.hotspotMarker.classList.add('hidden');
+                els.retouchPrompt.disabled = true;
+                els.retouchPrompt.placeholder = "First click a point on the image...";
+                els.retouchInstruction.innerText = "Click on the image to select an area to edit.";
+            }
+
+            // Update Prompt Input Values
+            if(els.retouchPrompt.value === '' && !state.hotspot) els.retouchSubmit.disabled = true;
+            else if(els.retouchPrompt.value !== '') els.retouchSubmit.disabled = false;
+        }
+
+        // --- Tab Logic ---
+
+        function switchTab(tabName) {
+            if (state.isProcessing) return;
+
+            state.activeTab = tabName;
+            
+            // Update Tab Styling
+            els.tabs.forEach(btn => {
+                const isActive = btn.dataset.tab === tabName;
+                btn.setAttribute('data-active', isActive);
+            });
+
+            // Show Panel
+            els.panels.forEach(panel => panel.classList.add('hidden'));
+            document.getElementById(`controls-${tabName}`).classList.remove('hidden');
+            document.getElementById(`controls-${tabName}`).classList.add('flex');
+
+            // Logic specific to tabs
+            if (tabName === 'crop') {
+                initCropper();
+                state.hotspot = null; // Clear hotspot when leaving retouch
+            } else {
+                destroyCropper();
+            }
+            
+            if (tabName !== 'retouch') {
+                state.hotspot = null;
+            }
+
+            updateView();
+        }
+
+        // --- Retouch Hotspot Logic ---
+
+        function handleImageClick(e) {
+            if (state.activeTab !== 'retouch' || state.isProcessing) return;
+
+            const rect = els.mainImage.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // Calculate percentage coordinates for "Backend" logic
+            const pctX = x / rect.width;
+            const pctY = y / rect.height;
+
+            state.hotspot = {
+                displayX: x,
+                displayY: y,
+                pctX, 
+                pctY
+            };
+
+            updateView();
+        }
+
+        // --- Cropper Logic ---
+
+        function initCropper() {
+            if (state.cropperInstance) return;
+            state.cropperInstance = new Cropper(els.mainImage, {
+                viewMode: 1,
+                dragMode: 'move',
+                autoCropArea: 0.8,
+                background: false,
+                guides: true
+            });
+        }
+
+        function destroyCropper() {
+            if (state.cropperInstance) {
+                state.cropperInstance.destroy();
+                state.cropperInstance = null;
+                // Restore original image style that cropper might mess with
+                els.mainImage.style.display = 'block';
+                els.mainImage.style.width = 'auto'; 
+                els.mainImage.style.maxWidth = '100%';
+            }
+        }
+
+        function applyCrop() {
+            if (!state.cropperInstance) return;
+
+            const canvas = state.cropperInstance.getCroppedCanvas();
+            const newDataUrl = canvas.toDataURL('image/png');
+            
+            addToHistory(newDataUrl);
+            switchTab('retouch'); // Go back to default after crop
+        }
+
+        // --- AI Generation / Mocking ---
+
+        async function handleGenerate(e, type = 'retouch') {
+            e.preventDefault();
+            if (state.isProcessing) return;
+
+            let prompt = "";
+            if (type === 'retouch') {
+                prompt = els.retouchPrompt.value;
+                if (!prompt || !state.hotspot) return;
+            } else if (type === 'adjust') {
+                prompt = document.getElementById('adjust-prompt').value;
+                if (!prompt) return;
+            }
+
+            startLoading();
+
+            try {
+                // SIMULATE AI DELAY
+                await new Promise(r => setTimeout(r, 2000));
+                
+                // SIMULATE IMAGE PROCESSING (Since we have no backend)
+                // We will modify the image using Canvas to show flow works
+                const processedImage = await simulateProcessing(state.history[state.historyIndex], type, prompt);
+                
+                addToHistory(processedImage);
+                
+                // Clear inputs
+                els.retouchPrompt.value = '';
+                document.getElementById('adjust-prompt').value = '';
+                state.hotspot = null;
+
+            } catch (err) {
+                console.error(err);
+                alert("Something went wrong with the generation.");
+            } finally {
+                stopLoading();
+            }
+        }
+
+        async function applyFilter(filterName) {
+            if (state.isProcessing) return;
+            startLoading();
+            
+            // Artificial delay for realism
+            setTimeout(async () => {
+                const processed = await simulateProcessing(state.history[state.historyIndex], 'filter', filterName);
+                addToHistory(processed);
+                stopLoading();
+            }, 1000);
+        }
+
+        // --- Mock Processing Logic (Canvas Manipulation) ---
+        function simulateProcessing(srcDataUrl, type, instruction) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Draw original
+                    if (type === 'filter' && instruction === 'Grayscale') ctx.filter = 'grayscale(100%)';
+                    if (type === 'filter' && instruction === 'Sepia') ctx.filter = 'sepia(100%)';
+                    if (type === 'filter' && instruction === 'Vivid') ctx.filter = 'saturate(200%)';
+                    if (type === 'filter' && instruction === 'Cool') ctx.filter = 'hue-rotate(180deg)';
+                    
+                    ctx.drawImage(img, 0, 0);
+                    ctx.filter = 'none'; // Reset filter
+
+                    // Add Overlay for Retouch/Adjust to visualize "AI" change
+                    if (type === 'retouch' || type === 'adjust') {
+                        // Add a subtle color tint to show "change"
+                        ctx.globalCompositeOperation = 'overlay';
+                        ctx.fillStyle = type === 'retouch' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(255, 165, 0, 0.2)';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        
+                        // Reset
+                        ctx.globalCompositeOperation = 'source-over';
+                        
+                        // Add watermarks if needed (optional, kept subtle)
+                        // ctx.font = "30px sans-serif";
+                        // ctx.fillStyle = "rgba(255,255,255,0.5)";
+                        // ctx.fillText("AI Processed: " + instruction, 20, 50);
+                    }
+
+                    if (type === 'retouch' && state.hotspot) {
+                        // Draw a glow where the hotspot was
+                        const centerX = state.hotspot.pctX * canvas.width;
+                        const centerY = state.hotspot.pctY * canvas.height;
+                        
+                        const gradient = ctx.createRadialGradient(centerX, centerY, 10, centerX, centerY, 100);
+                        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
+                        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                        
+                        ctx.fillStyle = gradient;
+                        ctx.beginPath();
+                        ctx.arc(centerX, centerY, 100, 0, Math.PI*2);
+                        ctx.fill();
+                    }
+
+                    resolve(canvas.toDataURL('image/png'));
+                };
+                img.src = srcDataUrl;
+            });
+        }
+
+        // --- History Management ---
+
+        function addToHistory(dataUrl) {
+            // Cut off any future history if we are in the middle
+            const newHistory = state.history.slice(0, state.historyIndex + 1);
+            newHistory.push(dataUrl);
+            state.history = newHistory;
+            state.historyIndex++;
+            updateView();
+        }
+
+        function handleUndo() {
+            if (state.historyIndex > 0) {
+                state.historyIndex--;
+                // If undoing crop, we need to ensure cropper is reset
+                if (state.activeTab === 'crop' && state.cropperInstance) {
+                    state.cropperInstance.replace(state.history[state.historyIndex]);
+                }
+                updateView();
+            }
+        }
+
+        function handleRedo() {
+            if (state.historyIndex < state.history.length - 1) {
+                state.historyIndex++;
+                if (state.activeTab === 'crop' && state.cropperInstance) {
+                    state.cropperInstance.replace(state.history[state.historyIndex]);
+                }
+                updateView();
+            }
+        }
+
+        function handleReset() {
+            if (state.history.length > 0) {
+                state.historyIndex = 0;
+                destroyCropper();
+                state.activeTab = 'retouch';
+                state.hotspot = null;
+                switchTab('retouch'); // Force UI reset
+            }
+        }
+
+        function handleUploadNew() {
+            state.history = [];
+            state.historyIndex = -1;
+            state.hotspot = null;
+            destroyCropper();
+            els.fileInput.value = ''; // Reset input
+            updateView();
+        }
+
+        function handleDownload() {
+            if (state.historyIndex >= 0) {
+                const link = document.createElement('a');
+                link.download = 'fairycode-edit.png';
+                link.href = state.history[state.historyIndex];
+                link.click();
+            }
+        }
+
+        // --- Compare Logic ---
+        function startCompare() {
+            if (state.historyIndex > 0) {
+                els.mainImage.src = state.history[0];
+            }
+        }
+
+        function endCompare() {
+            if (state.historyIndex >= 0) {
+                els.mainImage.src = state.history[state.historyIndex];
+            }
+        }
+
+        // --- Loading UI ---
+        function startLoading() {
+            state.isProcessing = true;
+            els.loadingOverlay.classList.remove('hidden');
+            els.loadingOverlay.classList.add('flex');
+        }
+
+        function stopLoading() {
+            state.isProcessing = false;
+            els.loadingOverlay.classList.add('hidden');
+            els.loadingOverlay.classList.remove('flex');
+            updateView();
+        }
+
+    </script>
+</body>
+</html>

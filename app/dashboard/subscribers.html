@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribers - PageFairy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .brand-font { font-family: 'Playfair Display', serif; }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: { colors: { fairy: { 50: '#fdfbff', 100: '#f5f3ff', 500: '#8b5cf6', 600: '#7c3aed', 900: '#4c1d95' } } }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen text-slate-600 flex">
+
+    <!-- SIDEBAR -->
+    <aside class="hidden md:flex flex-col w-64 bg-white border-r border-gray-100 fixed h-full z-10">
+        <div class="h-16 flex items-center px-6">
+            <div class="flex items-center gap-2">
+                <span class="bg-fairy-100 p-1.5 rounded-lg text-fairy-600"><i data-lucide="wand-2" class="h-5 w-5"></i></span>
+                <span class="font-bold text-lg tracking-tight text-gray-900 brand-font">PageFairy</span>
+            </div>
+        </div>
+        <nav class="flex-1 px-3 py-6 space-y-1">
+            <a href="campaigns.html" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-md hover:bg-gray-50 hover:text-fairy-600 transition-colors">
+                <i data-lucide="megaphone" class="h-4 w-4"></i><span>Campaigns</span>
+            </a>
+            <a href="orders.html" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-md hover:bg-gray-50 hover:text-fairy-600 transition-colors">
+                <i data-lucide="package-check" class="h-4 w-4"></i><span>Orders</span>
+            </a>
+            <a href="subscribers.html" class="flex items-center gap-3 px-3 py-2 text-sm bg-fairy-50 text-fairy-700 rounded-md font-medium">
+                <i data-lucide="users" class="h-4 w-4 text-fairy-600"></i><span>Subscribers</span>
+            </a>
+        </nav>
+        <div class="p-4 border-t border-gray-100">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded-full bg-fairy-100 flex items-center justify-center text-fairy-700 font-bold text-xs">SL</div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-medium text-gray-900 truncate">Sarah Lash Artist</p>
+                    <p class="text-[10px] text-gray-400 truncate">Luxe Lashes Co.</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 md:ml-64 p-4 md:p-10 pt-20 md:pt-10 max-w-6xl mx-auto">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 brand-font">Subscribers</h1>
+                <p class="text-sm text-gray-500 mt-1">Leads collected from your PDF and Campaign Pages.</p>
+            </div>
+            <button class="flex items-center gap-2 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                <i data-lucide="download" class="w-4 h-4"></i> Export CSV
+            </button>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                <div class="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-1">Total Leads</div>
+                <div class="text-2xl font-bold text-gray-900 brand-font">1,248</div>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                <div class="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-1">New This Week</div>
+                <div class="text-2xl font-bold text-fairy-600 brand-font">+42</div>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                <div class="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-1">Avg. Open Rate</div>
+                <div class="text-2xl font-bold text-gray-900 brand-font">58%</div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="bg-white rounded-lg border border-gray-200 overflow-hidden animate-fade-in">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-gray-50 border-b border-gray-100">
+                        <tr>
+                            <th class="px-6 py-3 font-medium text-gray-500">Email Address</th>
+                            <th class="px-6 py-3 font-medium text-gray-500">Status</th>
+                            <th class="px-6 py-3 font-medium text-gray-500">Source</th>
+                            <th class="px-6 py-3 font-medium text-gray-500 text-right">Date Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100" id="subscribers-body">
+                        <!-- JS Injected -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-center">
+                <button class="text-sm text-fairy-600 font-medium hover:text-fairy-700">Load More</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const subscribers = [
+            { email: "jessica.m@example.com", status: "Active", source: "PDF Catalog Download", date: "Oct 24, 2023" },
+            { email: "beautybykatie@studio.net", status: "Active", source: "Velvet Noir Campaign", date: "Oct 23, 2023" },
+            { email: "sarah.smith.lashes@gmail.com", status: "Unsubscribed", source: "Instagram Bio", date: "Oct 21, 2023" },
+            { email: "info@luxelounge.com", status: "Active", source: "Rapid Bond Campaign", date: "Oct 20, 2023" },
+            { email: "hello@browsandbeauty.co", status: "Active", source: "PDF Catalog Download", date: "Oct 18, 2023" },
+        ];
+
+        const tbody = document.getElementById('subscribers-body');
+        
+        tbody.innerHTML = subscribers.map(s => `
+            <tr class="hover:bg-gray-50/50 transition-colors">
+                <td class="px-6 py-4 font-medium text-gray-900">${s.email}</td>
+                <td class="px-6 py-4">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${s.status === 'Active' ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'}">
+                        ${s.status}
+                    </span>
+                </td>
+                <td class="px-6 py-4 text-gray-500">${s.source}</td>
+                <td class="px-6 py-4 text-gray-400 text-right">${s.date}</td>
+            </tr>
+        `).join('');
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,193 +1,127 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orders</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <title>Orders - PageFairy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="/styles/pagefairy-theme.css" rel="stylesheet" type="text/css" />
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=DM+Sans:wght@400;700&family=Oleo+Script:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
-      :root, html[data-theme="light"] { --p: 344 100% 72%; --pc: 0 0% 100%; }
-      .btn-primary { background-color: #ff7096 !important; border-color: #ff7096 !important; color: #fff !important; }
-      .text-primary { color: #ff7096 !important; }
-      .bg-primary { background-color: #ff7096 !important; }
-      .step-primary::after { background-color: #ff7096 !important; color: #fff !important; border-color: #ff7096 !important; }
+        body { font-family: 'Inter', sans-serif; }
+        .brand-font { font-family: 'Playfair Display', serif; }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: { colors: { fairy: { 50: '#fdfbff', 100: '#f5f3ff', 500: '#8b5cf6', 600: '#7c3aed', 900: '#4c1d95' } } }
+            }
+        }
+    </script>
 </head>
-<body style="font-family: 'DM Sans', sans-serif !important; font-weight: 500 !important;">
+<body class="bg-gray-50 min-h-screen text-slate-600 flex">
 
-    <div class="container mx-auto p-4 sm:p-6 lg:p-8 min-h-screen bg-page">
-        <header class="mb-8 flex items-center justify-between">
-            <div>
-              <h1 class="text-4xl font-bold text-slate-800">Orders</h1>
-              <p class="text-slate-600">Search, filter, and manage all your customer orders.</p>
+    <!-- SIDEBAR -->
+    <aside class="hidden md:flex flex-col w-64 bg-white border-r border-gray-100 fixed h-full z-10">
+        <div class="h-16 flex items-center px-6">
+            <div class="flex items-center gap-2">
+                <span class="bg-fairy-100 p-1.5 rounded-lg text-fairy-600"><i data-lucide="wand-2" class="h-5 w-5"></i></span>
+                <span class="font-bold text-lg tracking-tight text-gray-900 brand-font">PageFairy</span>
             </div>
-            <a href="/app/dashboard.html" class="btn btn-ghost"><i data-lucide="chevron-left"></i> Dashboard</a>
-        </header>
-
-        <div class="stats shadow w-full bg-base-100 border mb-8">
-            <div class="stat"><div class="stat-title">Total Orders</div><div id="stat-total-orders" class="stat-value">0</div></div>
-            <div class="stat"><div class="stat-title">Revenue (This Month)</div><div id="stat-total-revenue" class="stat-value">$0</div></div>
-            <div class="stat"><div class="stat-title">Unfulfilled Orders</div><div id="stat-unfulfilled" class="stat-value text-warning">0</div></div>
         </div>
-
-        <div class="card bg-base-100 border p-4 mb-8">
-            <div class="flex flex-wrap items-center gap-4">
-                <div class="flex-grow min-w-48">
-                    <input id="search-input" type="text" placeholder="Search by Order ID or Customer..." class="input input-bordered w-full" />
+        <nav class="flex-1 px-3 py-6 space-y-1">
+            <a href="campaigns.html" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-md hover:bg-gray-50 hover:text-fairy-600 transition-colors">
+                <i data-lucide="megaphone" class="h-4 w-4"></i><span>Campaigns</span>
+            </a>
+            <a href="orders.html" class="flex items-center gap-3 px-3 py-2 text-sm bg-fairy-50 text-fairy-700 rounded-md font-medium">
+                <i data-lucide="package-check" class="h-4 w-4 text-fairy-600"></i><span>Orders</span>
+            </a>
+            <a href="subscribers.html" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-md hover:bg-gray-50 hover:text-fairy-600 transition-colors">
+                <i data-lucide="users" class="h-4 w-4"></i><span>Subscribers</span>
+            </a>
+        </nav>
+        <div class="p-4 border-t border-gray-100">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded-full bg-fairy-100 flex items-center justify-center text-fairy-700 font-bold text-xs">SL</div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-medium text-gray-900 truncate">Sarah Lash Artist</p>
+                    <p class="text-[10px] text-gray-400 truncate">Luxe Lashes Co.</p>
                 </div>
-                <select id="filter-status" class="select select-bordered">
-                    <option>All Statuses</option>
-                    <option>Processing</option>
-                    <option>Shipped</option>
-                    <option>Delivered</option>
-                </select>
-                <button class="btn btn-ghost">Export</button>
             </div>
         </div>
+    </aside>
 
-        <div class="overflow-x-auto bg-base-100 rounded-lg border">
-            <table class="table table-zebra">
-                <thead class="text-slate-700">
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Date</th>
-                        <th>Customer</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="orders-table-body">
-                    </tbody>
-            </table>
-        </div>
-
-    </div>
-
-    <dialog id="order_details_modal" class="modal">
-      <div class="modal-box w-11/12 max-w-3xl bg-base-100">
-        <h3 id="modal-title" class="font-bold text-2xl">Order Details</h3>
-        <div class="py-4 space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div id="modal-customer-details"></div>
-                <div id="modal-product-details"></div>
-            </div>
-            <div class="divider"></div>
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 md:ml-64 p-4 md:p-10 pt-20 md:pt-10 max-w-6xl mx-auto">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <div>
-                <h4 class="font-bold text-lg mb-2">Fulfilment Status</h4>
-                <ul id="modal-fulfilment-steps" class="steps steps-vertical lg:steps-horizontal w-full"></ul>
+                <h1 class="text-2xl font-bold text-gray-900 brand-font">Orders</h1>
+                <p class="text-sm text-gray-500 mt-1">Pre-orders captured from successful campaigns.</p>
             </div>
-            <div id="modal-tracking-info" class="hidden"></div>
+            <div class="flex gap-2">
+                <button class="bg-white border border-gray-200 text-gray-600 px-3 py-2 rounded-lg text-sm font-medium">Filter</button>
+                <button class="bg-fairy-600 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm">Process Batch</button>
+            </div>
         </div>
-        <div class="modal-action">
-          <form method="dialog"><button class="btn">Close</button></form>
+
+        <!-- Orders Table -->
+        <div class="bg-white rounded-lg border border-gray-200 overflow-hidden animate-fade-in">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-gray-50 border-b border-gray-100">
+                        <tr>
+                            <th class="px-6 py-3 font-medium text-gray-500">Order ID</th>
+                            <th class="px-6 py-3 font-medium text-gray-500">Customer</th>
+                            <th class="px-6 py-3 font-medium text-gray-500">Items</th>
+                            <th class="px-6 py-3 font-medium text-gray-500">Total</th>
+                            <th class="px-6 py-3 font-medium text-gray-500">Status</th>
+                            <th class="px-6 py-3 font-medium text-gray-500 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100" id="orders-body">
+                        <!-- JS Injected -->
+                    </tbody>
+                </table>
+            </div>
         </div>
-      </div>
-    </dialog>
+    </main>
 
     <script>
-        lucide.createIcons({ attrs: { 'stroke-width': 1.75 } });
-
-        // --- Mock Data ---
-        const mockOrders = [
-            { id: 1026, date: '2025-10-08', customer: 'Alice Johnson', total: 64.00, status: 'Shipped', product: {name: 'Chronos Watch', qty: 1}, tracking: '1Z9999W99999999999', address: '456 Oak Ave, Austin, TX' },
-            { id: 1025, date: '2025-10-08', customer: 'Jane Doe', total: 25.00, status: 'Processing', product: {name: 'Organic Face Serum', qty: 1}, address: '123 Maple St, Toronto, ON' },
-            { id: 1024, date: '2025-10-07', customer: 'Bob Smith', total: 120.00, status: 'Delivered', product: {name: 'Aura Headphones', qty: 1}, address: '789 Pine Ln, Miami, FL' },
-            { id: 1023, date: '2025-10-05', customer: 'Charlie Brown', total: 75.00, status: 'Delivered', product: {name: 'Zenith Backpack', qty: 1}, address: '101 Elm Rd, Denver, CO' },
+        const orders = [
+            { id: "#PF-2024", customer: "Monica Geller", item: "Rose Gold Tweezers (x2)", total: "$49.98", status: "Unfulfilled" },
+            { id: "#PF-2023", customer: "Rachel Green", item: "Rose Gold Tweezers (x1)", total: "$24.99", status: "Unfulfilled" },
+            { id: "#PF-2022", customer: "Phoebe Buffay", item: "Rose Gold Tweezers (x5)", total: "$124.95", status: "Processing" },
+            { id: "#PF-2021", customer: "Chandler Bing", item: "Rose Gold Tweezers (x1)", total: "$24.99", status: "Fulfilled" },
         ];
+
+        const tbody = document.getElementById('orders-body');
         
-        // --- Element References ---
-        const tableBody = document.getElementById('orders-table-body');
-        const searchInput = document.getElementById('search-input');
-        const filterStatus = document.getElementById('filter-status');
-        const orderDetailsModal = document.getElementById('order_details_modal');
+        tbody.innerHTML = orders.map(o => {
+            let badgeClass = "bg-yellow-50 text-yellow-700"; // Unfulfilled
+            if(o.status === "Fulfilled") badgeClass = "bg-green-50 text-green-700";
+            if(o.status === "Processing") badgeClass = "bg-blue-50 text-blue-700";
 
-        const statusBadges = {
-            Processing: 'badge-warning',
-            Shipped: 'badge-info',
-            Delivered: 'badge-success',
-        };
-        
-        // --- Main Render Function ---
-        function renderTable(orders) {
-            tableBody.innerHTML = ''; // Clear table
-            if (orders.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No orders found.</td></tr>';
-                return;
-            }
-            orders.forEach(order => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="font-bold">#${order.id}</td>
-                    <td>${new Date(order.date).toLocaleDateString()}</td>
-                    <td>${order.customer}</td>
-                    <td>$${order.total.toFixed(2)}</td>
-                    <td><span class="badge ${statusBadges[order.status]}">${order.status}</span></td>
-                    <td><button class="btn btn-ghost btn-sm" onclick="showOrderDetails(${order.id})">Details</button></td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-        
-        // --- Filtering and Searching ---
-        function applyFilters() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const status = filterStatus.value;
-            
-            const filteredOrders = mockOrders.filter(order => {
-                const matchesSearch = searchTerm === '' || 
-                                      order.id.toString().includes(searchTerm) || 
-                                      order.customer.toLowerCase().includes(searchTerm);
-                const matchesStatus = status === 'All Statuses' || order.status === status;
-                return matchesSearch && matchesStatus;
-            });
-            renderTable(filteredOrders);
-        }
-        searchInput.addEventListener('input', applyFilters);
-        filterStatus.addEventListener('change', applyFilters);
+            return `
+                <tr class="hover:bg-gray-50/50 transition-colors">
+                    <td class="px-6 py-4 font-mono text-xs text-gray-400">${o.id}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900">${o.customer}</td>
+                    <td class="px-6 py-4 text-gray-500">${o.item}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900">${o.total}</td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide ${badgeClass}">
+                            ${o.status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <button class="text-gray-400 hover:text-fairy-600"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
 
-        // --- Modal Logic ---
-        function showOrderDetails(orderId) {
-            const order = mockOrders.find(o => o.id === orderId);
-            if (!order) return;
-
-            document.getElementById('modal-title').textContent = `Order #${order.id} - ${new Date(order.date).toLocaleDateString()}`;
-            document.getElementById('modal-customer-details').innerHTML = `<h4 class=\"font-bold text-lg mb-2\">Customer</h4><p>${order.customer}</p><p>${order.address}</p>`;
-            document.getElementById('modal-product-details').innerHTML = `<h4 class=\"font-bold text-lg mb-2\">Product</h4><p>${order.product.qty}x ${order.product.name}</p>`;
-
-            const steps = ['Order Placed', 'Processing', 'Shipped', 'Delivered'];
-            const currentStepIndex = steps.indexOf(order.status);
-            document.getElementById('modal-fulfilment-steps').innerHTML = steps.map((step, index) => 
-                `<li class="step ${index <= currentStepIndex ? 'step-primary' : ''}">${step}</li>`
-            ).join('');
-
-            const trackingInfo = document.getElementById('modal-tracking-info');
-            if (order.status === 'Shipped' || order.status === 'Delivered') {
-                trackingInfo.classList.remove('hidden');
-                trackingInfo.innerHTML = `<h4 class=\"font-bold text-lg\">Tracking</h4><p class=\"font-mono\">${order.tracking}</p>`;
-            } else {
-                trackingInfo.classList.add('hidden');
-            }
-            orderDetailsModal.showModal();
-        }
-
-        // --- Stats Update ---
-        function updateStats() {
-            document.getElementById('stat-total-orders').textContent = mockOrders.length;
-            const unfulfilled = mockOrders.filter(o => o.status === 'Processing').length;
-            document.getElementById('stat-unfulfilled').textContent = unfulfilled;
-            const totalRevenue = mockOrders.reduce((sum, order) => sum + order.total, 0);
-            document.getElementById('stat-total-revenue').textContent = `$${totalRevenue.toLocaleString()}`;
-        }
-
-        // --- Initial Load ---
-        renderTable(mockOrders);
-        updateStats();
+        lucide.createIcons();
     </script>
-
 </body>
 </html>

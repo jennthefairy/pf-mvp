@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Profile - PageFairy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .brand-font { font-family: 'Playfair Display', serif; }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom Checkbox for Color Selection */
+        .color-radio:checked + div { ring-width: 2px; ring-offset-width: 2px; ring-color: #7c3aed; }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: { colors: { fairy: { 50: '#fdfbff', 100: '#f5f3ff', 500: '#8b5cf6', 600: '#7c3aed', 900: '#4c1d95' } } }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen text-slate-600 flex">
+
+    <!-- SIDEBAR -->
+    <aside class="hidden md:flex flex-col w-64 bg-white border-r border-gray-100 fixed h-full z-10">
+        <div class="h-16 flex items-center px-6">
+            <div class="flex items-center gap-2">
+                <span class="bg-fairy-100 p-1.5 rounded-lg text-fairy-600"><i data-lucide="wand-2" class="h-5 w-5"></i></span>
+                <span class="font-bold text-lg tracking-tight text-gray-900 brand-font">PageFairy</span>
+            </div>
+        </div>
+        <nav class="flex-1 px-3 py-6 space-y-1">
+            <a href="campaigns.html" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-md hover:bg-gray-50 hover:text-fairy-600 transition-colors">
+                <i data-lucide="megaphone" class="h-4 w-4"></i><span>Campaigns</span>
+            </a>
+            <a href="orders.html" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-md hover:bg-gray-50 hover:text-fairy-600 transition-colors">
+                <i data-lucide="package-check" class="h-4 w-4"></i><span>Orders</span>
+            </a>
+            <a href="subscribers.html" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 rounded-md hover:bg-gray-50 hover:text-fairy-600 transition-colors">
+                <i data-lucide="users" class="h-4 w-4"></i><span>Subscribers</span>
+            </a>
+            
+            <div class="pt-6 mt-6 border-t border-gray-100 px-3">
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Settings</p>
+                <a href="settings.html" class="flex items-center gap-3 px-3 py-2 text-sm bg-fairy-50 text-fairy-700 rounded-md font-medium transition-colors">
+                    <i data-lucide="settings" class="h-4 w-4 text-fairy-600"></i><span>Brand Profile</span>
+                </a>
+            </div>
+        </nav>
+        <div class="p-4 border-t border-gray-100">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded-full bg-fairy-100 flex items-center justify-center text-fairy-700 font-bold text-xs">SL</div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-medium text-gray-900 truncate">Sarah Lash Artist</p>
+                    <p class="text-[10px] text-gray-400 truncate">Luxe Lashes Co.</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 md:ml-64 p-4 md:p-10 pt-20 md:pt-10 max-w-4xl mx-auto animate-fade-in">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 brand-font">Brand Profile</h1>
+                <p class="text-sm text-gray-500 mt-1">Manage your visual identity and billing settings.</p>
+            </div>
+            <button class="bg-fairy-600 hover:bg-fairy-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                Save Changes
+            </button>
+        </div>
+
+        <div class="space-y-6">
+
+            <!-- 1. Visual Identity Card -->
+            <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                    <h2 class="font-semibold text-gray-900">Visual Identity</h2>
+                    <span class="text-xs text-gray-500">Used for campaign pages</span>
+                </div>
+                
+                <div class="p-6 space-y-6">
+                    <!-- Brand Name & Logo -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="md:col-span-2 space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Brand Name</label>
+                                <input type="text" value="Luxe Lashes Co." class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-fairy-500 focus:border-fairy-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Subdomain</label>
+                                <div class="flex">
+                                    <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">pagefairy.com/</span>
+                                    <input type="text" value="luxe-lashes" class="flex-1 min-w-0 block w-full px-3 py-2 rounded-r-md border border-gray-300 text-sm focus:ring-fairy-500 focus:border-fairy-500">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Logo Upload -->
+                        <div class="flex flex-col items-center justify-center border-2 border-gray-300 border-dashed rounded-md p-4 hover:border-fairy-400 hover:bg-fairy-50 transition-colors cursor-pointer group">
+                            <div class="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center mb-2 group-hover:bg-white">
+                                <i data-lucide="image-plus" class="text-gray-400 group-hover:text-fairy-600"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 font-medium">Upload Logo</span>
+                            <span class="text-[10px] text-gray-400 mt-1">PNG or JPG</span>
+                        </div>
+                    </div>
+
+                    <!-- Colors -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Brand Color Theme</label>
+                        <div class="flex flex-wrap gap-4">
+                            <!-- Option 1: Minimal Black -->
+                            <label class="cursor-pointer">
+                                <input type="radio" name="color-theme" class="sr-only color-radio" checked>
+                                <div class="w-12 h-12 rounded-full bg-slate-900 border-2 border-transparent ring-offset-2 ring-gray-300 hover:ring-2 flex items-center justify-center"></div>
+                                <span class="text-xs text-gray-500 text-center block mt-1">Noir</span>
+                            </label>
+                            <!-- Option 2: Soft Pink -->
+                            <label class="cursor-pointer">
+                                <input type="radio" name="color-theme" class="sr-only color-radio">
+                                <div class="w-12 h-12 rounded-full bg-pink-300 border-2 border-transparent ring-offset-2 ring-gray-300 hover:ring-2"></div>
+                                <span class="text-xs text-gray-500 text-center block mt-1">Blush</span>
+                            </label>
+                            <!-- Option 3: Luxury Gold -->
+                            <label class="cursor-pointer">
+                                <input type="radio" name="color-theme" class="sr-only color-radio">
+                                <div class="w-12 h-12 rounded-full bg-amber-200 border-2 border-transparent ring-offset-2 ring-gray-300 hover:ring-2"></div>
+                                <span class="text-xs text-gray-500 text-center block mt-1">Gold</span>
+                            </label>
+                            <!-- Option 4: Sage Green -->
+                            <label class="cursor-pointer">
+                                <input type="radio" name="color-theme" class="sr-only color-radio">
+                                <div class="w-12 h-12 rounded-full bg-emerald-700 border-2 border-transparent ring-offset-2 ring-gray-300 hover:ring-2"></div>
+                                <span class="text-xs text-gray-500 text-center block mt-1">Sage</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Billing & Payouts Card -->
+            <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                    <h2 class="font-semibold text-gray-900">Billing & Payouts</h2>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                        <i data-lucide="check-circle-2" class="w-3 h-3 mr-1"></i> Account Active
+                    </span>
+                </div>
+
+                <div class="p-6 space-y-6">
+                    <!-- Stripe Connect (Payouts) -->
+                    <div class="flex items-start gap-4 p-4 border border-fairy-200 bg-fairy-50/50 rounded-lg">
+                        <div class="p-2 bg-white rounded-md border border-gray-200 shrink-0">
+                            <!-- Stripe Logo SVG -->
+                            <svg class="h-6 w-auto" viewBox="0 0 40 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.89502 11.2351C5.89502 12.8701 4.54502 13.5651 3.12002 13.5651C1.65002 13.5651 0.405023 13.1901 0.405023 13.1901L0.870023 16.0851C0.870023 16.0851 2.08502 16.5201 3.84002 16.5201C7.77002 16.5201 10.335 14.5701 10.335 11.1301C10.335 5.92505 3.39002 5.56505 3.39002 4.14005C3.39002 3.61505 3.88502 3.13505 5.02502 3.13505C6.01502 3.13505 7.02002 3.39005 7.02002 3.39005L7.42502 0.525049C7.42502 0.525049 6.27002 0.210049 4.87502 0.210049C1.39502 0.210049 0.435023 2.80505 0.435023 4.29005C0.435023 8.35505 5.89502 8.44505 5.89502 11.2351Z" fill="#635BFF"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-sm font-semibold text-gray-900">Stripe Connected Account</h3>
+                            <p class="text-xs text-gray-500 mt-1">Your account is connected. You can receive payouts from customer pre-orders directly to your bank.</p>
+                        </div>
+                        <button class="text-xs font-medium text-gray-600 hover:text-gray-900 border border-gray-200 px-3 py-1.5 rounded bg-white">
+                            Manage
+                        </button>
+                    </div>
+
+                    <hr class="border-gray-100">
+
+                    <!-- Payment Method (Wholesale Costs) -->
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-900 mb-3">Payment Method for Wholesale Costs</h3>
+                        <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-6 bg-gray-100 rounded border border-gray-200 flex items-center justify-center text-[10px] font-bold text-gray-500">VISA</div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Visa ending in 4242</p>
+                                    <p class="text-xs text-gray-400">Expires 12/26</p>
+                                </div>
+                            </div>
+                            <span class="text-xs text-gray-400 font-medium">Default</span>
+                        </div>
+                        <button class="text-xs text-fairy-600 font-medium hover:underline flex items-center gap-1">
+                            <i data-lucide="plus" class="w-3 h-3"></i> Add new card
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-4">
+                 <button class="text-gray-500 text-sm hover:text-red-500 transition-colors">Log Out</button>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
