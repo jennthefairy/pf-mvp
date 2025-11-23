@@ -1,0 +1,11 @@
+name = "pagefairy-mvp"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = "public"
+
+[vars]
+BETTER_AUTH_SECURE_COOKIES = true
+
+[dev]
+port = 8788
+
+
