@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PageFairy Campaign Setup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://rsms.me/inter/inter.css');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .selected-card {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+     <!-- App Header -->
+    <header class="bg-white border-b border-gray-200 p-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold">Page<span class="text-violet-600">Fairy</span> ✨</h1>
+        <button class="text-gray-500 hover:text-gray-800">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto py-12 px-4">
+        <div class="text-center">
+            <h2 class="text-4xl font-bold">Create a New Campaign</h2>
+            <p class="text-lg text-gray-500 mt-2">Let's get started. What's your main goal for this page?</p>
+        </div>
+
+        <!-- Step 1: Campaign Type -->
+        <div class="mt-10">
+            <h3 class="font-bold text-lg mb-4 text-center">
+                <span class="bg-violet-600 text-white rounded-full w-8 h-8 inline-flex items-center justify-center mr-2">1</span>
+                Choose a Campaign Type
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 bg-white rounded-xl border-2 border-gray-200 text-center cursor-pointer transition-all selected-card">
+                    <i data-lucide="clock" class="w-10 h-10 mx-auto text-violet-600"></i>
+                    <h4 class="font-bold text-lg mt-3">Waitlist</h4>
+                    <p class="text-sm text-gray-500 mt-1">Build hype for a future product launch.</p>
+                </div>
+                <div class="p-6 bg-white rounded-xl border-2 border-gray-200 text-center cursor-pointer transition-all hover:border-violet-400">
+                    <i data-lucide="shopping-cart" class="w-10 h-10 mx-auto text-gray-500"></i>
+                    <h4 class="font-bold text-lg mt-3">Pre-Order</h4>
+                    <p class="text-sm text-gray-500 mt-1">Take orders before your official launch.</p>
+                </div>
+                <div class="p-6 bg-white rounded-xl border-2 border-gray-200 text-center cursor-pointer transition-all hover:border-violet-400">
+                    <i data-lucide="download" class="w-10 h-10 mx-auto text-gray-500"></i>
+                    <h4 class="font-bold text-lg mt-3">Lead Magnet</h4>
+                    <p class="text-sm text-gray-500 mt-1">Grow your list by offering a freebie.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Name & Timeline -->
+        <div class="mt-12">
+            <h3 class="font-bold text-lg mb-4 text-center">
+                 <span class="bg-violet-600 text-white rounded-full w-8 h-8 inline-flex items-center justify-center mr-2">2</span>
+                 Campaign Details
+            </h3>
+            <div class="bg-white p-8 rounded-xl border border-gray-200 space-y-4">
+                <div>
+                    <label for="campaign-name" class="font-semibold">Campaign Name</label>
+                    <input type="text" id="campaign-name" value="My New Product Waitlist" class="w-full mt-1 p-2 border border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <label for="launch-date" class="font-semibold">Projected Launch Date (Optional)</label>
+                    <input type="date" id="launch-date" class="w-full mt-1 p-2 border border-gray-300 rounded-md">
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Funnel Setup -->
+        <div class="mt-12">
+            <h3 class="font-bold text-lg mb-4 text-center">
+                 <span class="bg-violet-600 text-white rounded-full w-8 h-8 inline-flex items-center justify-center mr-2">3</span>
+                 Your Funnel
+            </h3>
+            <div class="bg-white p-8 rounded-xl border border-gray-200 text-center">
+                <p class="text-gray-600 mb-4">Based on your selections, we'll create this two-page funnel for you.</p>
+                <div class="flex items-center justify-center space-x-4">
+                    <div class="text-center">
+                        <div class="w-32 h-20 bg-gray-100 border-2 border-dashed rounded-lg flex items-center justify-center">
+                            <i data-lucide="file-text" class="w-8 h-8 text-gray-400"></i>
+                        </div>
+                        <p class="text-sm font-semibold mt-2">1. Waitlist Page</p>
+                    </div>
+                    <i data-lucide="arrow-right" class="w-8 h-8 text-gray-400 flex-shrink-0"></i>
+                    <div class="text-center">
+                         <div class="w-32 h-20 bg-gray-100 border-2 border-dashed rounded-lg flex items-center justify-center">
+                            <i data-lucide="party-popper" class="w-8 h-8 text-gray-400"></i>
+                        </div>
+                        <p class="text-sm font-semibold mt-2">2. Thank You Page</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="mt-12 text-center">
+            <button class="bg-violet-600 text-white font-bold text-lg py-4 px-12 rounded-lg hover:bg-violet-700 transition-transform hover:scale-105">
+                Build My Campaign!
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

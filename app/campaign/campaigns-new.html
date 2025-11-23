@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campaigns - PageFairy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'sans': ['Poppins', 'sans-serif'],
+          },
+          colors: {
+            'brand-primary': '#E11D48',
+            'brand-secondary': '#FDF2F8',
+            'brand-dark': '#881337',
+            'brand-light': '#FECDD3',
+          },
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-gray-50 font-sans">
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <h1 class="text-2xl font-bold text-brand-primary">PageFairy</h1>
+        </div>
+        <nav class="hidden md:flex space-x-8">
+          <a href="dashboard.html" class="text-gray-600 hover:text-gray-900">Dashboard</a>
+          <a href="campaigns.html" class="text-brand-primary font-medium border-b-2 border-brand-primary pb-1">Campaigns</a>
+          <a href="#" class="text-gray-600 hover:text-gray-900">Settings</a>
+        </nav>
+        <div class="flex items-center gap-4">
+          <span class="text-sm text-gray-600">user@example.com</span>
+          <button class="text-gray-600 hover:text-gray-900">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 id="pageTitle" class="text-3xl font-bold text-gray-800">All Campaigns</h1>
+      <button
+        onclick="window.location.href='create-campaign.html'"
+        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition-colors"
+      >
+        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+        </svg>
+        New Campaign
+      </button>
+    </div>
+
+    <!-- Filter Pills -->
+    <div class="mb-8 flex flex-wrap gap-2">
+      <button 
+        onclick="filterCampaigns('all')" 
+        id="filter-all"
+        class="filter-pill px-4 py-2 text-sm font-medium rounded-full transition-colors bg-brand-primary text-white shadow"
+      >
+        All
+      </button>
+      <button 
+        onclick="filterCampaigns('Active')" 
+        id="filter-Active"
+        class="filter-pill px-4 py-2 text-sm font-medium rounded-full transition-colors bg-white text-gray-600 hover:bg-gray-100 border"
+      >
+        Active
+      </button>
+      <button 
+        onclick="filterCampaigns('Successful')" 
+        id="filter-Successful"
+        class="filter-pill px-4 py-2 text-sm font-medium rounded-full transition-colors bg-white text-gray-600 hover:bg-gray-100 border"
+      >
+        Successful
+      </button>
+      <button 
+        onclick="filterCampaigns('Failed')" 
+        id="filter-Failed"
+        class="filter-pill px-4 py-2 text-sm font-medium rounded-full transition-colors bg-white text-gray-600 hover:bg-gray-100 border"
+      >
+        Failed
+      </button>
+    </div>
+
+    <!-- Campaigns Grid -->
+    <div id="campaignsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Campaign cards will be inserted here -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="text-center py-20 bg-white rounded-lg shadow hidden">
+      <svg class="w-20 h-20 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      <h2 class="text-xl font-semibold text-gray-700">No campaigns found</h2>
+      <p class="text-gray-500 mt-2">There are no campaigns matching your filter.</p>
+      <button
+        onclick="filterCampaigns('all')"
+        class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-brand-primary bg-brand-secondary hover:bg-brand-light transition-colors"
+      >
+        Show All Campaigns
+      </button>
+    </div>
+  </main>
+
+  <script>
+    // Mock campaign data
+    const mockCampaigns = [
+      {
+        id: '1',
+        name: 'Luxury Lash Extensions Pre-order',
+        product: { 
+          name: 'Luxury Lash Extensions', 
+          imageUrl: 'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=400' 
+        },
+        goal: 50,
+        preorders: 42,
+        status: 'Active',
+        revenue: 1258.58,
+        endDate: new Date('2025-12-31')
+      },
+      {
+        id: '2',
+        name: 'Lip Gloss Set Launch',
+        product: { 
+          name: 'Lip Gloss Set', 
+          imageUrl: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400' 
+        },
+        goal: 30,
+        preorders: 35,
+        status: 'Successful',
+        revenue: 874.65,
+        endDate: new Date('2025-11-15')
+      },
+      {
+        id: '3',
+        name: 'Eyeshadow Palette Campaign',
+        product: { 
+          name: 'Eyeshadow Palette', 
+          imageUrl: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=400' 
+        },
+        goal: 40,
+        preorders: 28,
+        status: 'Active',
+        revenue: 1119.72,
+        endDate: new Date('2026-01-15')
+      },
+      {
+        id: '4',
+        name: 'Skincare Bundle Pre-sale',
+        product: { 
+          name: 'Skincare Bundle', 
+          imageUrl: 'https://images.unsplash.com/photo-1583241801196-f85ebcdc55b8?w=400' 
+        },
+        goal: 25,
+        preorders: 18,
+        status: 'Active',
+        revenue: 989.82,
+        endDate: new Date('2025-12-20')
+      },
+      {
+        id: '5',
+        name: 'Foundation Collection',
+        product: { 
+          name: 'Foundation Set', 
+          imageUrl: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400' 
+        },
+        goal: 60,
+        preorders: 15,
+        status: 'Failed',
+        revenue: 524.85,
+        endDate: new Date('2025-10-30')
+      },
+      {
+        id: '6',
+        name: 'Makeup Brush Set Launch',
+        product: { 
+          name: 'Professional Brush Set', 
+          imageUrl: 'https://images.unsplash.com/photo-1503236823255-94609f598e71?w=400' 
+        },
+        goal: 35,
+        preorders: 38,
+        status: 'Successful',
+        revenue: 1254.40,
+        endDate: new Date('2025-11-01')
+      }
+    ];
+
+    let currentFilter = 'all';
+
+    function getStatusColor(status) {
+      const colors = {
+        'Active': 'bg-blue-100 text-blue-800',
+        'Successful': 'bg-green-100 text-green-800',
+        'Failed': 'bg-red-100 text-red-800'
+      };
+      return colors[status] || 'bg-gray-100 text-gray-800';
+    }
+
+    function renderCampaignCard(campaign) {
+      const progress = Math.min((campaign.preorders / campaign.goal) * 100, 100);
+      const statusColor = getStatusColor(campaign.status);
+      
+      return `
+        <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
+          <img src="${campaign.product.imageUrl}" alt="${campaign.product.name}" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-800">${campaign.name}</h3>
+                <p class="text-sm text-gray-500">${campaign.product.name}</p>
+              </div>
+              <span class="px-2 py-1 text-xs font-semibold rounded-full ${statusColor}">
+                ${campaign.status}
+              </span>
+            </div>
+            
+            <div class="mt-4">
+              <div class="flex justify-between text-sm text-gray-600 mb-1">
+                <span>Progress</span>
+                <span class="font-medium">${campaign.preorders} / ${campaign.goal} units</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-brand-primary h-2.5 rounded-full transition-all duration-300" style="width: ${progress}%"></div>
+              </div>
+              <p class="text-right text-sm font-bold text-brand-primary mt-1">${progress.toFixed(0)}%</p>
+            </div>
+            
+            <div class="mt-4 pt-4 border-t border-gray-200 flex items-center justify-between">
+              <div>
+                <p class="text-xs text-gray-500">Revenue</p>
+                <p class="text-lg font-semibold text-gray-900">$${campaign.revenue.toFixed(2)}</p>
+              </div>
+              ${campaign.status === 'Active' ? `
+                <div class="text-right">
+                  <p class="text-xs text-gray-500">Ends on</p>
+                  <p class="text-sm font-medium text-gray-700">${campaign.endDate.toLocaleDateString()}</p>
+                </div>
+              ` : ''}
+            </div>
+
+            <button class="mt-4 w-full px-4 py-2 text-sm font-medium text-brand-primary bg-brand-secondary hover:bg-brand-light rounded-md transition-colors">
+              View Details
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function filterCampaigns(status) {
+      currentFilter = status;
+      
+      // Update active pill
+      document.querySelectorAll('.filter-pill').forEach(pill => {
+        pill.classList.remove('bg-brand-primary', 'text-white', 'shadow');
+        pill.classList.add('bg-white', 'text-gray-600', 'border');
+      });
+      
+      const activePill = document.getElementById(`filter-${status}`);
+      activePill.classList.remove('bg-white', 'text-gray-600', 'border');
+      activePill.classList.add('bg-brand-primary', 'text-white', 'shadow');
+
+      // Update page title
+      const pageTitle = document.getElementById('pageTitle');
+      pageTitle.textContent = status === 'all' ? 'All Campaigns' : `${status} Campaigns`;
+
+      // Filter and render campaigns
+      const filtered = status === 'all' 
+        ? mockCampaigns 
+        : mockCampaigns.filter(c => c.status === status);
+
+      const grid = document.getElementById('campaignsGrid');
+      const emptyState = document.getElementById('emptyState');
+
+      if (filtered.length === 0) {
+        grid.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+      } else {
+        grid.classList.remove('hidden');
+        emptyState.classList.add('hidden');
+        grid.innerHTML = filtered.map(campaign => renderCampaignCard(campaign)).join('');
+      }
+    }
+
+    // Initialize with all campaigns
+    filterCampaigns('all');
+
+    // Check URL params on load
+    const urlParams = new URLSearchParams(window.location.search);
+    const statusParam = urlParams.get('status');
+    if (statusParam && ['Active', 'Successful', 'Failed'].includes(statusParam)) {
+      filterCampaigns(statusParam);
+    }
+  </script>
+</body>
+</html>

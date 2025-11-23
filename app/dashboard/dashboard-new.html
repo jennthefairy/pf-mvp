@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - PageFairy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'sans': ['Poppins', 'sans-serif'],
+          },
+          colors: {
+            'brand-primary': '#E11D48',
+            'brand-secondary': '#FDF2F8',
+            'brand-dark': '#881337',
+            'brand-light': '#FECDD3',
+          },
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-gray-50 font-sans">
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <h1 class="text-2xl font-bold text-brand-primary">PageFairy</h1>
+        </div>
+        <nav class="hidden md:flex space-x-8">
+          <a href="#" class="text-brand-primary font-medium border-b-2 border-brand-primary pb-1">Dashboard</a>
+          <a href="#" class="text-gray-600 hover:text-gray-900">Campaigns</a>
+          <a href="#" class="text-gray-600 hover:text-gray-900">Settings</a>
+        </nav>
+        <div class="flex items-center gap-4">
+          <span class="text-sm text-gray-600">user@example.com</span>
+          <button class="text-gray-600 hover:text-gray-900">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
+      <button
+        onclick="window.location.href='create-campaign.html'"
+        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brand-primary hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition-colors"
+      >
+        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+        </svg>
+        New Campaign
+      </button>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-sm font-medium text-gray-500">Total Pre-orders</h3>
+        <p class="mt-1 text-3xl font-semibold text-gray-900" id="totalPreorders">0</p>
+      </div>
+      <a href="#" class="bg-white p-6 rounded-lg shadow block hover:bg-gray-50 transition-colors">
+        <h3 class="text-sm font-medium text-gray-500">Active Campaigns</h3>
+        <p class="mt-1 text-3xl font-semibold text-gray-900" id="activeCampaigns">0</p>
+      </a>
+      <a href="#" class="bg-white p-6 rounded-lg shadow block hover:bg-gray-50 transition-colors">
+        <h3 class="text-sm font-medium text-gray-500">Successful Campaigns</h3>
+        <p class="mt-1 text-3xl font-semibold text-gray-900" id="successfulCampaigns">0</p>
+      </a>
+    </div>
+
+    <!-- Active Campaigns Section -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold text-gray-700 mb-4">
+        <a href="#" class="hover:text-brand-primary hover:underline">Active Campaigns</a>
+      </h2>
+      <div id="activeCampaignsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Campaign cards will be inserted here -->
+      </div>
+      <div id="noCampaignsMessage" class="text-center py-10 bg-white rounded-lg shadow hidden">
+        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+        </svg>
+        <p class="text-gray-500 text-lg">No active campaigns. Time to launch a new one!</p>
+        <button
+          onclick="window.location.href='create-campaign.html'"
+          class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-brand-primary bg-brand-secondary hover:bg-brand-light transition-colors"
+        >
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+          </svg>
+          Create Your First Campaign
+        </button>
+      </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-2xl font-semibold text-gray-700 mb-4">Campaign Performance</h2>
+      <div class="relative" style="height: 300px;">
+        <canvas id="performanceChart"></canvas>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Mock campaign data
+    const mockCampaigns = [
+      {
+        id: '1',
+        name: 'Luxury Lash Extensions Pre-order',
+        product: { name: 'Luxury Lash Extensions', imageUrl: 'https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=400' },
+        goal: 50,
+        preorders: 42,
+        status: 'Active',
+        revenue: 1258.58
+      },
+      {
+        id: '2',
+        name: 'Lip Gloss Set Launch',
+        product: { name: 'Lip Gloss Set', imageUrl: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400' },
+        goal: 30,
+        preorders: 35,
+        status: 'Successful',
+        revenue: 874.65
+      },
+      {
+        id: '3',
+        name: 'Eyeshadow Palette Campaign',
+        product: { name: 'Eyeshadow Palette', imageUrl: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=400' },
+        goal: 40,
+        preorders: 28,
+        status: 'Active',
+        revenue: 1119.72
+      },
+      {
+        id: '4',
+        name: 'Skincare Bundle Pre-sale',
+        product: { name: 'Skincare Bundle', imageUrl: 'https://images.unsplash.com/photo-1583241801196-f85ebcdc55b8?w=400' },
+        goal: 25,
+        preorders: 18,
+        status: 'Active',
+        revenue: 989.82
+      }
+    ];
+
+    // Calculate stats
+    const activeCampaigns = mockCampaigns.filter(c => c.status === 'Active');
+    const successfulCampaigns = mockCampaigns.filter(c => c.status === 'Successful');
+    const totalPreorders = mockCampaigns.reduce((sum, c) => sum + c.preorders, 0);
+
+    // Update stats
+    document.getElementById('totalPreorders').textContent = totalPreorders.toLocaleString();
+    document.getElementById('activeCampaigns').textContent = activeCampaigns.length;
+    document.getElementById('successfulCampaigns').textContent = successfulCampaigns.length;
+
+    // Render campaign cards
+    function renderCampaigns() {
+      const grid = document.getElementById('activeCampaignsGrid');
+      const noMessage = document.getElementById('noCampaignsMessage');
+
+      if (activeCampaigns.length === 0) {
+        grid.classList.add('hidden');
+        noMessage.classList.remove('hidden');
+        return;
+      }
+
+      grid.classList.remove('hidden');
+      noMessage.classList.add('hidden');
+
+      grid.innerHTML = activeCampaigns.slice(0, 3).map(campaign => {
+        const progress = Math.round((campaign.preorders / campaign.goal) * 100);
+        const statusColor = campaign.status === 'Active' ? 'text-blue-600 bg-blue-100' : 
+                           campaign.status === 'Successful' ? 'text-green-600 bg-green-100' : 
+                           'text-gray-600 bg-gray-100';
+        
+        return `
+          <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden">
+            <img src="${campaign.product.imageUrl}" alt="${campaign.product.name}" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-semibold text-gray-900">${campaign.name}</h3>
+                <span class="px-2 py-1 text-xs font-medium rounded-full ${statusColor}">
+                  ${campaign.status}
+                </span>
+              </div>
+              
+              <div class="mb-4">
+                <div class="flex items-center justify-between text-sm text-gray-600 mb-2">
+                  <span>Progress</span>
+                  <span class="font-semibold">${campaign.preorders} / ${campaign.goal}</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div class="bg-brand-primary h-2.5 rounded-full transition-all duration-300" style="width: ${progress}%"></div>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">${progress}% of goal</p>
+              </div>
+
+              <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+                <div>
+                  <p class="text-xs text-gray-500">Revenue</p>
+                  <p class="text-lg font-semibold text-gray-900">$${campaign.revenue.toFixed(2)}</p>
+                </div>
+                <button class="px-4 py-2 text-sm font-medium text-brand-primary bg-brand-secondary hover:bg-brand-light rounded-md transition-colors">
+                  View Details
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render chart
+    function renderChart() {
+      const ctx = document.getElementById('performanceChart').getContext('2d');
+      
+      const chartData = {
+        labels: mockCampaigns.map(c => {
+          const name = c.name;
+          return name.length > 20 ? name.slice(0, 20) + '...' : name;
+        }),
+        datasets: [
+          {
+            label: 'Pre-orders',
+            data: mockCampaigns.map(c => c.preorders),
+            backgroundColor: '#E11D48',
+            borderColor: '#E11D48',
+            borderWidth: 1
+          },
+          {
+            label: 'Goal',
+            data: mockCampaigns.map(c => c.goal),
+            backgroundColor: '#FECDD3',
+            borderColor: '#FECDD3',
+            borderWidth: 1
+          }
+        ]
+      };
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false,
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                precision: 0
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Initialize
+    renderCampaigns();
+    renderChart();
+  </script>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>FairyCode — Upload AI Wizard (Pseudo-AI)</title>
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme:{
+      extend:{
+        colors:{
+          pf:{
+            bg:"#0E1420",
+            card:"#121A28",
+            border:"#232B3A",
+            ink:"#EAF0FF",
+            sub:"#9BA6BF",
+            rose:"#A78BFA",
+            roseHover:"#8B6FF0",
+            green:"#34D399"
+          }
+        }
+      }
+    }
+  }
+</script>
+<!-- DaisyUI and Brand Theme -->
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+<link href="/styles/pagefairy-theme.css" rel="stylesheet" type="text/css" />
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=DM+Sans:wght@400;700&family=Oleo+Script:wght@400;700&display=swap" rel="stylesheet">
+<!-- Lucide -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+  /* Original dark styles (kept for reference), overridden below */
+  /* Use theme overrides below; keep neutral base here */
+  body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  .pf-heading{font-family:ui-serif, "Playfair Display", Georgia, serif}
+  .chip{border:1px solid #232B3A;background:#121A28}
+  .chip.active{outline:2px solid #A78BFA; outline-offset:0}
+  .dropzone{border:2px dashed #232B3A}
+  .credit-pill{background:linear-gradient(90deg,#A78BFA33,#34D39933);border:1px solid #232B3A}
+</style>
+<style>
+  /* Brand primary for DaisyUI + immediate helpers (inline fallback) */
+  :root, html[data-theme="light"] { --p: 344 100% 72%; --pc: 0 0% 100%; }
+  .btn-primary { background-color: #ff7096 !important; border-color: #ff7096 !important; color: #fff !important; }
+  .text-primary { color: #ff7096 !important; }
+  .bg-primary { background-color: #ff7096 !important; }
+
+  /* Light theme overrides for this page (self-contained, no external vars needed) */
+  body { background-color: #F1F5F9 !important; background-image: radial-gradient(ellipse at center, rgba(255,112,150,0.05), transparent 70%); color: #1f2937 !important; font-family: 'DM Sans', sans-serif !important; font-weight: 500 !important; }
+  .bg-pf-card { background-color: #F9FAFB !important; }
+  .border-pf-border { border-color: #E8DCD3 !important; }
+  .text-pf-sub { color: #475569 !important; }
+  .text-pf-rose { color: #ff7096 !important; }
+  .bg-pf-rose { background-color: #ff7096 !important; }
+  .hover\:bg-pf-roseHover:hover { background-color: #f88ca9 !important; }
+  .hover\:border-pf-rose\/50:hover { border-color: rgba(255,112,150,0.5) !important; }
+  .dropzone { border-color: #E8DCD3 !important; }
+  .chip { border-color: #E8DCD3 !important; background-color: #F9F5F0 !important; }
+  .chip.active { outline-color: #ff7096 !important; }
+  .credit-pill { background: linear-gradient(90deg, rgba(255,112,150,0.2), rgba(52,211,153,0.2)) !important; border-color: #E8DCD3 !important; color: #1f2937 !important; }
+</style>
+</head>
+<body class="antialiased bg-page">
+
+<!-- Header -->
+<header class="max-w-5xl mx-auto px-4 py-6">
+  <nav class="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-pf-card border border-pf-border text-pf-rose">
+        <i data-lucide="sparkles"></i>
+      </span>
+      <span class="pf-heading text-xl">FairyCode Wizard</span>
+    </div>
+    <a href="/buy-credits.html" class="inline-flex items-center gap-2 rounded-lg bg-pf-rose px-4 py-2 text-sm font-medium text-white hover:bg-pf-roseHover">
+      Buy credits <i data-lucide="coins"></i>
+    </a>
+  </nav>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 pb-24">
+
+  <!-- STEP 0: Start with link OR upload -->
+  <section id="step0" class="mt-8">
+    <div class="mx-auto max-w-3xl bg-pf-card border border-pf-border rounded-2xl px-6 py-8">
+      <div class="text-center">
+        <i data-lucide="star" class="mx-auto text-pf-rose" style="width:40px;height:40px;"></i>
+        <h1 class="pf-heading text-4xl mt-2">Start your Wizard</h1>
+        <p class="text-pf-sub mt-2">Paste a link or upload assets. Both paths lead to 3 quick questions.</p>
+      </div>
+      <div class="mt-6 space-y-4">
+        <div class="space-y-4">
+                        <input type="text" id="inspiration-url" placeholder="example.com/great-landing-page" class="input input-bordered w-full text-lg h-14" />
+                        <div class="divider">OR</div>
+                        <div>
+                            <input type="file" id="inspiration-file" class="hidden" accept="image/*" />
+                            <label for="inspiration-file" class="btn btn-outline btn-lg w-full"><i data-lucide="upload-cloud" class="w-5 h-5"></i>Upload Screenshot</label>
+                            <p id="file-name-display" class="text-sm text-gray-500 mt-2 h-5"></p>
+                        </div>
+                    </div>
+                    <button id="submit-inspiration-btn" class="btn btn-primary btn-lg w-full" disabled>Submit for Review</button>
+
+          <div id="previews" class="mt-4 grid sm:grid-cols-3 gap-3"></div>
+
+          <div class="mt-4 grid md:grid-cols-2 gap-6">
+            <div>
+              <div class="text-sm font-medium mb-2">Inferred vibe</div>
+              <div id="vibeWrap" class="flex flex-wrap gap-2"></div>
+            </div>
+            <div>
+              <div class="text-sm font-medium mb-2">Detected primary color</div>
+              <div id="colorBadge" class="flex items-center gap-2 text-sm">
+                <span class="inline-block w-5 h-5 rounded-full border border-pf-border bg-white"></span>
+                <span id="colorText" class="text-pf-sub">—</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-xs text-pf-sub mt-2">Images work best. I’ll detect a dominant color and keywords from file names.</p>
+        </div>
+        <div class="flex justify-end">
+          <button id="cw_continue" class="btn btn-primary">Continue</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE: Upload UI moved into Step 0 for a simpler start experience -->
+
+  <!-- STEP 1: Questions (shared path) -->
+  <section id="step1_questions" class="hidden mt-8">
+    <div class="bg-pf-card border border-pf-border rounded-2xl p-6">
+      <h2 class="pf-heading text-2xl text-center">Answer 3 quick questions</h2>
+      <p class="text-pf-sub text-center text-sm mt-1">We’ll tailor the generated code to your goal and style.</p>
+      <div class="mt-6 grid md:grid-cols-2 gap-6">
+        <div>
+          <p class="text-sm mb-2">Industry</p>
+          <div id="q_industry" class="flex flex-wrap gap-2"></div>
+        </div>
+        <div>
+          <p class="text-sm mb-2">Goal</p>
+          <div id="q_goal" class="flex flex-wrap gap-2"></div>
+        </div>
+        <div class="md:col-span-2">
+          <p class="text-sm mb-2">Vibe</p>
+          <div id="q_vibe" class="flex flex-wrap gap-2"></div>
+        </div>
+      </div>
+      <div class="mt-6 flex justify-between">
+        <button data-goback class="rounded-lg border border-pf-border px-4 py-2 text-sm hover:border-pf-rose/50">Back</button>
+        <button id="toStylingFromQ" class="rounded-lg bg-pf-rose px-4 py-2 text-sm font-medium text-white hover:bg-pf-roseHover">Next: Brand styling</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2: Brand styling (like your screenshot) -->
+  <section id="step2" class="hidden mt-8">
+    <div class="bg-pf-card border border-pf-border rounded-2xl p-6">
+      <h2 class="pf-heading text-2xl text-center">Perfect. Now, let’s brand your page.</h2>
+
+      <div class="max-w-2xl mx-auto mt-6">
+        <label class="text-sm">Brand Name</label>
+        <input id="brandName" class="mt-2 w-full rounded-xl bg-transparent border border-pf-border px-4 py-3 placeholder:text-pf-sub" placeholder="Your Brand Name"/>
+      </div>
+
+      <div class="max-w-2xl mx-auto mt-6">
+        <div class="text-sm">Font Style</div>
+        <div id="fontChips" class="mt-3 grid grid-cols-3 gap-3">
+          <button class="chip rounded-xl px-4 py-3 text-center font-semibold" data-font="Modern">Modern</button>
+          <button class="chip rounded-xl px-4 py-3 text-center font-semibold" data-font="Elegant">Elegant</button>
+          <button class="chip rounded-xl px-4 py-3 text-center font-semibold" data-font="Playful">Playful</button>
+        </div>
+      </div>
+
+      <div class="max-w-2xl mx-auto mt-8">
+        <button id="computeBtn" class="w-full rounded-xl bg-pf-rose px-5 py-3 font-semibold hover:bg-pf-roseHover">
+          Save & Continue
+        </button>
+      </div>
+      <div class="text-center mt-3">
+        <button data-goback class="text-xs text-pf-sub hover:text-white">Back</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result" class="hidden mt-8">
+    <div class="bg-pf-card border border-pf-border rounded-2xl p-6">
+      <div class="flex items-start justify-between">
+        <div>
+          <h3 class="pf-heading text-2xl">Suggested start</h3>
+          <p class="text-pf-sub text-sm mt-1">Based on your uploads/answers and styling choices.</p>
+        </div>
+        <span id="creditTag" class="credit-pill rounded-full px-3 py-1 text-xs font-semibold">0 credits</span>
+      </div>
+
+      <div class="mt-6 grid md:grid-cols-2 gap-6 text-sm">
+        <div class="rounded-xl border border-pf-border p-4">
+          <div class="font-semibold flex items-center gap-2"><i data-lucide="layout-template" class="text-pf-rose"></i> Category</div>
+          <p id="out_category" class="mt-2"></p>
+
+          <div class="font-semibold flex items-center gap-2 mt-4"><i data-lucide="palette" class="text-pf-rose"></i> Tone & Color</div>
+          <p id="out_tone" class="mt-1"></p>
+          <p id="out_color" class="mt-1"></p>
+        </div>
+
+        <div class="rounded-xl border border-pf-border p-4">
+          <div class="font-semibold flex items-center gap-2"><i data-lucide="list-checks" class="text-pf-rose"></i> Sections (recipe)</div>
+          <ul id="out_blocks" class="mt-2 space-y-1 list-disc list-inside"></ul>
+
+          <div class="font-semibold flex items-center gap-2 mt-4"><i data-lucide="ticket" class="text-pf-rose"></i> Tags</div>
+          <p id="out_tags" class="mt-1 text-pf-sub"></p>
+        </div>
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a id="toSwipe" href="/swipe.html" class="rounded-lg bg-pf-rose px-4 py-2 text-sm font-medium text-white hover:bg-pf-roseHover">Continue to swipe</a>
+        <a id="seeTemplates" href="/templates.html#premium" class="rounded-lg border border-pf-border px-4 py-2 text-sm hover:border-pf-rose/50">Preview templates</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="max-w-5xl mx-auto px-4 py-8 text-xs text-pf-sub">
+  &copy; <span id="y"></span> FairyCode
+</footer>
+
+<script>
+lucide.createIcons({ attrs: { 'stroke-width': 1.75 } }); document.getElementById('y').textContent = new Date().getFullYear();
+
+/* ====== Small rule engine & data ====== */
+const INDUSTRIES = ["Beauty","Skincare","Makeup","Nails","Lashes","Fashion","Coaching","Fitness","Food","Tech","Art"];
+const GOALS = ["Leads","Preorders","Portfolio","Appointments","Newsletter","Waitlist"];
+const VIBES = ["Clean","Playful","Luxury","Bold","Natural","Minimal"];
+
+const TEMPLATES = [
+  { key:"Lead Starter", tags:["lead","email","pixel","simple","fast"],
+    blocks:[ {name:"Email capture",credits:20},{name:"Pixels & base events",credits:15},{name:"Color & font preset",credits:10},{name:"Hero",credits:50} ],
+    bias:["Beauty","Makeup","Lashes","Coaching"] },
+  { key:"Brand Polish", tags:["brand","logo","meta","share","visual"],
+    blocks:[ {name:"Color & font preset",credits:10},{name:"Logo lockup & favicon",credits:15},{name:"Social meta / Open Graph",credits:8},{name:"Hero",credits:50},{name:"Pixels & base events",credits:15} ],
+    bias:["Beauty","Skincare","Fashion","Art"] },
+  { key:"Trust Boost", tags:["social","proof","faq","convert"],
+    blocks:[ {name:"Testimonials",credits:20},{name:"FAQ",credits:15},{name:"Hero",credits:50} ],
+    bias:["Coaching","Fitness","Tech","Beauty"] },
+  { key:"Growth Test", tags:["ab","pricing","iterate","scale"],
+    blocks:[ {name:"Pricing block",credits:30},{name:"A/B variant (one section)",credits:35},{name:"Hero",credits:50} ],
+    bias:["Tech","Fashion","Beauty"] },
+];
+
+const LEX = {
+  beauty:["beauty","makeup","skincare","lashes","nail","glow","blush"],
+  fashion:["fashion","boutique","lookbook"],
+  coaching:["coaching","mentor","program"],
+  leads:["lead","signup","waitlist","newsletter","email"],
+  pre:["preorder","pre-order","drop","launch","shopify"],
+  portfolio:["portfolio","gallery","artist","case"],
+  appointments:["appointment","book","schedule","consult"],
+  clean:["clean","minimal","fresh","light"],
+  playful:["playful","fun","cute","bright"],
+  luxury:["luxury","editorial","premium"],
+  natural:["natural","organic","eco"],
+  bold:["bold","impact","contrast"],
+  ab:["ab","a/b","variant","split"],
+  pixel:["pixel","pixels","tiktok","meta"],
+  brand:["logo","favicon","og","open","graph","share"]
+};
+
+const TONES = {
+  Clean:   {tone:"Clean & minimal",   colorway:"Ivory / soft gray / blush accents"},
+  Playful: {tone:"Fun & friendly",    colorway:"Peach / pink / rounded CTAs"},
+  Luxury:  {tone:"Editorial luxury",  colorway:"Ivory / charcoal / subtle rose"},
+  Bold:    {tone:"High contrast",     colorway:"Charcoal / ivory / punchy rose"},
+  Natural: {tone:"Natural & calm",    colorway:"Sage / sand / soft peach"},
+  Minimal: {tone:"Understated minimal",colorway:"Ivory / charcoal / thin rules"}
+};
+
+/* ====== UI helpers ====== */
+function show(id){ document.getElementById(id).classList.remove('hidden'); }
+function hide(id){ document.getElementById(id).classList.add('hidden'); }
+function chip(el){ el.classList.toggle('active'); }
+function addChips(id, arr){ const c=document.getElementById(id); arr.forEach(t=>{ const b=document.createElement('button'); b.className='chip rounded-xl px-4 py-2 text-sm'; b.textContent=t; b.onclick=()=>chip(b); c.appendChild(b); }); }
+
+/* ====== Step routing ====== */
+// New start: link or upload then go to questions
+document.getElementById('cw_clear')?.addEventListener('click',()=>{ const i=document.getElementById('cw_link'); i.value=''; i.focus(); });
+document.getElementById('cw_continue')?.addEventListener('click',()=>{
+  const link = (document.getElementById('cw_link').value||'').trim();
+  const fileEl = document.getElementById('fileInput');
+  const hasFiles = fileEl && fileEl.files && fileEl.files.length>0;
+  if(!link && !hasFiles){
+    alert('Paste a link or choose a file to continue');
+    return;
+  }
+  hide('step0'); show('step1_questions');
+  if(!document.getElementById('q_industry').children.length){
+    addChips('q_industry',INDUSTRIES); addChips('q_goal',GOALS); addChips('q_vibe',VIBES);
+  }
+});
+document.querySelectorAll('[data-goback]').forEach(b=>b.onclick=()=>{ hide('step1_questions'); hide('step2'); hide('result'); show('step0'); });
+
+/* ====== Upload handling & inference ====== */
+const fileInput = document.getElementById('fileInput');
+document.getElementById('browseBtn').onclick = ()=> fileInput.click();
+document.getElementById('dz').ondragover = e=>{ e.preventDefault(); e.currentTarget.classList.add('border-pf-rose'); };
+document.getElementById('dz').ondragleave = e=> e.currentTarget.classList.remove('border-pf-rose');
+document.getElementById('dz').ondrop = e=>{ e.preventDefault(); e.currentTarget.classList.remove('border-pf-rose'); handleFiles(e.dataTransfer.files); };
+fileInput.onchange = e=> handleFiles(e.target.files);
+
+let inferred = { vibe:"Clean", color:"#ffffff", tokens:[] };
+
+function handleFiles(files){
+  const holder = document.getElementById('previews'); holder.innerHTML='';
+  const vibes = new Set();
+  const toks = [];
+  [...files].forEach(f=>{
+    const url = URL.createObjectURL(f);
+    const fig = document.createElement('div');
+    fig.className="rounded-xl overflow-hidden border border-pf-border";
+    fig.innerHTML = `<img src="${url}" class="w-full h-32 object-cover">`;
+    holder.appendChild(fig);
+
+    // keywords from filename
+    const name = f.name.toLowerCase();
+    toks.push(...name.split(/[^a-z0-9]+/).filter(Boolean));
+
+    // extract dominant color (average)
+    const img = new Image(); img.src=url; img.crossOrigin="anonymous";
+    img.onload = ()=>{
+      const c = document.createElement('canvas'); c.width=img.width; c.height=img.height;
+      const ctx = c.getContext('2d'); ctx.drawImage(img,0,0);
+      const d = ctx.getImageData(0,0,c.width,c.height).data;
+      let r=0,g=0,b=0, n=Math.floor(d.length/4), step=Math.max(4, Math.floor(n/5000));
+      for(let i=0;i<n;i+=step){ r+=d[i*4]; g+=d[i*4+1]; b+=d[i*4+2]; }
+      r=Math.round(r/(n/step)); g=Math.round(g/(n/step)); b=Math.round(b/(n/step));
+      const hex = '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
+      inferred.color = hex;
+      document.querySelector('#colorBadge span').style.background = hex;
+      document.getElementById('colorText').textContent = hex.toUpperCase();
+    };
+  });
+
+  inferred.tokens = toks;
+
+  // infer vibe from tokens/colors
+  const vibeScores = {Clean:0,Playful:0,Luxury:0,Bold:0,Natural:0,Minimal:0};
+  toks.forEach(t=>{
+    if(LEX.clean.includes(t)) vibeScores.Clean+=1;
+    if(LEX.playful.includes(t)) vibeScores.Playful+=1;
+    if(LEX.luxury.includes(t)) vibeScores.Luxury+=1;
+    if(LEX.natural.includes(t)) vibeScores.Natural+=1;
+    if(LEX.bold.includes(t)) vibeScores.Bold+=1;
+  });
+  // color nudge
+  const [r,g,b] = hexToRgb(inferred.color);
+  if(r>200 && g<170 && b>200) vibeScores.Playful+=0.5; // pink/purple
+  if(r<80 && g<80 && b<80) vibeScores.Luxury+=0.5;     // dark
+  inferred.vibe = Object.entries(vibeScores).sort((a,b)=>b[1]-a[1])[0][0] || "Clean";
+
+  // render vibe chips
+  renderVibeChips(inferred.vibe);
+}
+function hexToRgb(h){ const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(h); return m ? [parseInt(m[1],16),parseInt(m[2],16),parseInt(m[3],16)] : [255,255,255]; }
+function renderVibeChips(active){
+  const wrap = document.getElementById('vibeWrap'); wrap.innerHTML='';
+  VIBES.forEach(v=>{
+    const b = document.createElement('button');
+    b.className = "chip rounded-xl px-3 py-1.5 text-sm"+(v===active?" active":"");
+    b.textContent = v; b.onclick=()=>{ document.querySelectorAll('#vibeWrap .chip').forEach(x=>x.classList.remove('active')); b.classList.add('active'); inferred.vibe=v; };
+    wrap.appendChild(b);
+  });
+}
+
+// upload -> styling button removed (upload UI moved into Step 0). Navigation to styling happens from questions or compute button.
+document.getElementById('toStylingFromQ').onclick      = ()=>{ hide('step1_questions'); show('step2'); };
+
+/* ====== Step 1B chip builders ====== */
+function selectedFrom(container){ return [...document.querySelectorAll(`#${container} .chip.active`)].map(x=>x.textContent); }
+
+/* ====== Step 2: brand styling + compute suggestion ====== */
+document.querySelectorAll('#fontChips .chip').forEach(b=> b.onclick=()=>{ document.querySelectorAll('#fontChips .chip').forEach(x=>x.classList.remove('active')); b.classList.add('active'); });
+
+document.getElementById('computeBtn').onclick = ()=>{
+  const brandName = (document.getElementById('brandName').value || '').trim();
+  const font = document.querySelector('#fontChips .chip.active')?.dataset.font || 'Modern';
+
+  // Build a token vector from uploads OR questions
+  let tokens = inferred.tokens || [];
+  if(!tokens.length && document.getElementById('step1_questions').classList.contains('hidden')===false){
+    tokens = [...selectedFrom('q_industry'), ...selectedFrom('q_goal'), ...selectedFrom('q_vibe')].map(s=>s.toLowerCase());
+  }
+
+  // Score templates by simple overlap with LEX categories
+  function scoreTemplate(t){
+    let s = 0;
+    tokens.forEach(tok=>{
+      if(LEX.leads.includes(tok)) s += t.key==="Lead Starter" ? 2 : 0.5;
+      if(LEX.ab.includes(tok)) s += t.key==="Growth Test" ? 2 : 0.5;
+      if(LEX.brand.includes(tok)) s += t.key==="Brand Polish" ? 2 : 0.5;
+      if(["review","test","social","faq"].some(x=>tok.includes(x))) s += t.key==="Trust Boost" ? 1.5 : 0.3;
+    });
+    // vibe nudges
+    if(inferred.vibe==="Luxury" && t.key==="Brand Polish") s+=0.7;
+    if(inferred.vibe==="Playful" && t.key==="Lead Starter") s+=0.5;
+    return s;
+  }
+  let best = TEMPLATES[0], bestScore=-Infinity;
+  TEMPLATES.forEach(t=>{ const sc=scoreTemplate(t); if(sc>bestScore){best=t;bestScore=sc;} });
+
+  const vibe = inferred.vibe || "Clean";
+  const toneObj = TONES[vibe] || TONES.Clean;
+
+  // Dedup blocks + sum credits
+  const seen = new Set(); let credits = 0;
+  const blocks = [];
+  best.blocks.forEach(b=>{ if(!seen.has(b.name)){ seen.add(b.name); blocks.push(b); credits += b.credits; } });
+
+  // Output
+  document.getElementById('out_category').textContent = `${best.key} — ${brandName || "Untitled"}`;
+  document.getElementById('out_tone').textContent = `${toneObj.tone} • Font: ${font}`;
+  document.getElementById('out_color').textContent = `Primary color: ${inferred.color.toUpperCase()} (${toneObj.colorway})`;
+  document.getElementById('creditTag').textContent = `${credits} credits`;
+  const ul = document.getElementById('out_blocks'); ul.innerHTML='';
+  blocks.forEach(b=>{ const li=document.createElement('li'); li.textContent = `${b.name} — ${b.credits} credits`; ul.appendChild(li); });
+  document.getElementById('out_tags').textContent = [vibe,font].join(' • ');
+
+  // Persist session for Step 2 swipe
+  const session = {
+    step:1, mode: (inferred.tokens.length? 'upload':'questions'),
+    brandName, font, vibe, primaryColor: inferred.color,
+    category: best.key, blocks, credits,
+  };
+  localStorage.setItem('fc_session', JSON.stringify(session));
+
+  hide('step2'); show('result');
+  const toSwipe = document.getElementById('toSwipe');
+  toSwipe.href = `/swipe.html?category=${encodeURIComponent(best.key)}&credits=${credits}`;
+};
+
+/* ====== Initial vibe UI when visiting Upload step directly (optional) ====== */
+renderVibeChips("Clean");
+</script>
+</body>
+</html>

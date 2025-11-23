@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Page Wizard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../config.js"></script>
+</head>
+<body class="bg-slate-50">
+  <div class="max-w-3xl mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-1">AI Page Wizard</h1>
+    <p class="text-slate-600 mb-6">Describe your audience and offer. We’ll draft a page.</p>
+
+    <div class="bg-white border rounded-xl p-5 space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Audience / Problem</label>
+        <textarea id="step1" rows="3" class="w-full border rounded-lg p-2" placeholder="Who is this for and what problem do they have?"></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Offer / Angle</label>
+        <textarea id="step2" rows="3" class="w-full border rounded-lg p-2" placeholder="How do you solve it? What’s your angle?"></textarea>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Product Name</label>
+          <input id="productName" class="w-full border rounded-lg p-2" placeholder="e.g. Glow Serum" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Notes</label>
+          <input id="productNotes" class="w-full border rounded-lg p-2" placeholder="Key benefits, constraints, etc." />
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <input id="apiHost" class="flex-1 border rounded-lg p-2" placeholder="AI API host (e.g. https://api.pagefairy.com)" />
+        <input id="apiKey" class="flex-1 border rounded-lg p-2" placeholder="API_AUTH_KEY" />
+      </div>
+      <div class="flex gap-3">
+        <button id="runBtn" class="px-4 py-2 bg-[var(--pf-primary,#ff7096)] text-white rounded-lg">Generate</button>
+        <button id="clearBtn" class="px-4 py-2 bg-slate-100 rounded-lg">Clear</button>
+      </div>
+      <pre id="output" class="bg-slate-900 text-slate-100 text-sm p-4 rounded-lg overflow-auto max-h-96 hidden"></pre>
+    </div>
+
+    <div class="mt-4 text-sm text-slate-600">
+      Tip: Values persist in localStorage. Use the result to prefill your builder.
+    </div>
+  </div>
+
+  <script>
+    function saveState() {
+      const data = {
+        step_1: document.getElementById('step1').value,
+        step_2: document.getElementById('step2').value,
+        productName: document.getElementById('productName').value,
+        productNotes: document.getElementById('productNotes').value,
+        apiHost: document.getElementById('apiHost').value,
+        apiKey: document.getElementById('apiKey').value,
+      }
+      localStorage.setItem('AI_WIZ_STATE', JSON.stringify(data))
+      if (data.apiKey) localStorage.setItem('AI_API_KEY', data.apiKey)
+    }
+    function loadState() {
+      try {
+        const raw = localStorage.getItem('AI_WIZ_STATE')
+        if (!raw) return
+        const d = JSON.parse(raw)
+        document.getElementById('step1').value = d.step_1 || ''
+        document.getElementById('step2').value = d.step_2 || ''
+        document.getElementById('productName').value = d.productName || ''
+        document.getElementById('productNotes').value = d.productNotes || ''
+        document.getElementById('apiHost').value = d.apiHost || ''
+        document.getElementById('apiKey').value = d.apiKey || localStorage.getItem('AI_API_KEY') || ''
+      } catch {}
+    }
+    loadState()
+    document.querySelectorAll('textarea,input').forEach(el => el.addEventListener('input', saveState))
+
+    async function run() {
+      const apiHost = (document.getElementById('apiHost').value || '').replace(/\/$/, '')
+      const key = document.getElementById('apiKey').value
+      const body = {
+        step_1: document.getElementById('step1').value,
+        step_2: document.getElementById('step2').value,
+        productName: document.getElementById('productName').value,
+        productNotes: document.getElementById('productNotes').value,
+      }
+      const out = document.getElementById('output')
+      out.classList.remove('hidden'); out.textContent = 'Generating…'
+      try {
+        const res = await fetch(`${apiHost}/api/generate-page`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', 'authorization': `Bearer ${key}` },
+          body: JSON.stringify(body)
+        })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data?.error || 'request_failed')
+        out.textContent = JSON.stringify(data, null, 2)
+        localStorage.setItem('AI_WIZ_RESULT', JSON.stringify(data))
+      } catch (e) {
+        out.textContent = 'Error: ' + (e?.message || e)
+      }
+    }
+    document.getElementById('runBtn').onclick = run
+    document.getElementById('clearBtn').onclick = () => { localStorage.removeItem('AI_WIZ_RESULT'); document.getElementById('output').textContent = ''; document.getElementById('output').classList.add('hidden') }
+  </script>
+</body>
+</html>

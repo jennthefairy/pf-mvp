@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="/styles/pagefairy-theme.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=DM+Sans:wght@400;700&family=Oleo+Script:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      :root, html[data-theme="light"] { --p: 344 100% 72%; --pc: 0 0% 100%; }
+      .btn-primary { background-color: #ff7096 !important; border-color: #ff7096 !important; color: #fff !important; }
+      .text-primary { color: #ff7096 !important; }
+      .bg-primary { background-color: #ff7096 !important; }
+      .step-primary::after { background-color: #ff7096 !important; color: #fff !important; border-color: #ff7096 !important; }
+    </style>
+</head>
+<body style="font-family: 'DM Sans', sans-serif !important; font-weight: 500 !important;">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 min-h-screen bg-page">
+        <header class="mb-8 flex items-center justify-between">
+            <div>
+              <h1 class="text-4xl font-bold text-slate-800">Orders</h1>
+              <p class="text-slate-600">Search, filter, and manage all your customer orders.</p>
+            </div>
+            <a href="/app/dashboard.html" class="btn btn-ghost"><i data-lucide="chevron-left"></i> Dashboard</a>
+        </header>
+
+        <div class="stats shadow w-full bg-base-100 border mb-8">
+            <div class="stat"><div class="stat-title">Total Orders</div><div id="stat-total-orders" class="stat-value">0</div></div>
+            <div class="stat"><div class="stat-title">Revenue (This Month)</div><div id="stat-total-revenue" class="stat-value">$0</div></div>
+            <div class="stat"><div class="stat-title">Unfulfilled Orders</div><div id="stat-unfulfilled" class="stat-value text-warning">0</div></div>
+        </div>
+
+        <div class="card bg-base-100 border p-4 mb-8">
+            <div class="flex flex-wrap items-center gap-4">
+                <div class="flex-grow min-w-48">
+                    <input id="search-input" type="text" placeholder="Search by Order ID or Customer..." class="input input-bordered w-full" />
+                </div>
+                <select id="filter-status" class="select select-bordered">
+                    <option>All Statuses</option>
+                    <option>Processing</option>
+                    <option>Shipped</option>
+                    <option>Delivered</option>
+                </select>
+                <button class="btn btn-ghost">Export</button>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto bg-base-100 rounded-lg border">
+            <table class="table table-zebra">
+                <thead class="text-slate-700">
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="orders-table-body">
+                    </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <dialog id="order_details_modal" class="modal">
+      <div class="modal-box w-11/12 max-w-3xl bg-base-100">
+        <h3 id="modal-title" class="font-bold text-2xl">Order Details</h3>
+        <div class="py-4 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div id="modal-customer-details"></div>
+                <div id="modal-product-details"></div>
+            </div>
+            <div class="divider"></div>
+            <div>
+                <h4 class="font-bold text-lg mb-2">Fulfilment Status</h4>
+                <ul id="modal-fulfilment-steps" class="steps steps-vertical lg:steps-horizontal w-full"></ul>
+            </div>
+            <div id="modal-tracking-info" class="hidden"></div>
+        </div>
+        <div class="modal-action">
+          <form method="dialog"><button class="btn">Close</button></form>
+        </div>
+      </div>
+    </dialog>
+
+    <script>
+        lucide.createIcons({ attrs: { 'stroke-width': 1.75 } });
+
+        // --- Mock Data ---
+        const mockOrders = [
+            { id: 1026, date: '2025-10-08', customer: 'Alice Johnson', total: 64.00, status: 'Shipped', product: {name: 'Chronos Watch', qty: 1}, tracking: '1Z9999W99999999999', address: '456 Oak Ave, Austin, TX' },
+            { id: 1025, date: '2025-10-08', customer: 'Jane Doe', total: 25.00, status: 'Processing', product: {name: 'Organic Face Serum', qty: 1}, address: '123 Maple St, Toronto, ON' },
+            { id: 1024, date: '2025-10-07', customer: 'Bob Smith', total: 120.00, status: 'Delivered', product: {name: 'Aura Headphones', qty: 1}, address: '789 Pine Ln, Miami, FL' },
+            { id: 1023, date: '2025-10-05', customer: 'Charlie Brown', total: 75.00, status: 'Delivered', product: {name: 'Zenith Backpack', qty: 1}, address: '101 Elm Rd, Denver, CO' },
+        ];
+        
+        // --- Element References ---
+        const tableBody = document.getElementById('orders-table-body');
+        const searchInput = document.getElementById('search-input');
+        const filterStatus = document.getElementById('filter-status');
+        const orderDetailsModal = document.getElementById('order_details_modal');
+
+        const statusBadges = {
+            Processing: 'badge-warning',
+            Shipped: 'badge-info',
+            Delivered: 'badge-success',
+        };
+        
+        // --- Main Render Function ---
+        function renderTable(orders) {
+            tableBody.innerHTML = ''; // Clear table
+            if (orders.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No orders found.</td></tr>';
+                return;
+            }
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="font-bold">#${order.id}</td>
+                    <td>${new Date(order.date).toLocaleDateString()}</td>
+                    <td>${order.customer}</td>
+                    <td>$${order.total.toFixed(2)}</td>
+                    <td><span class="badge ${statusBadges[order.status]}">${order.status}</span></td>
+                    <td><button class="btn btn-ghost btn-sm" onclick="showOrderDetails(${order.id})">Details</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // --- Filtering and Searching ---
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const status = filterStatus.value;
+            
+            const filteredOrders = mockOrders.filter(order => {
+                const matchesSearch = searchTerm === '' || 
+                                      order.id.toString().includes(searchTerm) || 
+                                      order.customer.toLowerCase().includes(searchTerm);
+                const matchesStatus = status === 'All Statuses' || order.status === status;
+                return matchesSearch && matchesStatus;
+            });
+            renderTable(filteredOrders);
+        }
+        searchInput.addEventListener('input', applyFilters);
+        filterStatus.addEventListener('change', applyFilters);
+
+        // --- Modal Logic ---
+        function showOrderDetails(orderId) {
+            const order = mockOrders.find(o => o.id === orderId);
+            if (!order) return;
+
+            document.getElementById('modal-title').textContent = `Order #${order.id} - ${new Date(order.date).toLocaleDateString()}`;
+            document.getElementById('modal-customer-details').innerHTML = `<h4 class=\"font-bold text-lg mb-2\">Customer</h4><p>${order.customer}</p><p>${order.address}</p>`;
+            document.getElementById('modal-product-details').innerHTML = `<h4 class=\"font-bold text-lg mb-2\">Product</h4><p>${order.product.qty}x ${order.product.name}</p>`;
+
+            const steps = ['Order Placed', 'Processing', 'Shipped', 'Delivered'];
+            const currentStepIndex = steps.indexOf(order.status);
+            document.getElementById('modal-fulfilment-steps').innerHTML = steps.map((step, index) => 
+                `<li class="step ${index <= currentStepIndex ? 'step-primary' : ''}">${step}</li>`
+            ).join('');
+
+            const trackingInfo = document.getElementById('modal-tracking-info');
+            if (order.status === 'Shipped' || order.status === 'Delivered') {
+                trackingInfo.classList.remove('hidden');
+                trackingInfo.innerHTML = `<h4 class=\"font-bold text-lg\">Tracking</h4><p class=\"font-mono\">${order.tracking}</p>`;
+            } else {
+                trackingInfo.classList.add('hidden');
+            }
+            orderDetailsModal.showModal();
+        }
+
+        // --- Stats Update ---
+        function updateStats() {
+            document.getElementById('stat-total-orders').textContent = mockOrders.length;
+            const unfulfilled = mockOrders.filter(o => o.status === 'Processing').length;
+            document.getElementById('stat-unfulfilled').textContent = unfulfilled;
+            const totalRevenue = mockOrders.reduce((sum, order) => sum + order.total, 0);
+            document.getElementById('stat-total-revenue').textContent = `$${totalRevenue.toLocaleString()}`;
+        }
+
+        // --- Initial Load ---
+        renderTable(mockOrders);
+        updateStats();
+    </script>
+
+</body>
+</html>

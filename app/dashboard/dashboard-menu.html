@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - PageFairy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .btn-primary { background-color: #ff7096 !important; border-color: #ff7096 !important; color: #fff !important; }
+  </style>
+</head>
+<body style="background-color: #F7FAFC; font-family: 'DM Sans', sans-serif !important; font-weight: 500 !important;">
+  <header class="navbar bg-base-100 border-b">
+    <div class="flex-1">
+      <a href="/app/dashboard.html" class="btn btn-ghost text-xl">PageFairy</a>
+    </div>
+    <div class="flex-none gap-2">
+  <a href="/app/campaign_flows.html" class="btn btn-ghost">Campaigns</a>
+      <a href="/app/orders.html" class="btn btn-ghost">Orders</a>
+      <a href="/app/app_ecofairy.html?flow=store" class="btn btn-ghost">Store</a>
+      <a href="/app/app_email.html" class="btn btn-ghost">Emails</a>
+      <a href="/app/pagefairy-account" class="btn btn-ghost">Account</a>
+    </div>
+  </header>
+
+  <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <a href="/app/how_it_works.html" class="card bg-base-100 border hover:shadow-md transition">
+        <div class="card-body">
+          <div class="flex items-center gap-2"><i data-lucide="help-circle" class="text-primary"></i><h2 class="card-title">How It Works</h2></div>
+          <p>Simple overview of PageFairy’s launch flow.</p>
+        </div>
+      </a>
+      <a href="/app/campaign_flows.html" class="card bg-base-100 border hover:shadow-md transition">
+        <div class="card-body">
+          <div class="flex items-center gap-2"><i data-lucide="rocket" class="text-primary"></i><h2 class="card-title">Campaigns</h2></div>
+          <p>Create and manage your 7‑day pre‑order campaigns.</p>
+        </div>
+      </a>
+      <a href="/app/orders.html" class="card bg-base-100 border hover:shadow-md transition">
+        <div class="card-body">
+          <div class="flex items-center gap-2"><i data-lucide="shopping-bag" class="text-primary"></i><h2 class="card-title">Orders</h2></div>
+          <p>Track pre‑orders and fulfillment status.</p>
+        </div>
+      </a>
+      <a href="/app/app_ecofairy.html?flow=store" class="card bg-base-100 border hover:shadow-md transition">
+        <div class="card-body">
+          <div class="flex items-center gap-2"><i data-lucide="globe" class="text-primary"></i><h2 class="card-title">Create Store Page</h2></div>
+          <p>Publish a hosted Pulse page or connect Shopify.</p>
+        </div>
+      </a>
+      <a href="/app/app_email.html" class="card bg-base-100 border hover:shadow-md transition">
+        <div class="card-body">
+          <div class="flex items-center gap-2"><i data-lucide="mails" class="text-primary"></i><h2 class="card-title">Pre‑Order Email Sequence</h2></div>
+          <p>Configure confirmation and launch day emails.</p>
+        </div>
+      </a>
+      <a href="/app/app_ecofairy.html?flow=sample" class="card bg-base-100 border hover:shadow-md transition">
+        <div class="card-body">
+          <div class="flex items-center gap-2"><i data-lucide="package-plus" class="text-primary"></i><h2 class="card-title">Order a Sample Kit</h2></div>
+          <p>Test quality and finalize your brand choices.</p>
+        </div>
+      </a>
+      <a href="/app/profit_calculator.html" class="card bg-base-100 border hover:shadow-md transition">
+        <div class="card-body">
+          <div class="flex items-center gap-2"><i data-lucide="calculator" class="text-primary"></i><h2 class="card-title">Profit Calculator</h2></div>
+          <p>Estimate margin per unit and per campaign.</p>
+        </div>
+      </a>
+      <a href="/app/pagefairy-account" class="card bg-base-100 border hover:shadow-md transition">
+        <div class="card-body">
+          <div class="flex items-center gap-2"><i data-lucide="settings" class="text-primary"></i><h2 class="card-title">Account & Brand</h2></div>
+          <p>Update profile, brand details, and notifications.</p>
+        </div>
+      </a>
+      <a href="/app/code_wizard.html" class="card bg-base-100 border hover:shadow-md transition">
+        <div class="card-body">
+          <div class="flex items-center gap-2"><i data-lucide="wand-2" class="text-primary"></i><h2 class="card-title">Code Wizard</h2></div>
+          <p>Paste a link or upload assets, then answer 3 questions to generate your store section.</p>
+        </div>
+      </a>
+      
+    </div>
+  </main>
+  <script>lucide.createIcons({ attrs: { 'stroke-width': 1.75 } });</script>
+</body>
+</html>

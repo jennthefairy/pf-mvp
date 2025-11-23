@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Onboarding - PageFairy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=DM+Sans:wght@400;700&family=Oleo+Script:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .step-primary::after { background-color: #ff7096 !important; color: #fff !important; border-color: #ff7096 !important; }
+    .step-primary::before { background-color: #ff7096 !important; border-color: #ff7096 !important; }
+    .btn-primary { background-color: #ff7096 !important; border-color: #ff7096 !important; color: #fff !important; }
+  </style>
+</head>
+<body style="background-color: #FFFEFB; font-family: 'DM Sans', sans-serif !important; font-weight: 500 !important;">
+    <div class="w-full max-w-md">
+      <ul class="steps mb-8 w-full">
+        <li class="step step-primary" id="step1-ind">Brand Name</li>
+        <li class="step" id="step2-ind">Brand Assets</li>
+        <li class="step" id="step3-ind">Connect Payments</li>
+      </ul>
+
+      <!-- Step 1: Brand Name -->
+      <div id="step1" class="card w-full bg-base-100 shadow-xl border">
+        <div class="card-body text-center">
+          <h2 class="card-title justify-center text-2xl">Welcome to PageFairy!</h2>
+          <p>Let's set up your brand. What is your brand name?</p>
+          <div class="form-control w-full my-4">
+            <input id="brand-name" type="text" placeholder="e.g., 'Luxe Lashes by Jane'" class="input input-bordered w-full text-center" />
+            <label class="label">
+              <span class="label-text-alt mx-auto">Shown to customers on pages and emails.</span>
+            </label>
+          </div>
+          <div class="card-actions justify-center">
+            <button id="step1-next" class="btn btn-primary">Continue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Brand Assets -->
+      <div id="step2" class="card w-full bg-base-100 shadow-xl border hidden">
+        <div class="card-body">
+          <h2 class="card-title justify-center text-2xl">Customize Your Brand</h2>
+          <p class="text-center mb-4">Upload your logo and choose a color. We'll use this styling across your store pages.</p>
+          <div class="form-control w-full">
+            <label class="label"><span class="label-text">Brand Logo (Optional)</span></label>
+            <input id="brand-logo" type="file" class="file-input file-input-bordered w-full" />
+          </div>
+          <div class="form-control w-full mt-4">
+            <label class="label"><span class="label-text">Brand Color</span></label>
+            <div class="flex items-center gap-3">
+              <input id="brand-color" type="color" class="p-1 h-10 w-14 block bg-white border border-gray-200 cursor-pointer rounded-lg" value="#ff7096">
+              <input id="brand-color-text" type="text" placeholder="#ff7096" class="input input-bordered w-full" />
+            </div>
+          </div>
+          <div class="card-actions justify-between items-center mt-6">
+            <button id="step2-back" class="btn btn-ghost">Back</button>
+            <button id="step2-next" class="btn btn-primary">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Connect Payments -->
+      <div id="step3" class="card w-full bg-base-100 shadow-xl border hidden">
+        <div class="card-body text-center">
+          <h2 class="card-title justify-center text-2xl">Final Step!</h2>
+          <p>Connect your Stripe account to accept pre-orders and get paid. Required to launch a campaign.</p>
+          <div class="my-6">
+            <i data-lucide="credit-card" class="mx-auto h-12 w-12 text-primary"></i>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">You'll be securely redirected to Stripe. We don't store your financial info.</p>
+          <div class="card-actions justify-center">
+            <button id="stripe-connect" class="btn btn-primary">Connect with Stripe</button>
+          </div>
+          <div class="card-actions justify-center mt-2">
+            <button id="finish-later" class="btn btn-ghost btn-sm">I'll do this later</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const ind1 = document.getElementById('step1-ind');
+    const ind2 = document.getElementById('step2-ind');
+    const ind3 = document.getElementById('step3-ind');
+
+    const state = { brandName: '', brandColor: '#ff7096', logoFile: null };
+
+    function show(step) {
+      [step1, step2, step3].forEach(el => el.classList.add('hidden'));
+      step.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function mark(stepNumber) {
+      [ind1, ind2, ind3].forEach((el, i) => {
+        const idx = i + 1;
+        if (idx <= stepNumber) el.classList.add('step-primary'); else el.classList.remove('step-primary');
+      });
+    }
+
+    document.getElementById('step1-next').addEventListener('click', () => {
+      const name = (document.getElementById('brand-name').value || '').trim();
+      if (!name) { alert('Please enter your brand name'); return; }
+      state.brandName = name;
+      try { localStorage.setItem('pf_brand_name', name); } catch {}
+      mark(2); show(step2);
+    });
+
+    document.getElementById('step2-back').addEventListener('click', () => { mark(1); show(step1); });
+    document.getElementById('step2-next').addEventListener('click', () => {
+      const colorText = (document.getElementById('brand-color-text').value || '').trim();
+      const colorPicker = document.getElementById('brand-color').value || '#ff7096';
+      const color = /^#?[0-9a-fA-F]{6}$/.test(colorText) ? (colorText.startsWith('#') ? colorText : '#' + colorText) : colorPicker;
+      state.brandColor = color;
+      try { localStorage.setItem('pf_brand_color', color); } catch {}
+      mark(3); show(step3);
+    });
+
+    document.getElementById('brand-color').addEventListener('input', (e) => {
+      document.getElementById('brand-color-text').value = e.target.value;
+    });
+
+    document.getElementById('stripe-connect').addEventListener('click', () => {
+      // Placeholder: In real flow, redirect to your backend to create a Stripe Connect link
+      alert('Redirecting to Stripe Connect sandbox...');
+      window.location.href = '/app/dashboard.html';
+    });
+
+    document.getElementById('finish-later').addEventListener('click', () => {
+      window.location.href = '/app/dashboard.html';
+    });
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>
