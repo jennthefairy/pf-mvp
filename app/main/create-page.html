@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create a New Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="flex justify-between items-center py-4 px-6 bg-white border-b">
+                 <h2 class="text-2xl font-semibold text-gray-800">Create a new page</h2>
+            </header>
+            <main class="flex-1 overflow-x-hidden overflow-y-auto p-6">
+                <div class="max-w-2xl mx-auto">
+                    <p class="text-center text-gray-600 mb-8">What kind of page would you like to build?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Option 1: Link in Bio -->
+                        <a href="link-editor.html" class="block p-6 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all" style="border-color:#ffe0ea;">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-full bg-indigo-100 mb-4">
+                                <i class="lucide lucide-at-sign" style="color:#ff7096"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900">Link in bio</h3>
+                            <p class="text-sm text-gray-500 mt-1">A single page to host all your important links.</p>
+                        </a>
+                        <!-- Option 2: Pre-order Campaign -->
+                        <a href="preorder-recipes.html" class="block p-6 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all" style="border-color:#ffe0ea;">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-full mb-4" style="background-color:rgba(255,112,150,0.15)">
+                                <i class="lucide lucide-rocket" style="color:#ff7096"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900">Pre-order campaign</h3>
+                            <p class="text-sm text-gray-500 mt-1">Launch a new product and collect pre-orders.</p>
+                        </a>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+    </div>
+</body>
+</html>

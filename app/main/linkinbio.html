@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Link Hub Template</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://rsms.me/inter/inter.css');
+        body { font-family: 'Inter', sans-serif; background-color: #f4f4f5; }
+        .link-button {
+            transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+        }
+        .link-button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        }
+    </style>
+</head>
+<body class="text-gray-900">
+
+    <main class="max-w-lg mx-auto py-12 px-6">
+        <div class="text-center">
+            <!-- Profile Picture -->
+            <img src="https://pbs.twimg.com/profile_images/1941846313588371456/h9UmZQiH_400x400.jpg" alt="Profile Picture" class="w-24 h-24 rounded-full mx-auto shadow-md border-4 border-white">
+            
+            <!-- Name and Bio -->
+            <h1 class="text-2xl font-bold mt-4">Jade The Creator</h1>
+            <p class="text-gray-600 mt-1">Digital Artist & Entrepreneur</p>
+
+            <!-- Social Links -->
+            <div class="flex justify-center space-x-5 mt-4 text-gray-500">
+                <a href="#" class="hover:text-pink-600"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+                <a href="#" class="hover:text-blue-500"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+                <a href="#" class="hover:text-red-600"><i data-lucide="youtube" class="w-6 h-6"></i></a>
+                <a href="#" class="hover:text-black"><i data-lucide="globe" class="w-6 h-6"></i></a>
+            </div>
+        </div>
+
+        <!-- Link List -->
+        <div class="mt-8 space-y-4">
+            <a href="#" class="link-button block bg-violet-600 text-white p-4 w-full rounded-lg text-center font-semibold">
+                ✨ Pre-Order My New Course!
+            </a>
+            <a href="#" class="link-button block bg-white p-4 w-full rounded-lg text-center font-semibold border border-gray-200 hover:border-gray-400">
+                My Top 10 Procreate Brushes
+            </a>
+             <a href="#" class="link-button block bg-white p-4 w-full rounded-lg text-center font-semibold border border-gray-200 hover:border-gray-400">
+                Watch My Latest Studio Vlog
+            </a>
+             <a href="#" class="link-button block bg-white p-4 w-full rounded-lg text-center font-semibold border border-gray-200 hover:border-gray-400">
+                Shop My Digital Products
+            </a>
+        </div>
+        
+        <footer class="text-center mt-12">
+            <a href="#" class="text-sm font-bold text-gray-800">PageFairy ✨</a>
+        </footer>
+
+    </main>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

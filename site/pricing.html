@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - PageFairy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=DM+Sans:wght@400;700&family=Oleo+Script:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <style>@import url('https://rsms.me/inter/inter.css'); body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body style="background-color: #FFFEFB;">
+  <!-- Header Placeholder -->
+    <header class="p-4 border-b" style="background-color: #ffffff;">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="text-3xl font-bold logo-font  text-slate-900" style="font-family: 'Oleo Script', cursive !important; font-weight: 700 !important;">PageFairy</a>
+            <a href="/join-waitlist" class="btn  text-white" style="background-color: #ff7096;">Join Waitlist</a> 
+        </div>
+    </header>
+
+    <main class="py-20 px-6">
+        <div class="text-center max-w-4xl mx-auto">
+          <h1 class="text-5xl md:text-5xl font-extrabold heading-dmsans text-slate-900 leading-wide mb-6">
+            Simple, transparent pricing.</h1>
+            <p class="mt-4 text-lg text-slate-600">You only make money when you do. We're a partner in your success, not a monthly bill.</p>
+        </div>
+
+        <div class="mt-16 max-w-lg mx-auto">
+            <div class="rounded-2xl border border-slate-200 p-8 text-center" style="background-color: #f8f8f8;">
+                <h2 class="text-slate-700 text-2xl font-bold">Pay-as-you-go</h2>
+                <p class="text-slate-600 mt-2">Perfect for creators of all sizes.</p>
+                <div class="mt-8">
+                    <span class="text-7xl font-extrabold text-slate-900">5%</span>
+                    <span class="text-xl font-medium text-slate-500">/ per sale</span>
+                </div>
+                <p class="text-sm text-slate-500 mt-2">plus standard Stripe processing fees.</p>
+                
+                <ul class="mt-8 text-slate-700 space-y-3 max-w-md mx-auto">
+                  <li class="flex justify-center items-center gap-3">
+                        <svg class="w-5 h-5 flex-shrink-0" style="color: #ff7096;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.052-.143z" clip-rule="evenodd" /></svg>
+                        <span>Unlimited Pre-order Campaigns</span>
+                    </li>
+                    <li class="flex justify-center items-center gap-3">
+                        <svg class="w-5 h-5  flex-shrink-0" style="color: #ff7096;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.052-.143z" clip-rule="evenodd" /></svg>
+                        <span>Unlimited "Link in Bio" Links</span>
+                    </li>
+                    <li class="flex justify-center items-center gap-3">
+                        <svg class="w-5 h-5  flex-shrink-0" style="color: #ff7096;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.052-.143z" clip-rule="evenodd" /></svg>
+                        <span>AI "FairyGodwriter" Assistant</span>
+                    </li>
+                     <li class="flex justify-center items-center gap-3">
+                        <svg class="w-5 h-5  flex-shrink-0" style="color: #ff7096;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.052-.143z" clip-rule="evenodd" /></svg>
+                        <span>Secure Payments with Stripe</span>
+                    </li>
+                </ul>
+                <a href="/join-waitlist" class="btn  btn-lg w-full mt-8  text-white" style="background-color: #ff7096;">Get Started</a>
+            </div>
+        </div>
+    </main>
+    <div class="border-t  p-6  border-slate-200">
+      <p class="text-center text-xs/relaxed text-gray-500 dark:text-gray-400">
+        © PageFairy 2025. All rights reserved.
+
+      </p>
+    </div><script>window.parent.postMessage({ action: "ready" }, "*"); 
+ 
+window.console = new Proxy(console, {
+  get(target, prop) {
+    if (['log', 'warn', 'error'].includes(prop)) {
+      return new Proxy(target[prop], {
+        apply(fn, thisArg, args) {
+          fn.apply(thisArg, args);
+          window.parent.postMessage({ action: 'console', 
+            type: prop, 
+            args: args.map((arg) => {
+              try {
+                return JSON.stringify(arg).replace(/^["']|["']$/g, '');
+              } catch (e) {
+                return arg;
+              }
+            }) 
+          }, '*');
+        }
+      });
+    }
+    return target[prop];
+  }
+});
+</script></body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page Builder - PageFairy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pocketbase@0.21.0/dist/pocketbase.umd.js"></script>
+    <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <section class="bg-gray-50 min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 px-4 sm:px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <h1 class="text-xl font-bold text-gray-900">Landing Page Builder</h1>
+                    <div class="hidden sm:flex items-center gap-2" id="progressSteps">
+                        <!-- Steps will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-3">
+                    <button
+                        onclick="importAiDraft()"
+                        id="importButton"
+                        class="px-4 py-2 bg-white border hover:bg-gray-50 text-gray-700 rounded-lg transition-colors duration-200 font-medium"
+                    >
+                        ✨ Import AI Draft
+                    </button>
+                    <button
+                        onclick="togglePreview()"
+                        id="previewButton"
+                        class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 font-medium"
+                    >
+                        👁️ Preview
+                    </button>
+                    
+                    <button
+                        onclick="publishPage()"
+                        id="publishButton"
+                        class="px-6 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white rounded-lg transition-colors duration-200 font-medium hidden"
+                    >
+                        <span id="publishButtonText">🚀 Publish Page</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 flex">
+            <!-- Live Preview -->
+            <div id="previewPanel" class="flex-1 bg-white overflow-y-auto hidden">
+                <div class="min-h-full" style="font-family: 'Inter', sans-serif;" id="previewContent">
+                    <!-- Preview content will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Builder Interface -->
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Landing Page Builder - PageFairy</title>
+              <script src="https://cdn.tailwindcss.com"></script>
+            </head>
+            <body class="bg-gray-50">
+              <section class="bg-gray-50 min-h-screen flex flex-col">
+                <header class="bg-white border-b border-gray-200 px-4 sm:px-6 py-4">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                      <h1 class="text-xl font-bold text-gray-900">Landing Page Builder</h1>
+                      <div class="hidden sm:flex items-center gap-2" id="progressSteps"></div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                      <a href="pages.html" class="px-3 py-2 text-slate-600 hover:underline">← Back</a>
+                      <button onclick="importAiDraft()" id="importButton" class="px-4 py-2 bg-white border hover:bg-gray-50 text-gray-700 rounded-lg">✨ Import AI Draft</button>
+                      <button onclick="togglePreview()" id="previewButton" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg">👁️ Preview</button>
+                      <button onclick="saveDraft()" id="saveButton" class="px-4 py-2 bg-white border hover:bg-gray-50 text-gray-700 rounded-lg">💾 Save</button>
+                      <button onclick="refineWithAI()" id="refineBtn" class="px-4 py-2 bg-white border hover:bg-gray-50 text-gray-700 rounded-lg">✨ Refine with AI</button>
+                      <button onclick="publishPage()" id="publishButton" class="px-4 py-2 bg-green-600 text-white rounded-lg">🚀 Publish</button>
+                    </div>
+                  </div>
+                </header>
+
+                <div class="flex-1 flex">
+                  <div id="previewPanel" class="flex-1 bg-white overflow-y-auto hidden">
+                    <div class="min-h-full" id="previewContent"></div>
+                  </div>
+                  <div id="builderPanel" class="flex-1 overflow-y-auto">
+                    <div id="contentStep" class="p-6 max-w-3xl mx-auto">
+                      <div class="bg-white rounded-xl p-6 shadow-sm border space-y-4">
+                        <div>
+                          <label class="block text-sm font-medium text-gray-700 mb-2">Theme Color</label>
+                          <input id="themeColorInput" type="color" class="w-24 h-10 px-1 py-1 border rounded" onchange="updateContent()"/>
+                        </div>
+                        <div>
+                          <label class="block text-sm font-medium text-gray-700 mb-2">Main Headline</label>
+                          <input id="titleInput" class="w-full px-3 py-2 border rounded-lg" placeholder="Enter your main headline" onchange="updateContent()"/>
+                        </div>
+                        <div>
+                          <label class="block text-sm font-medium text-gray-700 mb-2">Subtitle</label>
+                          <input id="subtitleInput" class="w-full px-3 py-2 border rounded-lg" placeholder="Enter your subtitle" onchange="updateContent()"/>
+                        </div>
+                        <div>
+                          <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                          <textarea id="descriptionInput" rows="3" class="w-full px-3 py-2 border rounded-lg" placeholder="Describe your product" onchange="updateContent()"></textarea>
+                        </div>
+                        <div>
+                          <label class="block text-sm font-medium text-gray-700 mb-2">CTA Text</label>
+                          <input id="ctaTextInput" class="w-full px-3 py-2 border rounded-lg" placeholder="Join Waitlist" onchange="updateContent()"/>
+                        </div>
+                        <div>
+                          <div class="flex items-center justify-between mb-2">
+                            <label class="block text-sm font-medium text-gray-700">Features</label>
+                            <button onclick="addFeature()" class="text-blue-600 text-sm font-medium">+ Add Feature</button>
+                          </div>
+                          <div id="featuresContainer" class="space-y-2"></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="pricingSection">
+                          <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Early Bird Price</label>
+                            <input id="earlyBirdInput" class="w-full px-3 py-2 border rounded-lg" placeholder="$49" onchange="updateContent()"/>
+                          </div>
+                          <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Regular Price</label>
+                            <input id="regularPriceInput" class="w-full px-3 py-2 border rounded-lg" placeholder="$99" onchange="updateContent()"/>
+                          </div>
+                          <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Savings Text</label>
+                            <input id="savingsInput" class="w-full px-3 py-2 border rounded-lg" placeholder="50% off" onchange="updateContent()"/>
+                          </div>
+                        </div>
+                        <div id="paymentLinkRow" class="hidden">
+                          <label class="block text-sm font-medium text-gray-700 mb-2">Stripe Payment Link</label>
+                          <input id="paymentLinkInput" class="w-full px-3 py-2 border rounded-lg" placeholder="https://buy.stripe.com/..." onchange="updateContent()"/>
+                          <p class="text-xs text-gray-500 mt-1">If provided, CTA will link directly to checkout instead of showing a waitlist form.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <script>
+                let campaignType = 'waitlist';
+                let showPreview = false;
+                let currentPlan = 'free';
+                function getParam(key){ const u = new URL(window.location.href); return u.searchParams.get(key); }
+                let pageContent = {
+                  title: 'Get Early Access to Our Amazing Product',
+                  subtitle: 'Be the first to experience the future',
+                  description: 'Join thousands of early adopters who are transforming their workflow.',
+                  ctaText: 'Join Waitlist',
+                  features: ['Revolutionary technology','Seamless integration','24/7 support'],
+                  pricing: { earlyBird: '$49', regular: '$99', savings: '50% off' },
+                  colors: { primary: '#ff7096', secondary: '#8B5CF6', accent: '#10B981' },
+                  paymentLinkUrl: ''
+                };
+
+            function renderProgressSteps(){ const container = document.getElementById('progressSteps'); container.innerHTML = '<div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium bg-blue-600 text-white">1</div>'; }
+                function updateFormInputs(){
+                  document.getElementById('titleInput').value = pageContent.title;
+                  document.getElementById('subtitleInput').value = pageContent.subtitle;
+                  document.getElementById('descriptionInput').value = pageContent.description;
+                  document.getElementById('ctaTextInput').value = pageContent.ctaText;
+                  document.getElementById('earlyBirdInput').value = pageContent.pricing.earlyBird;
+                  document.getElementById('regularPriceInput').value = pageContent.pricing.regular;
+                  document.getElementById('savingsInput').value = pageContent.pricing.savings;
+                  document.getElementById('themeColorInput').value = pageContent.colors.primary || '#ff7096';
+                  document.getElementById('paymentLinkInput').value = pageContent.paymentLinkUrl || '';
+                  renderFeatures();
+                }
+                function renderFeatures(){ const c = document.getElementById('featuresContainer'); c.innerHTML = ''; pageContent.features.forEach((feature, idx)=>{ const d = document.createElement('div'); d.className='flex gap-2'; d.innerHTML = `
+                  <input class="flex-1 px-3 py-2 border rounded-lg" value="${feature}" onchange="updateFeature(${idx}, this.value)"/>
+                  <button onclick="removeFeature(${idx})" class="px-3 py-2 bg-red-100 text-red-600 rounded-lg text-sm font-medium">×</button>`; c.appendChild(d); }); }
+                function updateFeature(i,v){ pageContent.features[i]=v; updatePreview(); }
+                function addFeature(){ pageContent.features.push('New feature description'); renderFeatures(); updatePreview(); }
+                function removeFeature(i){ pageContent.features.splice(i,1); renderFeatures(); updatePreview(); }
+            function updateContent(){ pageContent.title = document.getElementById('titleInput').value; pageContent.subtitle=document.getElementById('subtitleInput').value; pageContent.description=document.getElementById('descriptionInput').value; pageContent.ctaText=document.getElementById('ctaTextInput').value; pageContent.pricing.earlyBird=document.getElementById('earlyBirdInput').value; pageContent.pricing.regular=document.getElementById('regularPriceInput').value; pageContent.pricing.savings=document.getElementById('savingsInput').value; pageContent.colors.primary=document.getElementById('themeColorInput').value; pageContent.paymentLinkUrl = document.getElementById('paymentLinkInput').value.trim(); document.getElementById('paymentLinkRow').classList.toggle('hidden', campaignType!=='preorder'); updatePreview(); }
+                function togglePreview(){ showPreview=!showPreview; const p=document.getElementById('previewPanel'); const b=document.getElementById('builderPanel'); const btn=document.getElementById('previewButton'); if(showPreview){ p.classList.remove('hidden'); b.classList.add('hidden'); btn.textContent='✏️ Edit'; } else { p.classList.add('hidden'); b.classList.remove('hidden'); btn.textContent='👁️ Preview'; } }
+            function importAiDraft(){ try{ const raw=localStorage.getItem('AI_WIZ_RESULT'); if(!raw){ alert('No AI draft found. Run the AI Wizard first.'); return; } const draft=JSON.parse(raw); if(draft.headline) pageContent.title=draft.headline; const hero=(draft.sections||[]).find(s=>s.type==='hero'); if(hero&&hero.content){ if(hero.content.subtitle) pageContent.subtitle=String(hero.content.subtitle); if(hero.content.description) pageContent.description=String(hero.content.description); if(hero.content.ctaText) pageContent.ctaText=String(hero.content.ctaText); } const features=(draft.sections||[]).find(s=>s.type==='features'); if(features&&features.content&&Array.isArray(features.content.items)){ pageContent.features=features.content.items.map(x=>String(x)); } if(draft.theme&&draft.theme.colors){ pageContent.colors.primary=draft.theme.colors.primary||pageContent.colors.primary; pageContent.colors.secondary=draft.theme.colors.secondary||pageContent.colors.secondary; pageContent.colors.accent=draft.theme.colors.accent||pageContent.colors.accent; } window.__aiRaw = draft; document.getElementById('themeColorInput').value = pageContent.colors.primary || '#ff7096'; updateFormInputs(); updatePreview(); } catch(e){ alert('Failed to import AI draft.'); }
+                }
+
+                // Persistence with PocketBase
+                const pb = new PocketBase(window.PB_URL);
+                if (!pb.authStore.isValid) { window.location.href = 'login.html'; }
+                let currentRecordId = null;
+                function toRecordPayload(status){
+                  return {
+                    title: pageContent.title,
+                    subtitle: pageContent.subtitle,
+                    description: pageContent.description,
+                    ctaText: pageContent.ctaText,
+                    features: pageContent.features,
+                    pricing: pageContent.pricing,
+                    colors: pageContent.colors,
+                    type: campaignType,
+                    status,
+                    ai_raw: window.__aiRaw || null,
+                    creator: pb.authStore.model.id,
+                    payment_link_url: pageContent.paymentLinkUrl || ''
+                  };
+                }
+                async function saveDraft(){
+                  try {
+                    const payload = toRecordPayload('draft');
+                    if (currentRecordId) {
+                      const rec = await pb.collection('pages').update(currentRecordId, payload);
+                      localStorage.setItem('PAGE_BUILDER_LAST_ID', rec.id);
+                      alert('Draft saved');
+                      return rec;
+                    } else {
+                      const rec = await pb.collection('pages').create(payload);
+                      currentRecordId = rec.id;
+                      localStorage.setItem('PAGE_BUILDER_LAST_ID', rec.id);
+                      alert('Draft created');
+                      return rec;
+                    }
+                  } catch (e) {
+                    alert('Save failed: ' + (e?.message || e));
+                  }
+                }
+
+                async function publishPage(){
+                  try {
+                    // Plan gating: allow only 1 published page on free
+                    if (currentPlan === 'free') {
+                      try {
+                        const userId = pb.authStore.model.id
+                        const res = await pb.collection('pages').getList(1, 2, { filter: `creator.id = "${userId}" && status = "published"` })
+                        const count = res?.items?.length || 0
+                        if (count >= 1) {
+                          alert('Free plan allows 1 published page. Upgrade to publish more.');
+                          return
+                        }
+                      } catch {}
+                    }
+                    // Ensure saved
+                    const rec = await saveDraft();
+                    if (!rec && !currentRecordId) return;
+                    const id = currentRecordId || rec.id;
+                    // Call secure publish endpoint
+                    const res = await fetch(`${window.API_BASE || ''}/api/pages/publish`, {
+                      method: 'POST',
+                      headers: { 'content-type': 'application/json', 'authorization': `Bearer ${pb.authStore.token}` },
+                      body: JSON.stringify({ page_id: id })
+                    })
+                    const data = await res.json()
+                    if (!res.ok || !data.ok) throw new Error(data?.message || data?.error || 'publish_failed')
+                    const publicUrl = `${window.API_BASE || ''}/p/${encodeURIComponent(data.slug)}`.replace(/\/$/,'');
+                    alert('Published!\n' + publicUrl);
+                    window.location.href = publicUrl;
+                  } catch (e) {
+                    alert('Publish failed: ' + (e?.message || e));
+                  }
+                }
+
+                // Autosave every 20s
+                setInterval(() => { if (pb.authStore.isValid) saveDraft(); }, 20000);
+
+                // Load existing draft by id param or last saved
+                async function tryLoad(){
+                  const id = getParam('id') || localStorage.getItem('PAGE_BUILDER_LAST_ID');
+                  if (!id) return;
+                  try {
+                    const rec = await pb.collection('pages').getOne(id);
+                    currentRecordId = rec.id;
+                    pageContent.title = rec.title || pageContent.title;
+                    pageContent.subtitle = rec.subtitle || pageContent.subtitle;
+                    pageContent.description = rec.description || pageContent.description;
+                    pageContent.ctaText = rec.ctaText || pageContent.ctaText;
+                    pageContent.features = Array.isArray(rec.features) ? rec.features : (Array.isArray(rec.features?.items) ? rec.features.items : pageContent.features);
+                    pageContent.pricing = rec.pricing || pageContent.pricing;
+                    pageContent.colors = rec.colors || pageContent.colors;
+                    pageContent.paymentLinkUrl = rec.payment_link_url || '';
+                    if (rec.type) campaignType = rec.type;
+                    if (rec.ai_raw) window.__aiRaw = rec.ai_raw;
+                    document.getElementById('pricingSection').style.display=(campaignType==='preorder')?'grid':'none';
+                    document.getElementById('paymentLinkRow').classList.toggle('hidden', campaignType!=='preorder');
+                  } catch {}
+                }
+                function updatePreview(){ const el=document.getElementById('previewContent'); const pricing=(campaignType==='preorder')?`<div class=\"bg-white/80 rounded-xl p-4 inline-block ml-3\"><div class=\"text-2xl font-bold\" style=\"color:${pageContent.colors.primary}\">${pageContent.pricing.earlyBird}</div><div class=\"text-sm text-gray-500 line-through\">${pageContent.pricing.regular}</div><div class=\"text-sm text-green-600\">${pageContent.pricing.savings}</div></div>`:''; const hero=`<section class=\"relative py-16 px-6\" style=\"background: linear-gradient(135deg, ${pageContent.colors.primary}15, ${pageContent.colors.secondary}15)\"><div class=\"max-w-3xl mx-auto text-center\"><h1 class=\"text-4xl font-extrabold text-gray-900 mb-3\">${pageContent.title}</h1><p class=\"text-lg text-gray-600 mb-4\">${pageContent.subtitle}</p><p class=\"text-gray-700 mb-6\">${pageContent.description}</p><div class=\"flex items-center justify-center\"><button class=\"px-5 py-3 rounded-lg text-white\" style=\"background-color:${pageContent.colors.primary}\">${pageContent.ctaText}</button>${pricing}</div></div></section>`; const features = (pageContent.features.length)?`<section class=\"py-16 px-6 bg-gray-50\"><div class=\"max-w-4xl mx-auto\"><h3 class=\"text-2xl font-bold text-center mb-6\">Why you'll love it</h3><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\">${pageContent.features.map(f=>`<div class=\\\"bg-white border rounded-lg p-4\\\">${f}</div>`).join('')}</div></div></section>`:''; el.innerHTML = hero + features; }
+                async function loadBrandDefaults(){
+                  try {
+                    const userId = pb.authStore.model.id;
+                    const profiles = await pb.collection('profiles').getList(1,1,{ filter: `user.id = "${userId}"` });
+                    const profile = profiles.items?.[0];
+                    if (profile?.primaryColor) {
+                      pageContent.colors.primary = profile.primaryColor;
+                    }
+                    currentPlan = (profile?.plan || 'free').toLowerCase();
+                    const refineBtn = document.getElementById('refineBtn');
+                    if (currentPlan === 'free') {
+                      refineBtn.title = 'Upgrade to Pro to use AI refine';
+                    } else {
+                      refineBtn.removeAttribute('title');
+                    }
+                  } catch {}
+                }
+                function applyPathwayPreset(){ const pathway=(getParam('pathway')||'').toLowerCase().replace(/\s+/g,'-'); if(!pathway) return; const presets={ 'early-access-waitlist':['waitlist','Get Early Access','Join Waitlist'], 'vip-launch-list':['waitlist','Join the VIP Launch List','Reserve My Spot'], 'exclusive-preview-list':['waitlist','Exclusive Preview Access','Get Preview'], 'coming-soon-capture':['waitlist','Coming Soon','Notify Me'], 'limited-edition-alert':['waitlist','Limited Edition Alert','Alert Me'], 'product-launch-pre-order':['preorder','Product Launch Pre-Order','Pre-Order Now'], 'early-bird-pre-order':['preorder','Early Bird Pre-Order','Lock Early Price'], 'bundle-pre-order':['preorder','Bundle Pre-Order','Pre-Order Bundle'], 'limited-edition-pre-order':['preorder','Limited Edition Pre-Order','Reserve Yours'], 'subscription-pre-order':['preorder','Subscription Pre-Order','Subscribe Early'], 'free-guide-download':['waitlist','Free Guide Download','Get the Guide'], 'tutorial-access':['waitlist','Tutorial Access','Get Access'], 'sample-kit-request':['waitlist','Request a Sample Kit','Request Kit'], 'color-match-quiz':['waitlist','Color Match Quiz','Start Quiz'], 'style-assessment':['waitlist','Style Assessment','Take Assessment'], 'product-showcase-flow':['waitlist','Product Showcase','Learn More'], 'upsell-sequence':['waitlist','Upsell Sequence','See Offers'], 'cross-sell-journey':['waitlist','Cross-Sell Journey','Explore More'], 'seasonal-collection':['waitlist','Seasonal Collection','Shop Collection'], 'flash-sale-capture':['waitlist','Flash Sale','Get Deal'], 'brand-story-journey':['waitlist','Our Brand Story','Follow Along'], 'behind-the-scenes-access':['waitlist','Behind-the-Scenes','Get Access'], 'community-invitation':['waitlist','Join Our Community','Join Community'], 'loyalty-program-signup':['waitlist','Loyalty Program','Sign Up'], 'referral-program-flow':['waitlist','Referral Program','Refer a Friend'] }; const p=presets[pathway]; if(!p) return; campaignType=p[0]; pageContent.title=p[1]; pageContent.ctaText=p[2]; document.getElementById('pricingSection').style.display=(campaignType==='preorder')?'grid':'none'; document.getElementById('paymentLinkRow').classList.toggle('hidden', campaignType!=='preorder'); }
+            function init(){ renderProgressSteps(); applyPathwayPreset(); loadBrandDefaults().then(()=> tryLoad()).then(()=>{ updateFormInputs(); updatePreview(); }); }
+                async function refineWithAI(){
+                  if (currentPlan === 'free') { alert('Upgrade to Pro to use AI refine.'); return }
+                  try {
+                    const wiz = JSON.parse(localStorage.getItem('AI_WIZ_STATE')||'{}')
+                    const host = (wiz.apiHost||'').replace(/\/$/,'')
+                    const key = wiz.apiKey || localStorage.getItem('AI_API_KEY') || ''
+                    if (!host || !key) { alert('Set AI host and key in AI Wizard first.'); return }
+                    const body = {
+                      step_1: pageContent.description || pageContent.subtitle || pageContent.title,
+                      step_2: `${campaignType} page for ${pageContent.title}`,
+                      productName: (wiz.productName || pageContent.title || '').slice(0,80),
+                      productNotes: wiz.productNotes || ''
+                    }
+                    const btn = document.getElementById('refineBtn'); const prev = btn.textContent; btn.textContent='✨ Refining...'; btn.disabled=true
+                    const res = await fetch(`${host}/api/generate-page`, { method:'POST', headers:{ 'content-type':'application/json', 'authorization': `Bearer ${key}` }, body: JSON.stringify(body) })
+                    const data = await res.json(); if (!res.ok) throw new Error(data?.error || 'ai_failed')
+                    localStorage.setItem('AI_WIZ_RESULT', JSON.stringify(data))
+                    if (data.headline) pageContent.title = data.headline
+                    const hero=(data.sections||[]).find(s=>s.type==='hero'); if (hero?.content){ if(hero.content.subtitle) pageContent.subtitle=String(hero.content.subtitle); if(hero.content.description) pageContent.description=String(hero.content.description); if(hero.content.ctaText) pageContent.ctaText=String(hero.content.ctaText); }
+                    const features=(data.sections||[]).find(s=>s.type==='features'); if(features?.content?.items) pageContent.features = features.content.items.map(String)
+                    if (data.theme?.colors?.primary) pageContent.colors.primary = data.theme.colors.primary
+                    updateFormInputs(); updatePreview();
+                    btn.textContent = prev; btn.disabled=false
+                  } catch(e){ alert('AI refine failed: ' + (e?.message || e))
+                    const btn = document.getElementById('refineBtn'); btn.textContent='✨ Refine with AI'; btn.disabled=false }
+                }
+                init();
+              </script>
+            </body>
+            </html>

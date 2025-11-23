@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - PageFairy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=DM+Sans:wght@400;700&family=Oleo+Script:wght@400;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <style>@import url('https://rsms.me/inter/inter.css'); body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body style="background-color: #FFFEFB;">
+  <!-- Header Placeholder -->
+  <header class="p-4 border-b" style="background-color: #ffffff;">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="/" class="text-3xl font-bold logo-font  text-slate-900" style="font-family: 'Oleo Script', cursive !important; font-weight: 700 !important;">PageFairy</a>
+      <a href="/join-waitlist" class="btn  text-white" style="background-color: #ff7096;">Join Waitlist</a> 
+
+        </div>
+    </header>
+
+    <main class="py-20 px-6">
+        <div class="text-center max-w-2xl mx-auto">
+            <h1 class="text-5xl font-extrabold tracking-tight text-slate-900" style="font-family: 'DM Sans', sans-serif !important; font-weight: 700 !important;">Get in touch.</h1>
+            <p class="mt-4 text-lg text-slate-600" style="font-family: 'Quicksand', sans-serif !important; font-weight: 700 !important;">Have a question, a partnership idea, or just want to say hello? We'd love to hear from you.</p>
+        </div>
+        
+        <div class="mt-16 max-w-lg mx-auto ">
+            <form class="space-y-4 ">
+                <div>
+                    <label class="label"><span class="label-text  text-slate-700">Your Name</span></label>
+                    <input type="text"                         
+                    style="background-color: #f8f8f8;" 
+                    class="input input-bordered w-full" required />
+                </div>
+                <div>
+                    <label class="label"><span class="label-text text-slate-700">Your Email</span></label>
+                    <input type="email" 
+                    style="background-color: #f8f8f8;  " 
+                    class="input input-bordered w-full" required />
+                </div>
+                <div>
+                    <label class="label"><span class="label-text text-slate-700">Your Message</span></label>
+                    
+                    <textarea style="background-color: #f8f8f8;" 
+
+                    class="textarea textarea-bordered w-full h-32" required></textarea>
+                </div>
+                <button type="submit" class="btn  w-full text-white" style="background-color: #ff7096;">Send Message</button>
+            </form>
+        </div>
+    </main>
+    <div class="border-t  p-6  border-slate-200">
+      <p class="text-center text-xs/relaxed text-gray-500 dark:text-gray-400">
+        © PageFairy 2025. All rights reserved.
+
+      </p>
+<script>window.parent.postMessage({ action: "ready" }, "*"); 
+ 
+window.console = new Proxy(console, {
+  get(target, prop) {
+    if (['log', 'warn', 'error'].includes(prop)) {
+      return new Proxy(target[prop], {
+        apply(fn, thisArg, args) {
+          fn.apply(thisArg, args);
+          window.parent.postMessage({ action: 'console', 
+            type: prop, 
+            args: args.map((arg) => {
+              try {
+                return JSON.stringify(arg).replace(/^["']|["']$/g, '');
+              } catch (e) {
+                return arg;
+              }
+            }) 
+          }, '*');
+        }
+      });
+    }
+    return target[prop];
+  }
+});
+</script></body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Pre-order Campaign - Select Recipes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.css" rel="stylesheet" />
+    <style>
+        .credit-pill {
+            background-color: #fff0f5;
+            color: #ff7096;
+        }
+        .group:has(:checked) {
+            border-color: #ff7096;
+            box-shadow: 0 0 0 2px #ff7096;
+        }
+        .text-pf-rose {
+            color: #ff7096;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="flex justify-between items-center py-4 px-6 bg-white border-b">
+                <h2 class="text-2xl font-semibold text-gray-800">Create Pre-order Campaign</h2>
+            </header>
+            <main class="flex-1 overflow-x-hidden overflow-y-auto p-6">
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-8">
+                        <h3 class="text-xl font-semibold text-gray-900">Build your campaign with credit recipes</h3>
+                        <p class="text-gray-600 mt-1">Select features to add to your page. You have <span class="font-bold">150</span> credits.</p>
+                    </div>
+                    
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="recipes">
+                        <!-- Lead Starter 45 -->
+                        <label class="group rounded-2xl bg-white border border-gray-200 p-6 hover:shadow-md transition cursor-pointer flex flex-col gap-3">
+                            <input type="checkbox" class="sr-only recipe" data-name="Lead Starter" data-credits="45"
+                                data-items="Email capture, Pixels & base events, Color & font preset">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <h3 class="text-lg font-semibold">Lead Starter</h3>
+                                    <p class="text-sm text-gray-500 mt-1">Start collecting emails and track visits immediately.</p>
+                                </div>
+                                <span class="credit-pill rounded-full px-3 py-1 text-xs font-semibold">45 credits</span>
+                            </div>
+                            <ul class="mt-2 text-sm text-gray-500 list-disc list-inside space-y-1">
+                                <li>Email capture</li>
+                                <li>Pixels & base events</li>
+                                <li>Color & font preset</li>
+                            </ul>
+                            <div class="mt-auto pt-3 text-right text-xs text-pf-rose font-medium opacity-0 group-has-[:checked]:opacity-100 transition-opacity">Selected</div>
+                        </label>
+
+                        <!-- Brand Polish 48 -->
+                        <label class="group rounded-2xl bg-white border border-gray-200 p-6 hover:shadow-md transition cursor-pointer flex flex-col gap-3">
+                            <input type="checkbox" class="sr-only recipe" data-name="Brand Polish" data-credits="48"
+                                data-items="Color & font preset, Logo lockup & favicon, Social meta / Open Graph, Pixels & base events">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <h3 class="text-lg font-semibold">Brand Polish</h3>
+                                    <p class="text-sm text-gray-500 mt-1">Make it look on-brand and share beautifully on social.</p>
+                                </div>
+                                <span class="credit-pill rounded-full px-3 py-1 text-xs font-semibold">48 credits</span>
+                            </div>
+                            <ul class="mt-2 text-sm text-gray-500 list-disc list-inside space-y-1">
+                                <li>Color & font preset</li>
+                                <li>Logo lockup & favicon</li>
+                                <li>Social meta / Open Graph</li>
+                                <li>Pixels & base events</li>
+                            </ul>
+                            <div class="mt-auto pt-3 text-right text-xs text-pf-rose font-medium opacity-0 group-has-[:checked]:opacity-100 transition-opacity">Selected</div>
+                        </label>
+
+                        <!-- Trust Boost 35 -->
+                        <label class="group rounded-2xl bg-white border border-gray-200 p-6 hover:shadow-md transition cursor-pointer flex flex-col gap-3">
+                            <input type="checkbox" class="sr-only recipe" data-name="Trust Boost" data-credits="35"
+                                data-items="Testimonials block, FAQ block">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <h3 class="text-lg font-semibold">Trust Boost</h3>
+                                    <p class="text-sm text-gray-500 mt-1">Add social proof so more visitors say yes.</p>
+                                </div>
+                                <span class="credit-pill rounded-full px-3 py-1 text-xs font-semibold">35 credits</span>
+                            </div>
+                            <ul class="mt-2 text-sm text-gray-500 list-disc list-inside space-y-1">
+                                <li>Testimonials block</li>
+                                <li>FAQ block</li>
+                            </ul>
+                            <div class="mt-auto pt-3 text-right text-xs text-pf-rose font-medium opacity-0 group-has-[:checked]:opacity-100 transition-opacity">Selected</div>
+                        </label>
+
+                        <!-- Hero Launch 50 -->
+                        <label class="group rounded-2xl bg-white border border-gray-200 p-6 hover:shadow-md transition cursor-pointer flex flex-col gap-3">
+                            <input type="checkbox" class="sr-only recipe" data-name="Hero Launch" data-credits="50"
+                                data-items="Generated hero section (headline, subhead, CTA)">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <h3 class="text-lg font-semibold">Hero Launch</h3>
+                                    <p class="text-sm text-gray-500 mt-1">Publish a clean, high-converting hero today.</p>
+                                </div>
+                                <span class="credit-pill rounded-full px-3 py-1 text-xs font-semibold">50 credits</span>
+                            </div>
+                            <ul class="mt-2 text-sm text-gray-500 list-disc list-inside space-y-1">
+                                <li>Generated hero (headline, subhead, CTA)</li>
+                            </ul>
+                            <div class="mt-auto pt-3 text-right text-xs text-pf-rose font-medium opacity-0 group-has-[:checked]:opacity-100 transition-opacity">Selected</div>
+                        </label>
+
+                        <!-- Welcome Only 25 -->
+                        <label class="group rounded-2xl bg-white border border-gray-200 p-6 hover:shadow-md transition cursor-pointer flex flex-col gap-3">
+                            <input type="checkbox" class="sr-only recipe" data-name="Welcome Only" data-credits="25"
+                                data-items="ESP-safe HTML welcome, plain text version">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <h3 class="text-lg font-semibold">Welcome Only</h3>
+                                    <p class="text-sm text-gray-500 mt-1">Send a polished first touch to every new lead.</p>
+                                </div>
+                                <span class="credit-pill rounded-full px-3 py-1 text-xs font-semibold">25 credits</span>
+                            </div>
+                            <ul class="mt-2 text-sm text-gray-500 list-disc list-inside space-y-1">
+                                <li>ESP-safe HTML template</li>
+                                <li>Plain text version</li>
+                            </ul>
+                            <div class="mt-auto pt-3 text-right text-xs text-pf-rose font-medium opacity-0 group-has-[:checked]:opacity-100 transition-opacity">Selected</div>
+                        </label>
+
+                        <!-- Growth Test 65 -->
+                        <label class="group rounded-2xl bg-white border border-gray-200 p-6 hover:shadow-md transition cursor-pointer flex flex-col gap-3">
+                            <input type="checkbox" class="sr-only recipe" data-name="Growth Test" data-credits="65"
+                                data-items="A/B section variant, Pricing block">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <h3 class="text-lg font-semibold">Growth Test</h3>
+                                    <p class="text-sm text-gray-500 mt-1">Add pricing and test a second version of a key section.</p>
+                                </div>
+                                <span class="credit-pill rounded-full px-3 py-1 text-xs font-semibold">65 credits</span>
+                            </div>
+                            <ul class="mt-2 text-sm text-gray-500 list-disc list-inside space-y-1">
+                                <li>A/B section variant</li>
+                                <li>Pricing block</li>
+                            </ul>
+                            <div class="mt-auto pt-3 text-right text-xs text-pf-rose font-medium opacity-0 group-has-[:checked]:opacity-100 transition-opacity">Selected</div>
+                        </label>
+                    </div>
+
+                    <!-- Summary and CTA -->
+                    <div class="mt-10 p-6 bg-white rounded-lg shadow-md">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h4 class="text-lg font-semibold">Total Credits: <span id="total-credits">0</span></h4>
+                                <p class="text-sm text-gray-500">Credits remaining: <span id="remaining-credits">150</span></p>
+                            </div>
+                            <button id="next-button" class="bg-gray-300 text-white font-bold py-2 px-6 rounded-lg cursor-not-allowed" disabled>
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const recipes = document.querySelectorAll('.recipe');
+            const totalCreditsEl = document.getElementById('total-credits');
+            const remainingCreditsEl = document.getElementById('remaining-credits');
+            const nextButton = document.getElementById('next-button');
+            const totalAvailableCredits = 150;
+
+            function updateSummary() {
+                let currentTotal = 0;
+                recipes.forEach(recipe => {
+                    if (recipe.checked) {
+                        currentTotal += parseInt(recipe.dataset.credits, 10);
+                    }
+                });
+
+                const remaining = totalAvailableCredits - currentTotal;
+                totalCreditsEl.textContent = currentTotal;
+                remainingCreditsEl.textContent = remaining;
+
+                if (currentTotal > 0 && currentTotal <= totalAvailableCredits) {
+                    nextButton.disabled = false;
+                    nextButton.classList.remove('bg-gray-300', 'cursor-not-allowed');
+                    nextButton.classList.add('bg-pink-500', 'hover:bg-pink-600');
+                } else {
+                    nextButton.disabled = true;
+                    nextButton.classList.add('bg-gray-300', 'cursor-not-allowed');
+                    nextButton.classList.remove('bg-pink-500', 'hover:bg-pink-600');
+                }
+            }
+
+            recipes.forEach(recipe => {
+                recipe.addEventListener('change', updateSummary);
+            });
+
+            nextButton.addEventListener('click', () => {
+                if (!nextButton.disabled) {
+                    // Navigate to the next step, e.g., the page editor or another configuration screen
+                    window.location.href = 'create-campaign1.html'; 
+                }
+            });
+
+            updateSummary();
+        });
+    </script>
+
+</body>
+</html>

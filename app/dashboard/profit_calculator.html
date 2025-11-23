@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profit Calculator - PageFairy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=DM+Sans:wght@400;700&family=Oleo+Script:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .btn-primary { background-color: #ff7096 !important; border-color: #ff7096 !important; color: #fff !important; }
+  </style>
+</head>
+<body style="background-color: #F1F5F9; font-family: 'DM Sans', sans-serif !important; font-weight: 500 !important;">
+  <main class="container mx-auto p-4 sm:p-6 lg:p-8 min-h-screen flex flex-col items-center justify-center">
+    <div class="w-full max-w-2xl space-y-6">
+      <div class="flex items-center gap-2">
+        <a href="/app/app_home.html" class="btn btn-ghost"><i data-lucide='chevron-left'></i> Back</a>
+      </div>
+      <div class="text-center space-y-2">
+        <h1 class="text-3xl font-bold text-slate-800">Profit Calculator</h1>
+        <p class="text-slate-600">Estimate profit per unit and per campaign for your private label products.</p>
+      </div>
+      <div class="bg-base-100 border rounded-lg p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <label class="form-control">
+          <span class="label-text">Your MSRP ($)</span>
+          <input id="msrp" type="number" min="0" step="0.01" class="input input-bordered" value="29.00" />
+        </label>
+        <label class="form-control">
+          <span class="label-text">Wholesale Cost ($)</span>
+          <input id="wholesale" type="number" min="0" step="0.01" class="input input-bordered" value="9.50" />
+        </label>
+        <label class="form-control">
+          <span class="label-text">Estimated Fees (%)</span>
+          <input id="fees" type="number" min="0" step="0.1" class="input input-bordered" value="5" />
+        </label>
+        <label class="form-control">
+          <span class="label-text">Units in Campaign</span>
+          <input id="units" type="number" min="1" step="1" class="input input-bordered" value="50" />
+        </label>
+      </div>
+      <div class="bg-base-100 border rounded-lg p-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+          <div>
+            <div class="text-xs uppercase tracking-wide text-slate-500">Profit / Unit</div>
+            <div id="profitPer" class="text-2xl font-bold">$0.00</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-slate-500">Margin</div>
+            <div id="margin" class="text-2xl font-bold">0%</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wide text-slate-500">Campaign Profit</div>
+            <div id="campaign" class="text-2xl font-bold">$0.00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    function fmt(n){return n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
+    function calc(){
+      const msrp = parseFloat(document.getElementById('msrp').value)||0;
+      const wholesale = parseFloat(document.getElementById('wholesale').value)||0;
+      const fees = (parseFloat(document.getElementById('fees').value)||0)/100;
+      const units = parseInt(document.getElementById('units').value)||0;
+      const feeAmt = msrp*fees;
+      const profitPer = Math.max(0, msrp - wholesale - feeAmt);
+      const margin = msrp? (profitPer/msrp*100):0;
+      document.getElementById('profitPer').textContent = `$${fmt(profitPer)}`;
+      document.getElementById('margin').textContent = `${fmt(margin)}%`;
+      document.getElementById('campaign').textContent = `$${fmt(profitPer*units)}`;
+    }
+    ['msrp','wholesale','fees','units'].forEach(id=>document.getElementById(id).addEventListener('input', calc));
+    calc();
+  </script>
+</body>
+</html>

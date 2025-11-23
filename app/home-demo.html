@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagefairy</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS + DaisyUI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Custom Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        page: '#0f172a', // Dark slate background to match text-gray-100
+                        primary: '#60a5fa', // blue-400 equivalent
+                    },
+                    fontFamily: {
+                        sans: ['DM Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-page min-h-screen text-slate-200">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- Lucide Icons (Inline SVGs) ---
+        const IconWrapper = ({ children, className }) => (
+            <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                className={className}
+            >
+                {children}
+            </svg>
+        );
+
+        const Sparkles = ({ className }) => (
+            <IconWrapper className={className}>
+                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                <path d="M5 3v4"/>
+                <path d="M9 3v4"/>
+                <path d="M5 7h4"/>
+            </IconWrapper>
+        );
+
+        const FileDown = ({ className }) => (
+            <IconWrapper className={className}>
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <path d="M12 18v-6"/>
+                <path d="m9 15 3 3 3-3"/>
+            </IconWrapper>
+        );
+
+        const PackagePlus = ({ className }) => (
+            <IconWrapper className={className}>
+                <path d="M16.5 9.4 7.55 4.24"/>
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/>
+                <path d="m3.3 7 8.7 5 8.7-5"/>
+                <line x1="12" x2="12" y1="22" y2="13"/>
+                <line x1="16" x2="16" y1="18" y2="24"/>
+                <line x1="19" x2="19" y1="21" y2="21"/>
+                <line x1="13" x2="19" y1="21" y2="21"/>
+            </IconWrapper>
+        );
+
+        const Rocket = ({ className }) => (
+            <IconWrapper className={className}>
+                <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+            </IconWrapper>
+        );
+
+        const Globe = ({ className }) => (
+            <IconWrapper className={className}>
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" x2="22" y1="12" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </IconWrapper>
+        );
+
+        const Calculator = ({ className }) => (
+            <IconWrapper className={className}>
+                <rect width="16" height="20" x="4" y="2" rx="2"/>
+                <line x1="8" x2="16" y1="6" y2="6"/>
+                <line x1="16" x2="16" y1="14" y2="18"/>
+                <path d="M16 10h.01"/>
+                <path d="M12 10h.01"/>
+                <path d="M8 10h.01"/>
+                <path d="M12 14h.01"/>
+                <path d="M8 14h.01"/>
+                <path d="M12 18h.01"/>
+                <path d="M8 18h.01"/>
+            </IconWrapper>
+        );
+
+        const Check = ({ className }) => (
+            <IconWrapper className={className}>
+                <polyline points="20 6 9 17 4 12"/>
+            </IconWrapper>
+        );
+
+        const AlertCircle = ({ className }) => (
+             <IconWrapper className={className}>
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" x2="12" y1="8" y2="12" />
+                <line x1="12" x2="12.01" y1="16" y2="16" />
+            </IconWrapper>
+        );
+
+
+        // --- Main Component ---
+
+        const Home = () => {
+            const [activeSection, setActiveSection] = useState('home');
+            const [email, setEmail] = useState('');
+            const [showSuccess, setShowSuccess] = useState(false);
+            const [errorMsg, setErrorMsg] = useState('');
+
+            const handleCatalogSubmit = () => {
+                setErrorMsg('');
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    setErrorMsg('Please enter a valid email address');
+                    return;
+                }
+                try {
+                    localStorage.setItem('pf_catalog_email', email);
+                } catch (e) {
+                    console.log('Local storage not available');
+                }
+                setShowSuccess(true);
+            };
+
+            return (
+                <div className="flex flex-col min-h-screen p-4 bg-page text-slate-200" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}>
+                    <main className="flex-grow w-full flex items-center justify-center">
+                        {activeSection === 'home' && (
+                            <section id="home" className="max-w-3xl mx-auto text-center space-y-6">
+                                <Sparkles className="mx-auto h-16 w-16 text-primary animate-pulse" />
+                                <div className="flex flex-col items-center gap-6 animate-fade-in">
+                                    <h1 className="text-5xl font-extrabold tracking-tight text-gray-100 sm:text-6xl md:text-7xl">
+                                        Simplify Your Brand With <span className="text-blue-400">Pagefairy</span>.
+                                    </h1>
+                                </div>
+
+                                <p className="max-w-2xl text-lg text-gray-400 md:text-xl mx-auto">
+                                    Hello I am AI assistant, JennTheFairy. Get started by exploring the options below to enhance your brand with Pagefairy.
+                                </p>
+                                
+                                <div className="w-full max-w-2xl mx-auto py-2">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <button onClick={() => setActiveSection('flow-catalog')} className="card w-full bg-base-100 card-xs shadow-md hover:scale-[1.02] transition-transform cursor-pointer hover:bg-slate-700 border border-slate-700">
+                                            <div className="card-body flex-row items-center gap-4">
+                                                <FileDown className="text-slate-400" />
+                                                <span className="font-semibold text-slate-200 normal-case text-left">Get Product Catalog (PDF)</span>
+                                            </div>
+                                        </button>
+                                        
+                                        <a href="#" onClick={(e)=>e.preventDefault()} className="btn h-auto py-3 justify-start bg-base-100 border border-slate-700 gap-3 hover:bg-slate-700 hover:border-slate-500">
+                                            <PackagePlus className="text-slate-400" />
+                                            <span className="font-semibold text-slate-200 normal-case">Order a Sample Kit</span>
+                                        </a>
+                                        
+                                        <a href="#" onClick={(e)=>e.preventDefault()} className="btn h-auto py-3 justify-start bg-base-100 border border-slate-700 gap-3 hover:bg-slate-700 hover:border-slate-500">
+                                            <Rocket className="text-slate-400" />
+                                            <span className="font-semibold text-slate-200 normal-case">Start Selling Now</span>
+                                        </a>
+                                        
+                                        <a href="#" onClick={(e)=>e.preventDefault()} className="btn h-auto py-3 justify-start bg-base-100 border border-slate-700 gap-3 hover:bg-slate-700 hover:border-slate-500">
+                                            <Globe className="text-slate-400" />
+                                            <span className="font-semibold text-slate-200 normal-case">Create Store Page</span>
+                                        </a>
+                                        
+                                        <a href="#" onClick={(e)=>e.preventDefault()} className="btn h-auto py-3 justify-start bg-base-100 border border-slate-700 gap-3 hover:bg-slate-700 hover:border-slate-500">
+                                            <Calculator className="text-slate-400" />
+                                            <span className="font-semibold text-slate-200 normal-case">Profit Calculator</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </section>
+                        )}
+
+                        {activeSection === 'flow-catalog' && (
+                            <section id="flow-catalog" className="max-w-3xl mx-auto w-full">
+                                <div className="breadcrumbs text-sm mb-4 text-slate-400">
+                                    <ul>
+                                        <li><a href="#" onClick={(e) => { e.preventDefault(); setActiveSection('home'); }} className="hover:text-primary">Home</a></li>
+                                        <li>Get Product Catalog</li>
+                                    </ul>
+                                </div>
+                                <div className="bg-base-100 border border-slate-700 rounded-xl p-6 space-y-6 shadow-xl">
+                                    {!showSuccess ? (
+                                        <>
+                                            <p className="text-slate-300">
+                                                Enter your email to receive our free catalog featuring lash tech-ready white-label products with transparent pricing and profit estimates.
+                                            </p>
+                                            
+                                            <div className="form-control w-full">
+                                                <label className="label">
+                                                    <span className="label-text text-slate-300">Email Address</span>
+                                                </label>
+                                                <input
+                                                    type="email"
+                                                    className={`input input-bordered w-full bg-slate-800 text-white ${errorMsg ? 'input-error' : ''}`}
+                                                    placeholder="you@example.com"
+                                                    value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                />
+                                                {errorMsg && (
+                                                    <div className="text-error text-sm mt-2 flex items-center gap-1">
+                                                        <AlertCircle className="w-4 h-4" /> {errorMsg}
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            <button onClick={handleCatalogSubmit} className="btn btn-primary w-full sm:w-auto">
+                                                Get Catalog
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <div className="space-y-6 animate-fade-in">
+                                            <div className="alert alert-success bg-green-900/50 border-green-800 text-green-100">
+                                                <Check className="h-6 w-6" />
+                                                <span>Thanks! Your catalog is ready.</span>
+                                            </div>
+                                            <p className="text-slate-400">What would you like to do next?</p>
+                                            <div className="flex flex-wrap gap-3">
+                                                <a href="#" className="btn btn-outline text-slate-300 border-slate-600 hover:bg-slate-700 hover:text-white hover:border-slate-500">
+                                                    <FileDown className="w-4 h-4" /> Download PDF
+                                                </a>
+                                                <a className="btn bg-slate-700 text-white hover:bg-slate-600 border-none" href="#">
+                                                    <PackagePlus className="w-4 h-4" /> Order a Sample Kit
+                                                </a>
+                                                <a className="btn btn-primary text-white" href="#">
+                                                    <Rocket className="w-4 h-4" /> Start Selling Now
+                                                </a>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </section>
+                        )}
+                    </main>
+                    
+                    <footer className="footer footer-center text-slate-500 p-4 mt-8">
+                        <aside>
+                            <p> ©{new Date().getFullYear()} Powered By Pagefairy </p>
+                        </aside>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Home />);
+    </script>
+</body>
+</html>

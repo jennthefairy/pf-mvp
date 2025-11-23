@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Personal Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=DM+Sans:wght@400;700&family=Oleo+Script:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link href="/styles/pagefairy-theme.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+            :root, html[data-theme="light"] {
+                    /* Brand primary for DaisyUI components */
+                    --p: 344 100% 72%;
+                    --pc: 0 0% 100%;
+            }
+            .btn-primary { background-color: #ff7096 !important; border-color: #ff7096 !important; color: #fff !important; }
+            .text-primary { color: #ff7096 !important; }
+            .bg-primary { background-color: #ff7096 !important; }
+      .step-primary::after {
+          background-color: #ff7096 !important;
+          color: white !important;
+          border-color: #ff7096 !important;
+      }
+    </style>
+</head>
+<body style="font-family: 'DM Sans', sans-serif !important; font-weight: 500 !important;">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 min-h-screen flex flex-col items-center justify-center bg-page">
+        <main class="w-full max-w-4xl">
+
+            <div id="dashboard-view" class="hidden">
+                <div class="mb-8">
+                    <h1 class="text-4xl sm:text-5xl font-bold text-slate-800">Good morning!</h1>
+                    <p id="dashboard-date" class="text-lg text-slate-600">Here is your business snapshot.</p>
+                </div>
+                <div class="stats shadow w-full bg-base-100 border">
+                    </div>
+                <div class="mt-12">
+                    <h2 class="text-2xl font-bold mb-4 text-slate-800">Today's Priorities</h2>
+                    <div id="priorities-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        </div>
+                </div>
+            </div>
+
+            <div id="empty-state-view" class="hidden text-center">
+                <div class="max-w-2xl mx-auto space-y-8">
+                    <i data-lucide="rocket" class="mx-auto h-16 w-16 text-[#ff7096] mb-2"></i>
+                    <h1 class="text-4xl sm:text-5xl font-bold text-slate-800">Welcome to Your Dashboard!</h1>
+                    <p class="text-lg text-slate-600">I'm your personal assistant, and I'm here to help you get your business up and running. Let's start with a few key steps.</p>
+                    
+                    <ul class="steps steps-vertical lg:steps-horizontal w-full">
+                        <li class="step step-primary">
+                            <div class="text-left p-4">
+                                <h3 class="font-bold text-slate-800">Order Your Pixie Kit</h3>
+                                <p class="text-sm text-slate-600 mb-2">See and feel the quality of our products and packaging firsthand.</p>
+                                <button class="btn text-white btn-sm" style="background-color: #ff7096">Order Your Kit</button>
+                            </div>
+                        </li>
+                        <li class="step">
+                            <div class="text-left p-4">
+                                <h3 class="font-bold text-slate-800">Set Up Your Branding</h3>
+                                <p class="text-sm text-slate-600 mb-2">Customize your packaging so you're ready to start selling.</p>
+                                <button class="btn btn-outline btn-sm" disabled>Set Up Branding</button>
+                            </div>
+                        </li>
+                        <li class="step">
+                            <div class="text-left p-4">
+                                <h3 class="font-bold text-slate-800">Test Product Demand</h3>
+                                <p class="text-sm text-slate-600 mb-2">Create a waitlist for a product to validate your idea before investing.</p>
+                                <button class="btn btn-outline btn-sm" disabled>Create a Waitlist</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+    lucide.createIcons({ attrs: { 'stroke-width': 1.75 } });
+
+        // --- Mock Data & User State ---
+        // In a real app, this would come from your backend.
+        const isNewUser = true; // TOGGLE THIS to 'false' to see the existing user dashboard.
+
+        const mockData = {
+            inventory: [{ id: 1, name: 'Organic Face Serum', stock: 15, salesPerDay: 5 }],
+            ads: [{ id: 'ad1', name: 'Holiday Instagram Ad', roas: 5.2 }],
+        };
+
+        const dashboardView = document.getElementById('dashboard-view');
+        const emptyStateView = document.getElementById('empty-state-view');
+        
+        // --- Core "AI" Function ---
+        // This function decides which view to show the user.
+        function initializeDashboard() {
+            if (isNewUser) {
+                // Show the onboarding checklist for new users
+                dashboardView.classList.add('hidden');
+                emptyStateView.classList.remove('hidden');
+            } else {
+                // Show the data-driven dashboard for existing users
+                emptyStateView.classList.add('hidden');
+                dashboardView.classList.remove('hidden');
+                renderDataDashboard();
+            }
+            lucide.createIcons({ attrs: { 'stroke-width': 1.75 } });
+        }
+
+        // This function builds the dashboard for users with data
+        function renderDataDashboard() {
+            const prioritiesGrid = document.getElementById('priorities-grid');
+            prioritiesGrid.innerHTML = ''; // Clear old data
+
+            // AI Rule 1: Check for low stock
+            const lowStockProduct = mockData.inventory.find(p => p.stock < 20);
+            if (lowStockProduct) {
+                const card = createInsightCard('Low Stock Alert', `**${lowStockProduct.name}** is down to **${lowStockProduct.stock} units**.`);
+                prioritiesGrid.appendChild(card);
+            }
+
+            // AI Rule 2: Check for high-performing ads
+            const topAd = mockData.ads.find(ad => ad.roas > 4);
+            if (topAd) {
+                const card = createInsightCard('Ad Performance', `Your **'${topAd.name}'** has a **${topAd.roas}x ROAS**.`);
+                prioritiesGrid.appendChild(card);
+            }
+            
+            // Add other data-driven cards here...
+        }
+
+        // Helper function to create dashboard cards (abbreviated)
+        function createInsightCard(title, text) {
+            const card = document.createElement('div');
+            card.className = `card bg-base-100 border p-6 shadow`;
+            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-slate-800">$1</span>');
+            card.innerHTML = `<h3 class="font-bold text-lg text-slate-800">${title}</h3><p class="text-slate-600">${formattedText}</p>`;
+            return card;
+        }
+
+        // --- Initial Load ---
+        initializeDashboard();
+    </script>
+</body>
+</html>

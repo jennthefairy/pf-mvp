@@ -1,0 +1,54 @@
+/* PageFairy Theme - Light */
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Oleo+Script:wght@400;700&display=swap');
+
+/* Define custom properties */
+:root {
+  --color-primary: #ff7096;
+  --color-accent: #885A5A;
+  --color-muted: #3A2D32;
+  --color-dark: #392b30;
+  --color-card: #F9FAFB;
+  --color-input: #FFF9F6;
+  --color-page: #F1F5F9;
+  --color-border-muted: #E8DCD3;
+}
+
+/* DaisyUI theme variable overrides (use brand pink as primary) */
+/* DaisyUI expects HSL channel values in custom properties like --p */
+:root,
+html[data-theme="light"] {
+  /* Primary brand color: #ff7096 ≈ hsl(344, 100%, 72%) */
+  --p: 344 100% 72%;
+  --pc: 0 0% 100%; /* primary content (on primary) - white */
+}
+
+/* Typography */
+body { font-family: 'Quicksand', sans-serif; }
+.heading-dmsans { font-family: 'DM Sans', sans-serif; font-weight: 700; }
+.logo-font { font-family: 'Oleo Script', cursive; font-weight: 700; }
+
+/* Brand Palette using CSS custom properties */
+.bg-page { background-color: var(--color-page); background-image: radial-gradient(ellipse at center, rgba(255, 112, 150, 0.05), transparent 70%); }
+.bg-page-hero { background-color: var(--color-page); background-image: radial-gradient(ellipse at center, rgba(255, 112, 150, 0.12), transparent 70%); }
+.bg-card { background-color: var(--color-card); }
+.bg-primary { background-color: var(--color-primary); }
+.bg-input { background-color: var(--color-input); }
+.bg-muted { background-color: var(--color-muted); }
+.bg-white { background-color: #ffffff; }
+.text-primary { color: var(--color-primary); }
+.text-accent { color: var(--color-accent); }
+.text-muted { color: var(--color-muted); }
+.text-dark { color: var(--color-dark); }
+.border-primary { border-color: var(--color-primary); }
+.border-muted { border-color: var(--color-border-muted); }
+
+/* Buttons - lightweight brand override (compatible with DaisyUI .btn) */
+.btn-primary { background-color: var(--color-primary) !important; color: white !important; border: none !important; }
+.btn-primary:hover { background-color: #f88ca9 !important; transform: translateY(-1px); }
+.btn-secondary { background-color: var(--color-accent) !important; color: white !important; border: none !important; }
+.btn-secondary:hover { background-color: #6d4848 !important; transform: translateY(-1px); }
+
+/* Inputs */
+input[type="text"], input[type="email"], input[type="password"], input[type="tel"], input[type="number"], input[type="search"], textarea, select { background-color: var(--color-input) !important; }
+.bg-input { background-color: var(--color-input) !important; }

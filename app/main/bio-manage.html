@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Editor - PageFairy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://rsms.me/inter/inter.css');
+        body { font-family: 'Inter', sans-serif; }
+        .phone-preview-container::-webkit-scrollbar { display: none; }
+        .editor-panel { scrollbar-gutter: stable; }
+    </style>
+</head>
+<body class="bg-slate-100 flex flex-col h-screen">
+
+    <!-- Top Navigation -->
+    <header class="bg-white border-b border-slate-200 z-10 flex-shrink-0">
+        <div class="container mx-auto px-6">
+            <div class="navbar min-h-[4rem]">
+                <div class="navbar-start">
+                    <a href="#" class="btn btn-ghost gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                        Back
+                    </a>
+                </div>
+                <div class="navbar-center hidden lg:flex">
+                     <p class="font-medium">Your public URL: <a href="#" class="link link-primary">pagefairy.me/luxe-lashes</a></p>
+                </div>
+                <div class="navbar-end">
+                    <button class="btn btn-primary bg-indigo-600 hover:bg-indigo-700 text-white ml-2">Publish</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Editor -->
+    <main class="flex-grow grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-5 overflow-hidden">
+        
+        <!-- Left Panel: Editor & Controls -->
+        <div class="col-span-1 xl:col-span-2 bg-white border-r border-slate-200 overflow-y-auto editor-panel">
+            <div class="p-8 space-y-8">
+                <!-- Add New Block Section -->
+                <div class="space-y-2">
+                    <h2 class="text-lg font-bold text-slate-800">Add Content</h2>
+                    <button class="btn btn-outline w-full justify-start h-16">
+                        <i data-lucide="link-2" class="text-indigo-500"></i>
+                        <span class="text-left normal-case">
+                            <strong class="block text-slate-700">Add Link</strong>
+                            <span class="font-normal text-slate-500">Link to a campaign, website, or social.</span>
+                        </span>
+                    </button>
+                </div>
+                
+                <!-- Appearance/Style Section -->
+                 <div class="space-y-4">
+                    <h2 class="text-lg font-bold text-slate-800">Appearance</h2>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text">Page Theme</span></label>
+                        <div class="btn-group grid grid-cols-3">
+                            <button class="btn btn-active">Light</button>
+                            <button class="btn">Dark</button>
+                            <button class="btn">Creator</button>
+                        </div>
+                    </div>
+                     <div class="form-control">
+                        <label class="label"><span class="label-text">Brand Color</span></label>
+                        <div class="flex items-center gap-3">
+                            <input type="color" class="p-1 h-10 w-14 block bg-white border border-gray-200 cursor-pointer rounded-lg" value="#6366F1">
+                            <input type="text" value="#6366F1" class="input input-bordered w-full" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Live Phone Preview (Always Visible) -->
+        <div class="col-span-1 xl:col-span-3 bg-slate-50 flex items-center justify-center p-4 lg:p-12">
+            <div class="w-full max-w-[380px]">
+                <div class="bg-slate-800 rounded-[2.5rem] p-2.5 shadow-2xl shadow-slate-400">
+                    <div class="bg-white h-[750px] w-full rounded-[2rem] overflow-y-auto phone-preview-container">
+                        <!-- Live Preview Content -->
+                        <div class="p-5">
+                            <!-- Profile Section -->
+                            <div class="text-center group relative cursor-pointer p-3 rounded-xl hover:bg-blue-500/10 transition-colors">
+                                <div class="avatar online">
+                                    <div class="w-24 rounded-full">
+                                        <img src="/api/placeholder/200/200" />
+                                    </div>
+                                </div>
+                                <h1 class="text-2xl font-bold mt-3 text-slate-900">Luxe Lashes by Jane</h1>
+                                <p class="text-gray-600">Pre-order our exclusive product drops!</p>
+                            </div>
+                            
+                            <!-- Links List -->
+                            <div class="mt-6 space-y-3">
+                                <!-- Draggable Link Item 1 -->
+                                <div class="group relative cursor-pointer p-1 rounded-lg">
+                                    <div class="absolute inset-0 border-2 border-dashed border-blue-500 rounded-xl opacity-0 group-hover:opacity-100"></div>
+                                    <a class="block bg-indigo-600 text-white p-4 w-full rounded-lg text-center font-semibold">
+                                        Holiday Special Kit
+                                    </a>
+                                </div>
+                                <!-- Draggable Link Item 2 (Active/Selected State) -->
+                                <div class="group relative cursor-pointer p-1 rounded-lg bg-blue-500/10">
+                                    <div class="absolute inset-0 border-2 border-solid border-blue-500 rounded-xl opacity-100"></div>
+                                    <a class="block bg-white p-4 w-full rounded-lg text-center font-semibold border border-slate-200">
+                                        My Top 10 Lash Tools
+                                    </a>
+                                </div>
+                                <!-- Draggable Link Item 3 -->
+                                <div class="group relative cursor-pointer p-1 rounded-lg">
+                                    <div class="absolute inset-0 border-2 border-dashed border-blue-500 rounded-xl opacity-0 group-hover:opacity-100"></div>
+                                    <a class="block bg-white p-4 w-full rounded-lg text-center font-semibold border border-slate-200">
+                                        Follow us on TikTok
+                                    </a>
+                                </div>
+                            </div>
+
+                             <!-- Socials Section -->
+                            <div class="text-center group relative cursor-pointer p-3 rounded-xl hover:bg-blue-500/10 transition-colors mt-8">
+                                <div class="flex justify-center space-x-5 text-slate-500">
+                                    <i data-lucide="instagram" class="w-6 h-6"></i>
+                                    <i data-lucide="youtube" class="w-6 h-6"></i>
+                                    <i data-lucide="globe" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

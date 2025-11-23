@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PageFairy - Your Brand, Zero Risk.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        @keyframes ticker-scroll {
+            0% { transform: translateY(0); }
+            15% { transform: translateY(-1.5em); } /* Wait on first item */
+            30% { transform: translateY(-1.5em); }
+            45% { transform: translateY(-3em); }   /* Wait on second item */
+            60% { transform: translateY(-3em); }
+            75% { transform: translateY(-4.5em); } /* Wait on third item */
+            90% { transform: translateY(-4.5em); }
+            100% { transform: translateY(0); }
+        }
+        .ticker-container {
+            height: 1.5em;
+            line-height: 1.5em;
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+        .ticker-item {
+            animation: ticker-scroll 8s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white font-sans antialiased">
+    <!-- Header -->
+    <header class="sticky top-0 bg-slate-900/70 backdrop-blur-lg z-50 border-b border-slate-700">
+        <div class="container mx-auto px-4">
+            <div class="navbar">
+                <div class="navbar-start">
+                    <a class="text-2xl font-bold">PageFairy</a>
+                </div>
+                <div class="navbar-end">
+                    <a href="#" class="btn btn-ghost hidden sm:inline-flex">Log In</a>
+                    <a href="#" class="btn btn-primary bg-white text-slate-900 hover:bg-slate-200 ml-2">Get Started Free</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-24 pb-28 sm:pt-32 sm:pb-36">
+        <div class="container mx-auto text-center px-4">
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter leading-tight">
+                The platform to launch<br/>your brand with
+                <span class="ticker-container text-purple-400">
+                    <span class="ticker-item flex flex-col">
+                        <span>Zero Risk.</span>
+                        <span>Zero Inventory.</span>
+                        <span>Zero Upfront Cost.</span>
+                        <span>Zero Risk.</span> <!-- Loop back -->
+                    </span>
+                </span>
+            </h1>
+            <p class="mt-6 text-lg md:text-xl text-slate-400 max-w-3xl mx-auto">
+                Turn your influence into a business. PageFairy is the all-in-one platform for creators to launch their own product lines through risk-free pre-order campaigns. No inventory, no stress.
+            </p>
+            <div class="mt-10">
+                <a href="#" class="btn btn-primary btn-lg bg-white text-slate-900 hover:bg-slate-200 shadow-lg shadow-purple-500/20">
+                    Start Your First Campaign
+                </a>
+                <p class="text-sm text-slate-500 mt-4">It's free to get started. Seriously.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works Section -->
+    <section class="py-20 bg-slate-800/50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold">A simple path to your first launch.</h2>
+                <p class="text-lg text-slate-400 mt-2">No spreadsheets, no guesswork, no risk.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                <!-- Step 1 -->
+                <div class="relative p-8 border border-slate-700 rounded-2xl bg-slate-800">
+                     <div class="absolute top-0 -translate-y-1/2 bg-purple-600 text-white text-sm font-bold px-3 py-1 rounded-full">STEP 1</div>
+                    <h3 class="text-2xl font-bold">Create</h3>
+                    <p class="text-slate-400 mt-2">Use our AI-powered wizard to design a stunning, high-converting pre-order page for your product in minutes. No design skills needed.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="relative p-8 border border-slate-700 rounded-2xl bg-slate-800">
+                    <div class="absolute top-0 -translate-y-1/2 bg-purple-600 text-white text-sm font-bold px-3 py-1 rounded-full">STEP 2</div>
+                    <h3 class="text-2xl font-bold">Promote</h3>
+                    <p class="text-slate-400 mt-2">Share your unique link. We handle the payment processing. Your customers' cards are only authorized, not charged, until your goal is met.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="relative p-8 border border-slate-700 rounded-2xl bg-slate-800">
+                    <div class="absolute top-0 -translate-y-1/2 bg-purple-600 text-white text-sm font-bold px-3 py-1 rounded-full">STEP 3</div>
+                    <h3 class="text-2xl font-bold">Profit</h3>
+                    <p class="text-slate-400 mt-2">Once successful, we invoice you the wholesale cost. We then manufacture your branded products and ship them directly to you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Final CTA Section -->
+    <section class="py-24">
+        <div class="container mx-auto text-center px-4 max-w-3xl">
+            <h2 class="text-5xl font-bold tracking-tight">Your Audience is Waiting.</h2>
+            <p class="text-lg text-slate-400 mt-4">
+                Stop leaving money on the table. Turn your influence into a tangible brand that you own and control. Create your free account today and launch a product you can be proud of.
+            </p>
+            <div class="mt-8">
+                 <a href="#" class="btn btn-primary btn-lg bg-white text-slate-900 hover:bg-slate-200 shadow-lg shadow-purple-500/20">
+                    Build Your Brand, Risk-Free
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-700">
+        <div class="container mx-auto p-10 text-center">
+            <p class="text-slate-400">&copy; 2025 PageFairy Inc. The future of creator-led commerce.</p>
+        </div>
+    </footer>
+<script>window.parent.postMessage({ action: "ready" }, "*"); 
+ 
+window.console = new Proxy(console, {
+  get(target, prop) {
+    if (['log', 'warn', 'error'].includes(prop)) {
+      return new Proxy(target[prop], {
+        apply(fn, thisArg, args) {
+          fn.apply(thisArg, args);
+          window.parent.postMessage({ action: 'console', 
+            type: prop, 
+            args: args.map((arg) => {
+              try {
+                return JSON.stringify(arg).replace(/^["']|["']$/g, '');
+              } catch (e) {
+                return arg;
+              }
+            }) 
+          }, '*');
+        }
+      });
+    }
+    return target[prop];
+  }
+});
+</script></body>
+</html>

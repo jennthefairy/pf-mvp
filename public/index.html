@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PageFairy — Validate & launch your beauty product</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pf: {
+              pink: "#FADADD",
+              peach: "#F7C5A8",
+              rose: "#E8A9A5",
+              ivory: "#FFF9F6",
+              charcoal: "#3E3E3E",
+              roseHover: "#D68E8A",
+              charcoal60: "#6A6A6A",
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --pf-pink:#FADADD; --pf-peach:#F7C5A8; --pf-rose:#E8A9A5;
+      --pf-ivory:#FFF9F6; --pf-charcoal:#3E3E3E;
+    }
+    body{ font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--pf-ivory); color: var(--pf-charcoal); }
+    .pf-heading{ font-family: "Playfair Display", serif; }
+    .glass { backdrop-filter: saturate(140%) blur(8px); -webkit-backdrop-filter: saturate(140%) blur(8px); background: rgba(255,255,255,0.6); }
+    @keyframes shake { 25%{ transform: translateX(3px);} 50%{ transform: translateX(-3px);} 75%{ transform: translateX(2px);} 100%{ transform: translateX(0);} }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- Header + Hero -->
+  <header class="relative">
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-pf-pink to-pf-peach opacity-60"></div>
+
+    <nav class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2">
+        <span class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-pf-rose text-pf-rose">
+          <i data-lucide="wand-2"></i>
+        </span>
+        <span class="pf-heading text-xl tracking-tight">PageFairy</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-6 text-sm">
+        <a href="#platform" class="hover:opacity-80">Platform</a>
+        <a href="#services" class="hover:opacity-80">Sub-services</a>
+        <a href="#faq" class="hover:opacity-80">FAQ</a>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="#waitlist" id="openWaitlistTop" class="inline-flex items-center gap-2 rounded-md border border-pf-rose bg-pf-rose px-4 py-2 text-sm font-medium text-white hover:bg-pf-roseHover transition">
+          Join Waitlist <i data-lucide="sparkles"></i>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="mx-auto max-w-6xl px-4 py-16 md:py-24 text-center">
+      <div class="mx-auto max-w-3xl">
+        <h1 class="pf-heading text-4xl md:text-5xl leading-tight">
+          Launch your beauty product <span class="text-pf-rose">risk-free</span>
+        </h1>
+        <p class="mt-4 text-pf-charcoal60">
+          Validate with preorders, build a beautiful landing page, and grow with automated marketing — all unified under PageFairy.
+        </p>
+
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a href="#waitlist" id="openWaitlist"
+             class="inline-flex items-center gap-2 rounded-md border border-pf-rose bg-pf-rose px-5 py-3 text-white font-medium hover:bg-pf-roseHover transition">
+            Join Waitlist <i data-lucide="arrow-right"></i>
+          </a>
+          <a href="#demo" class="inline-flex items-center gap-2 rounded-md border border-pf-rose px-5 py-3 text-pf-rose font-medium hover:bg-pf-rose/10 transition">
+            View Demo <i data-lucide="play-circle"></i>
+          </a>
+        </div>
+
+        <div class="mt-10 mx-auto max-w-4xl rounded-2xl glass p-4 shadow-sm">
+          <div class="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-pf-pink/60 text-sm">
+            <div class="p-4 flex items-center justify-center gap-2"><i data-lucide="credit-card"></i> Preorder holds (no charge)</div>
+            <div class="p-4 flex items-center justify-center gap-2"><i data-lucide="bar-chart-3"></i> Goal tracking</div>
+            <div class="p-4 flex items-center justify-center gap-2"><i data-lucide="wand-2"></i> Fast page build</div>
+            <div class="p-4 flex items-center justify-center gap-2"><i data-lucide="send"></i> Email & social automation</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <!-- Platform -->
+  <section id="platform" class="mx-auto max-w-6xl px-4 py-12 md:py-16">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div class="order-2 md:order-1">
+        <h2 class="pf-heading text-3xl md:text-4xl">Unified Launch Platform</h2>
+        <p class="mt-3 text-pf-charcoal60">
+          Run 7-day demand tests with Stripe authorization, charge only when goals are met, and track results with clean analytics.
+        </p>
+        <ul class="mt-6 space-y-3 text-sm">
+          <li class="flex items-start gap-3"><i data-lucide="check-circle-2" class="mt-0.5 text-pf-rose"></i><span>Risk-free validation — authorize now, capture on success</span></li>
+          <li class="flex items-start gap-3"><i data-lucide="check-circle-2" class="mt-0.5 text-pf-rose"></i><span>Pixel-ready for TikTok & Meta</span></li>
+          <li class="flex items-start gap-3"><i data-lucide="check-circle-2" class="mt-0.5 text-pf-rose"></i><span>Beauty-first templates and checkout</span></li>
+        </ul>
+        <div class="mt-6 flex gap-3">
+          <a href="#waitlist" id="openWaitlistMid" class="inline-flex items-center gap-2 rounded-md border border-pf-rose bg-pf-rose px-4 py-2 text-white text-sm font-medium hover:bg-pf-roseHover transition">
+            Join Waitlist <i data-lucide="rocket"></i>
+          </a>
+          <a href="#learn" class="inline-flex items-center gap-2 rounded-md border border-pf-rose px-4 py-2 text-pf-rose text-sm font-medium hover:bg-pf-rose/10 transition">
+            Learn More <i data-lucide="chevron-right"></i>
+          </a>
+        </div>
+      </div>
+      <div class="order-1 md:order-2">
+        <div class="rounded-xl border border-pf-pink bg-white/70 p-6 shadow-sm">
+          <div class="flex items-center gap-2 text-sm text-pf-charcoal60">
+            <i data-lucide="sparkles" class="text-pf-rose"></i> Preview
+          </div>
+          <div class="mt-3 rounded-lg bg-gradient-to-br from-pf-pink to-pf-peach p-6 text-center">
+            <p class="pf-heading text-xl">Campaign Goal: 100 Preorders</p>
+            <div class="mt-4 h-3 w-full rounded-full bg-white/60">
+              <div class="h-3 rounded-full bg-pf-rose" style="width:62%"></div>
+            </div>
+            <p class="mt-2 text-sm">62% funded — authorizations held, not charged</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sub-services -->
+  <section id="services" class="mx-auto max-w-6xl px-4 py-12 md:py-16">
+    <h2 class="pf-heading text-3xl md:text-4xl text-center">Your Fairy ecosystem</h2>
+    <p class="mt-3 text-center text-pf-charcoal60">All services connect to your single PageFairy account.</p>
+
+    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <a href="https://fairyflow.app" class="group rounded-xl border border-pf-pink bg-white p-6 hover:shadow-md transition block">
+        <div class="flex items-center justify-between">
+          <h3 class="pf-heading text-xl">FairyFlow</h3>
+          <i data-lucide="wand-2" class="text-pf-rose"></i>
+        </div>
+        <p class="mt-2 text-sm text-pf-charcoal60">Upload inspiration → get a polished landing page with email & social automation.</p>
+        <span class="mt-4 inline-flex items-center gap-1 text-pf-rose text-sm">Open <i data-lucide="arrow-right"></i></span>
+      </a>
+
+      <a href="https://ecofairy.biz" class="group rounded-xl border border-pf-pink bg-white p-6 hover:shadow-md transition block">
+        <div class="flex items-center justify-between">
+          <h3 class="pf-heading text-xl">EcoFairy</h3>
+          <i data-lucide="leaf" class="text-pf-rose"></i>
+        </div>
+        <p class="mt-2 text-sm text-pf-charcoal60">Natural cosmetics & eco packaging for private-label wholesale.</p>
+        <span class="mt-4 inline-flex items-center gap-1 text-pf-rose text-sm">Explore <i data-lucide="arrow-right"></i></span>
+      </a>
+
+      <a href="https://pixiekits.store" class="group rounded-xl border border-pf-pink bg-white p-6 hover:shadow-md transition block">
+        <div class="flex items-center justify-between">
+          <h3 class="pf-heading text-xl">PixieKits</h3>
+          <i data-lucide="package" class="text-pf-rose"></i>
+        </div>
+        <p class="mt-2 text-sm text-pf-charcoal60">DIY starter kits and packaging sets to prototype your beauty line.</p>
+        <span class="mt-4 inline-flex items-center gap-1 text-pf-rose text-sm">Shop <i data-lucide="arrow-right"></i></span>
+      </a>
+
+      <a href="https://jennthfairy.com" class="group rounded-xl border border-pf-pink bg-white p-6 hover:shadow-md transition block">
+        <div class="flex items-center justify-between">
+          <h3 class="pf-heading text-xl">Jenn the Fairy</h3>
+          <i data-lucide="heart" class="text-pf-rose"></i>
+        </div>
+        <p class="mt-2 text-sm text-pf-charcoal60">Founder stories and behind-the-scenes building PageFairy.</p>
+        <span class="mt-4 inline-flex items-center gap-1 text-pf-rose text-sm">Read <i data-lucide="arrow-right"></i></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="mx-auto max-w-6xl px-4 py-12 md:py-16">
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="md:col-span-1">
+        <h3 class="pf-heading text-2xl">FAQ</h3>
+        <p class="mt-2 text-pf-charcoal60">Short answers to common questions.</p>
+      </div>
+      <div class="md:col-span-2 space-y-6">
+        <div>
+          <h4 class="font-semibold">Do customers get charged right away?</h4>
+          <p class="text-sm text-pf-charcoal60 mt-1">No — we only place an authorization hold. Cards are captured if your campaign meets its goal.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold">Can I connect my own domain?</h4>
+          <p class="text-sm text-pf-charcoal60 mt-1">Yes. Public pages work out of the box; custom domains are available on paid plans.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold">Is email marketing included?</h4>
+          <p class="text-sm text-pf-charcoal60 mt-1">Yes — FairyFlow provides simple automations and social scheduling integrated with your campaigns.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-pf-pink/60">
+    <div class="mx-auto max-w-6xl px-4 py-8 text-sm flex flex-col md:flex-row items-center justify-between gap-4">
+      <p>&copy; <span id="y"></span> PageFairy. All rights reserved.</p>
+      <nav class="flex flex-wrap items-center gap-4">
+        <a href="#services" class="hover:opacity-80">Services</a>
+        <a href="#faq" class="hover:opacity-80">FAQ</a>
+        <a href="#" class="hover:opacity-80">Privacy</a>
+        <a href="#" class="hover:opacity-80">Terms</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- ===== WAITLIST WIZARD (Fullscreen) ===== -->
+  <div id="waitlistOverlay" class="fixed inset-0 z-[999] hidden">
+    <div class="absolute inset-0 bg-black/40"></div>
+
+    <div class="relative mx-auto mt-6 mb-6 max-w-2xl rounded-2xl bg-white shadow-xl overflow-hidden">
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-pf-pink to-pf-peach px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="wand-2" class="text-pf-rose"></i>
+          <h3 class="pf-heading text-lg">PageFairy Early Access</h3>
+        </div>
+        <button id="closeWaitlist" class="p-2 rounded-md hover:bg-white/50" aria-label="Close">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <!-- Progress -->
+      <div class="px-6 pt-5">
+        <div class="flex items-center justify-between text-xs text-pf-charcoal60 mb-2">
+          <span id="stepLabel">Step 1 of 6</span>
+          <span id="stepName">Contact</span>
+        </div>
+        <div class="h-2 w-full bg-pf-pink/50 rounded-full overflow-hidden">
+          <div id="progressBar" class="h-2 bg-pf-rose w-[16%]"></div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form id="waitlistForm" class="px-6 pb-6 pt-4 space-y-6">
+        <!-- Step 1: Contact -->
+        <section data-step="1" class="grid gap-4">
+          <div>
+            <label class="text-sm font-medium">Email</label>
+            <input name="email" type="email" required placeholder="you@brand.com"
+                   class="mt-1 w-full rounded-md border border-pf-pink px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pf-rose">
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="text-sm font-medium">First name</label>
+              <input name="first_name" type="text" required
+                     class="mt-1 w-full rounded-md border border-pf-pink px-3 py-2 focus:ring-2 focus:ring-pf-rose">
+            </div>
+            <div>
+              <label class="text-sm font-medium">Last name</label>
+              <input name="last_name" type="text"
+                     class="mt-1 w-full rounded-md border border-pf-pink px-3 py-2 focus:ring-2 focus:ring-pf-rose">
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 2: Brand Basics -->
+        <section data-step="2" class="hidden grid gap-4">
+          <div>
+            <label class="text-sm font-medium">Brand name</label>
+            <input name="brand_name" type="text" placeholder="e.g., Lashy Bloom"
+                   class="mt-1 w-full rounded-md border border-pf-pink px-3 py-2 focus:ring-2 focus:ring-pf-rose">
+          </div>
+          <div>
+            <label class="text-sm font-medium">Instagram / TikTok (optional)</label>
+            <input name="social_handle" type="text" placeholder="@yourbrand"
+                   class="mt-1 w-full rounded-md border border-pf-pink px-3 py-2 focus:ring-2 focus:ring-pf-rose">
+          </div>
+          <div>
+            <label class="text-sm font-medium">Niche</label>
+            <select name="niche" class="mt-1 w-full rounded-md border border-pf-pink px-3 py-2 focus:ring-2 focus:ring-pf-rose">
+              <option value="">Select…</option>
+              <option>Lash Tech</option>
+              <option>Nail Artist</option>
+              <option>Brow Artist</option>
+              <option>MUA</option>
+              <option>Salon</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- Step 3: Product & Packaging -->
+        <section data-step="3" class="hidden grid gap-4">
+          <div>
+            <label class="text-sm font-medium">What are you planning to launch first?</label>
+            <select name="product_focus" required
+                    class="mt-1 w-full rounded-md border border-pf-pink px-3 py-2 focus:ring-2 focus:ring-pf-rose">
+              <option value="">Select…</option>
+              <option>Lashes</option>
+              <option>Nail Tips / Gels</option>
+              <option>Brow / Aftercare</option>
+              <option>Makeup (Natural)</option>
+              <option>Tools / Accessories</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-sm font-medium">Packaging preference</label>
+            <select name="packaging" class="mt-1 w-full rounded-md border border-pf-pink px-3 py-2 focus:ring-2 focus:ring-pf-rose">
+              <option value="">Select…</option>
+              <option>Eco / Minimal</option>
+              <option>Premium / Magnetic Box</option>
+              <option>Refill / Kit Style</option>
+              <option>Undecided</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-sm font-medium">Upload inspiration (URL)</label>
+            <input name="inspo_url" type="url" placeholder="https://… (Pinterest, IG, site)"
+                   class="mt-1 w-full rounded-md border border-pf-pink px-3 py-2 focus:ring-2 focus:ring-pf-rose">
+          </div>
+        </section>
+
+        <!-- Step 4: Launch Goals -->
+        <section data-step="4" class="hidden grid gap-4">
+          <div>
+            <label class="text-sm font-medium">Target launch window</label>
+            <select name="launch_timing" class="mt-1 w-full rounded-md border border-pf-pink px-3 py-2 focus:ring-2 focus:ring-pf-rose">
+              <option value="">Select…</option>
+              <option>Within 2 weeks</option>
+              <option>Within 30 days</option>
+              <option>1–3 months</option>
+              <option>3+ months</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-sm font-medium">Preorder goal (units)</label>
+            <input name="goal_units" type="number" min="10" step="10" placeholder="e.g., 100"
+                   class="mt-1 w-full rounded-md border border-pf-pink px-3 py-2 focus:ring-2 focus:ring-pf-rose">
+          </div>
+          <div>
+            <label class="text-sm font-medium">Do you want help writing copy?</label>
+            <div class="mt-2 flex gap-4 text-sm">
+              <label class="inline-flex items-center gap-2"><input type="radio" name="copy_help" value="Yes"> Yes</label>
+              <label class="inline-flex items-center gap-2"><input type="radio" name="copy_help" value="No"> No</label>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 5: Marketing Channels -->
+        <section data-step="5" class="hidden grid gap-4">
+          <div>
+            <label class="text-sm font-medium">Where do you market?</label>
+            <div class="mt-2 grid grid-cols-2 gap-2 text-sm">
+              <label class="inline-flex items-center gap-2"><input type="checkbox" name="channels" value="Instagram"> Instagram</label>
+              <label class="inline-flex items-center gap-2"><input type="checkbox" name="channels" value="TikTok"> TikTok</label>
+              <label class="inline-flex items-center gap-2"><input type="checkbox" name="channels" value="Pinterest"> Pinterest</label>
+              <label class="inline-flex items-center gap-2"><input type="checkbox" name="channels" value="YouTube"> YouTube</label>
+              <label class="inline-flex items-center gap-2"><input type="checkbox" name="channels" value="Threads"> Threads</label>
+              <label class="inline-flex items-center gap-2"><input type="checkbox" name="channels" value="Email"> Email</label>
+            </div>
+          </div>
+          <div>
+            <label class="text-sm font-medium">Approx. audience size</label>
+            <select name="audience_size" class="mt-1 w-full rounded-md border border-pf-pink px-3 py-2 focus:ring-2 focus:ring-pf-rose">
+              <option value="">Select…</option>
+              <option>0–500</option>
+              <option>500–2k</option>
+              <option>2k–10k</option>
+              <option>10k+</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- Step 6: Consent -->
+        <section data-step="6" class="hidden grid gap-4">
+          <div class="rounded-lg border border-pf-pink p-4 bg-pf-ivory/60 text-sm">
+            By joining, you agree to receive onboarding emails about your launch, setup tips, and early-access updates. You can unsubscribe anytime.
+          </div>
+          <label class="inline-flex items-center gap-2 text-sm">
+            <input type="checkbox" name="consent" required> I agree to receive emails and accept the Terms.
+          </label>
+        </section>
+
+        <!-- Hidden meta fields -->
+        <input type="hidden" name="utm_source">
+        <input type="hidden" name="utm_medium">
+        <input type="hidden" name="utm_campaign">
+        <input type="hidden" name="referrer">
+        <input type="hidden" name="page_path">
+        <input type="hidden" name="submitted_at_iso">
+
+        <!-- Controls -->
+        <div class="flex items-center justify-between pt-2">
+          <button type="button" id="prevBtn" class="inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm hover:bg-pf-pink/30">
+            <i data-lucide="chevron-left"></i> Back
+          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" id="saveBtn" class="hidden text-xs underline text-pf-charcoal60">Save & resume later</button>
+            <button type="button" id="nextBtn" class="inline-flex items-center gap-2 rounded-md border border-pf-rose bg-pf-rose px-4 py-2 text-sm font-medium text-white hover:bg-pf-roseHover">
+              Next <i data-lucide="chevron-right"></i>
+            </button>
+            <button type="submit" id="submitBtn" class="hidden inline-flex items-center gap-2 rounded-md border border-pf-rose bg-pf-rose px-4 py-2 text-sm font-medium text-white hover:bg-pf-roseHover">
+              Join Waitlist <i data-lucide="check-circle-2"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Success -->
+      <div id="successPane" class="hidden px-6 pb-8">
+        <div class="mt-6 rounded-xl bg-pf-ivory border border-pf-pink p-6 text-center">
+          <i data-lucide="party-popper" class="mx-auto mb-2 text-pf-rose"></i>
+          <h4 class="pf-heading text-2xl">You're on the list! ✨</h4>
+          <p class="mt-2 text-sm text-pf-charcoal60">We’ll email setup steps and your PDF Catalog shortly. Watch your inbox.</p>
+          <a href="/" class="mt-4 inline-flex items-center gap-2 rounded-md border border-pf-rose px-4 py-2 text-pf-rose text-sm font-medium hover:bg-pf-pink/40">
+            Back to Home <i data-lucide="arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ===== /WAITLIST WIZARD ===== -->
+
+  <script>
+    // Icons
+    lucide.createIcons();
+
+    // Open/close overlay
+    const overlay = document.getElementById('waitlistOverlay');
+    function openOverlay(e){ e?.preventDefault(); overlay.classList.remove('hidden'); document.body.style.overflow='hidden'; initMeta(); loadSaved(); }
+    function closeOverlay(){ overlay.classList.add('hidden'); document.body.style.overflow=''; }
+
+    document.getElementById('openWaitlist')?.addEventListener('click', openOverlay);
+    document.getElementById('openWaitlistTop')?.addEventListener('click', openOverlay);
+    document.getElementById('openWaitlistMid')?.addEventListener('click', openOverlay);
+    document.getElementById('closeWaitlist')?.addEventListener('click', closeOverlay);
+    overlay.addEventListener('click', (e)=>{ if(e.target===overlay) closeOverlay(); });
+
+    // Steps
+    const steps = Array.from(document.querySelectorAll('[data-step]'));
+    const stepLabel = document.getElementById('stepLabel');
+    const stepName  = document.getElementById('stepName');
+    const progressBar = document.getElementById('progressBar');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const form = document.getElementById('waitlistForm');
+    const successPane = document.getElementById('successPane');
+
+    const names = ['Contact','Brand Basics','Product & Packaging','Launch Goals','Marketing Channels','Consent'];
+    let current = 1, total = steps.length;
+
+    function showStep(n) {
+      steps.forEach(s => s.classList.add('hidden'));
+      const el = document.querySelector(`[data-step="${n}"]`);
+      if (el) el.classList.remove('hidden');
+
+      stepLabel.textContent = `Step ${n} of ${total}`;
+      stepName.textContent = names[n-1] || '';
+      const pct = Math.round((n/total)*100);
+      progressBar.style.width = pct + '%';
+
+      prevBtn.disabled = n === 1;
+      nextBtn.classList.toggle('hidden', n === total);
+      submitBtn.classList.toggle('hidden', n !== total);
+      saveBtn.classList.toggle('hidden', false);
+    }
+    showStep(current);
+
+    function validStep(n) {
+      const section = document.querySelector(`[data-step="${n}"]`);
+      const required = section.querySelectorAll('[required]');
+      for (const input of required) {
+        if ((input.type === 'checkbox' || input.type === 'radio')) {
+          const group = section.querySelectorAll(`input[name="${input.name}"]`);
+          const anyChecked = Array.from(group).some(i => i.checked);
+          if (!anyChecked) return false;
+        } else if (!input.value.trim()) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function shake() {
+      const panel = overlay.querySelector('.relative.mx-auto');
+      panel.style.animation = 'shake .2s linear 1';
+      setTimeout(()=>panel.style.animation='', 220);
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (!validStep(current)) { shake(); return; }
+      current = Math.min(total, current + 1);
+      saveProgress();
+      showStep(current);
+    });
+    prevBtn.addEventListener('click', () => {
+      current = Math.max(1, current - 1);
+      showStep(current);
+    });
+
+    // Meta capture
+    function initMeta() {
+      const params = new URLSearchParams(location.search);
+      form.elements['utm_source'].value   = params.get('utm_source') || '';
+      form.elements['utm_medium'].value   = params.get('utm_medium') || '';
+      form.elements['utm_campaign'].value = params.get('utm_campaign') || '';
+      form.elements['referrer'].value     = document.referrer || '';
+      form.elements['page_path'].value    = location.pathname + location.search;
+      form.elements['submitted_at_iso'].value = new Date().toISOString();
+    }
+
+    // Save + resume (localStorage)
+    const KEY = 'pf_waitlist_draft_v1';
+    function saveProgress() {
+      const data = Object.fromEntries(new FormData(form).entries());
+      data.channels = Array.from(form.querySelectorAll('input[name="channels"]:checked')).map(i=>i.value);
+      localStorage.setItem(KEY, JSON.stringify({ current, data }));
+    }
+    function loadSaved() {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return;
+      try {
+        const { current: c, data } = JSON.parse(raw);
+        if (data) {
+          Object.keys(data).forEach(k => {
+            const field = form.elements[k];
+            if (!field) return;
+            if (Array.isArray(data[k]) && k === 'channels') {
+              data[k].forEach(v => {
+                const box = form.querySelector(`input[name="channels"][value="${v}"]`);
+                if (box) box.checked = true;
+              });
+            } else if (field instanceof RadioNodeList) {
+              const r = form.querySelector(`input[name="${k}"][value="${data[k]}"]`);
+              if (r) r.checked = true;
+            } else {
+              field.value = data[k];
+            }
+          });
+        }
+        if (c && Number.isInteger(c)) {
+          current = Math.min(total, Math.max(1, c));
+          showStep(current);
+        }
+      } catch {}
+    }
+    saveBtn.addEventListener('click', () => {
+      saveProgress();
+      saveBtn.textContent = 'Saved!';
+      setTimeout(()=>saveBtn.textContent='Save & resume later', 1200);
+    });
+
+    // Submit (replace with your API)
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!validStep(current)) { shake(); return; }
+
+      const fd = new FormData(form);
+      const payload = Object.fromEntries(fd.entries());
+      payload.channels = Array.from(form.querySelectorAll('input[name="channels"]:checked')).map(i=>i.value);
+
+      try {
+        // Example: POST to your Worker / PocketBase / Resend endpoint
+        // await fetch('/api/waitlist', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+
+        await new Promise(r=>setTimeout(r,500)); // simulate success
+        document.getElementById('waitlistForm').classList.add('hidden');
+        document.getElementById('successPane').classList.remove('hidden');
+        localStorage.removeItem(KEY);
+      } catch {
+        alert('Something went wrong. Please try again.');
+      }
+    });
+
+    // Close on ESC
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && !overlay.classList.contains('hidden')) closeOverlay(); });
+
+    // Click outside closes
+    overlay.addEventListener('click', (e)=>{ if(e.target===overlay) closeOverlay(); });
+    
+    // Year
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
